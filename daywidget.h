@@ -46,7 +46,7 @@ private:
     void setup();
 
 signals:
-    void clicked(DayWidget* sender);
+    void clicked();
 };
 
 #endif // DAYWIDGET_H

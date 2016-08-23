@@ -41,15 +41,15 @@ void DayWidget::setup()
 
 void DayWidget::mousePressEvent(QMouseEvent *ev)
 {
-    title->Press();
-    content->Press();
+    title->SetPressedStyle();
+    content->SetPressedStyle();
     QWidget::mousePressEvent(ev);
 }
 
 void DayWidget::mouseReleaseEvent(QMouseEvent *ev)
 {
-    title->Release();
-    content->Release();
-    emit clicked(this);
+    title->SetReleasedStyle();
+    content->SetReleasedStyle();
+    emit clicked();
     QWidget::mouseReleaseEvent(ev);
 }

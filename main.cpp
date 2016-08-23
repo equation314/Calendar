@@ -7,5 +7,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+    //qRegisterMetaType<Event*>("Event*");
+
     return a.exec();
 }

@@ -50,15 +50,13 @@ MainWindow::MainWindow(QWidget *parent) :
             connect(day_table[i][j], &DayWidget::clicked, this, &MainWindow::onDayWidgetClicked);
         }
 
-    event_list.push_back(new Event("hehe",m_date, m_date,"",this));
-    event_list.push_back(new Event("233",m_date, m_date.addDays(15),"",this));
-    event_list.push_back(new Event("fuck",m_date.addDays(-4), m_date.addDays(-1),"",this));
-
     loadTable();
 }
 
 MainWindow::~MainWindow()
 {
+    for (auto i : event_list) delete i;
+    event_list.clear();
     delete ui;
 }
 
@@ -70,6 +68,12 @@ pair<int, int> MainWindow::dayPosition(const QDate& date)
         for (int j = 0; j < Const::WEEK_DAYS; j++)
             if (day_table[i][j]->Date() == date) return make_pair(i, j);
     return make_pair(-1, -1);
+}
+
+void MainWindow::addEvent(Event* event)
+{
+    event_list.push_back(event);
+    connect(event, &Event::clicked, this, &MainWindow::onEventClicked);
 }
 
 void MainWindow::loadTable()
@@ -111,11 +115,12 @@ void MainWindow::loadTable()
 void MainWindow::loadEvents()
 {
     int eventCount[Const::MONTH_WEEKS][Const::WEEK_DAYS] = {0};
-    for (auto i : event_list)
+    for (auto i = event_list.rbegin(); i != event_list.rend(); i++)
     {
-        for (int j = 0; j < i->DayCount(); j++) i->EventLabel(j)->hide();
+        Event* event = *i;
+        for (int j = 0; j < event->DayCount(); j++) event->EventLabel(j)->hide();
 
-        QDate begin = i->Begin(), end = i->End();
+        QDate begin = event->Begin(), end = event->End();
         if (begin < day_table[0][0]->Date() && end >= day_table[0][0]->Date())
             begin = day_table[0][0]->Date();
         auto pos = dayPosition(begin);
@@ -125,13 +130,15 @@ void MainWindow::loadEvents()
         {
             int span = min(qint64(Const::WEEK_DAYS - pos.second), date.daysTo(end) + 1), num = 0;
             for (int j = 0; j < span; j++) num = max(num, eventCount[pos.first][pos.second + j]);
-
-            i->EventLabel(date)->show();
-            ui->layout_table->addWidget(i->EventLabel(date), pos.first * 4 + num + 2, pos.second + 1, 1, span);
-            for (int j = 0; j < span; j++)
+            if (num < 3)
             {
-                day_table[pos.first][pos.second + j]->AddEvent(i);
-                eventCount[pos.first][pos.second + j] = num + 1;
+                ui->layout_table->addWidget(event->EventLabel(date), pos.first * 4 + num + 2, pos.second + 1, 1, span);
+                event->EventLabel(date)->show();
+                for (int j = 0; j < span; j++)
+                {
+                    day_table[pos.first][pos.second + j]->AddEvent(event);
+                    eventCount[pos.first][pos.second + j] = num + 1;
+                }
             }
 
             pos.first++, pos.second = 0;
@@ -157,11 +164,23 @@ void MainWindow::on_pushButton_right_clicked()
     ui->label_date->setText(m_date.toString("MMMM yyyy"));
 }
 
-void MainWindow::onDayWidgetClicked(DayWidget *sender)
+void MainWindow::onDayWidgetClicked()
 {
-    AddEventDialog dialog(sender->Date(), this);
+    DayWidget* widget = qobject_cast<DayWidget*>(sender());
+    AddEventDialog dialog(widget->Date(), false, this);
     if (dialog.exec() == QDialog::Accepted)
     {
+        addEvent(dialog.GetEvent());
+        loadTable();
+    }
+}
 
+void MainWindow::onEventClicked()
+{
+    Event* event = qobject_cast<Event*>(sender());
+    AddEventDialog dialog(event, true, this);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        loadTable();
     }
 }

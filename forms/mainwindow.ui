@@ -87,7 +87,7 @@
     <item row="1" column="0" colspan="3">
      <layout class="QGridLayout" name="layout_table">
       <property name="spacing">
-       <number>1</number>
+       <number>2</number>
       </property>
      </layout>
     </item>

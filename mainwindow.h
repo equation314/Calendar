@@ -35,14 +35,17 @@ private:
     DayWidget* day_table[Const::MONTH_WEEKS][Const::WEEK_DAYS];
     LabelButton* vertical_header[Const::MONTH_WEEKS];
     LabelButton* horizontal_header[Const::WEEK_DAYS];
+
+    std::pair<int, int> dayPosition(const QDate &date);
     void loadTable();
     void loadEvents();
-    std::pair<int, int> dayPosition(const QDate &date);
+    void addEvent(Event *event);
 
 private slots:
     void on_pushButton_left_clicked();
     void on_pushButton_right_clicked();
-    void onDayWidgetClicked(DayWidget* sender);
+    void onDayWidgetClicked();
+    void onEventClicked();
 };
 
 #endif // MAINWINDOW_H

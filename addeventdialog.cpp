@@ -1,3 +1,4 @@
+#include "event.h"
 #include "addeventdialog.h"
 #include "ui_weekrepeatwidget.h"
 #include "ui_monthrepeatwidget.h"
@@ -105,20 +106,50 @@ YearRepeatWidget::YearRepeatWidget(QWidget *parent) :
 
 
 
-
-
-AddEventDialog::AddEventDialog(const QDate& date, QWidget *parent) :
+AddEventDialog::AddEventDialog(Event* event, const bool isEditing, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddEventDialog),
-    begin(date), end(date)
+    is_editing(isEditing), event(event), begin(event->Begin()), end(event->End())
+{
+    setup();
+}
+
+AddEventDialog::AddEventDialog(const QDate& date, bool isEditing, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::AddEventDialog),
+    is_editing(isEditing), event(nullptr), begin(date), end(date)
+{
+    setup();
+}
+
+AddEventDialog::~AddEventDialog()
+{
+    delete ui;
+}
+
+void AddEventDialog::setup()
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
+    if (is_editing)
+        this->setWindowTitle(tr("修改事件"));
+    else
+    {
+        this->setWindowTitle(tr("新建事件"));
+        ui->pushButton_delete->hide();
+    }
 
     ui->dateEdit_begin->setDate(begin);
     ui->dateEdit_end->setDate(end);
 
-    ui->comboBox_endType->addItem(date.toString("yyyy/M/d"));
+    if (event)
+    {
+        ui->lineEdit_title->setText(event->Title());
+        ui->lineEdit_place->setText(event->Place());
+        ui->plainTextEdit_deail->setPlainText(event->Detail());
+    }
+
+    ui->comboBox_endType->addItem(end.toString("yyyy/M/d"));
     ui->spinBox_repeatTimes->hide();
     ui->label_5->hide();
 
@@ -138,11 +169,8 @@ AddEventDialog::AddEventDialog(const QDate& date, QWidget *parent) :
     // year
     year_repeat_widget = new YearRepeatWidget(ui->groupBox);
     layout_repeat->addWidget(year_repeat_widget);
-}
 
-AddEventDialog::~AddEventDialog()
-{
-    delete ui;
+    this->ui->lineEdit_title->setFocus();
 }
 
 void AddEventDialog::accept()
@@ -151,6 +179,18 @@ void AddEventDialog::accept()
     {
         QMessageBox::critical(this, "事件无效", "请输入主题！");
         return;
+    }
+    if (ui->groupBox->isChecked())
+    {
+
+    }
+    else
+    {
+        if (event == nullptr) event = new Event(begin, end, static_cast<QWidget*>(this->parent()));
+        event->ResetBeginEnd(begin, end);
+        event->SetTitle(ui->lineEdit_title->text());
+        event->SetPlace(ui->lineEdit_place->text());
+        event->SetDetail(ui->plainTextEdit_deail->toPlainText());
     }
     QDialog::accept();
 }

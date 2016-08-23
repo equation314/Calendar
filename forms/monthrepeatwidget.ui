@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MonthRepeatWidget</class>
+ <widget class="QWidget" name="MonthRepeatWidget">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QRadioButton" name="radioButton_day">
+     <property name="text">
+      <string>在</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QRadioButton" name="radioButton_weekday">
+     <property name="text">
+      <string>在</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="comboBox_day"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="comboBox_weekday_1">
+     <item>
+      <property name="text">
+       <string>第一个</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第二个</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第三个</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第四个</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>第五个</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>最后一个</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QComboBox" name="comboBox_weekday_2"/>
+   </item>
+   <item row="0" column="3" rowspan="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

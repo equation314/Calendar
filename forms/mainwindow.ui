@@ -6,12 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>702</width>
-    <height>453</height>
+    <width>768</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Calendar</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget
+{
+	font-family: &quot;微软雅黑&quot;;
+}</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -40,6 +46,19 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_date">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="1">
      <widget class="QPushButton" name="pushButton_right">
       <property name="sizePolicy">
@@ -65,21 +84,12 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QLabel" name="label_date">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="0" colspan="3">
-     <widget class="QWidget" name="widget_empty" native="true"/>
+     <layout class="QGridLayout" name="layout_table">
+      <property name="spacing">
+       <number>1</number>
+      </property>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -88,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>702</width>
+     <width>768</width>
      <height>23</height>
     </rect>
    </property>

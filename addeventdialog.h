@@ -1,7 +1,7 @@
 #ifndef ADDEVENTDIALOG_H
 #define ADDEVENTDIALOG_H
 
-#include "event.h"
+#include "abstractevent.h"
 
 #include <QDate>
 #include <QDialog>
@@ -25,6 +25,19 @@ public:
     explicit WeekRepeatWidget(QWidget *parent = nullptr);
     ~WeekRepeatWidget() { delete ui; }
 
+    void SetCheckStatus(int mark)
+    {
+        for (int i = 1; i <= 7; i++)
+            checkBox[i]->setChecked((mark >> i) & 1);
+    }
+    int DayMark() const
+    {
+        int mark = 0;
+        for (int i = 1; i <= 7; i++)
+            if (checkBox[i]->isChecked()) mark |= 1 << i;
+        return mark;
+    }
+
 private:
     Ui::WeekRepeatWidget *ui;
     QCheckBox* checkBox[8];
@@ -39,6 +52,15 @@ public:
     explicit MonthRepeatWidget(QWidget *parent = nullptr);
     ~MonthRepeatWidget() { delete ui; }
 
+    int MonthType();
+    int MonthDay();
+    int MonthWeekday();
+    int MonthWeekdayNum();
+
+    void SetMonthDay(int x);
+    void SetMonthWeekday(int x);
+    void SetMonthWeekdayNum(int x);
+
 private:
     Ui::MonthRepeatWidget *ui;
 };
@@ -52,6 +74,17 @@ public:
     explicit YearRepeatWidget(QWidget *parent = nullptr);
     ~YearRepeatWidget() { delete ui; }
 
+    int MonthType();
+    int MonthDay();
+    int MonthWeekday();
+    int MonthWeekdayNum();
+    int YearMonth();
+
+    void SetMonthDay(int x);
+    void SetMonthWeekday(int x);
+    void SetMonthWeekdayNum(int x);
+    void SetYearMonth(int x);
+
 private:
     Ui::YearRepeatWidget *ui;
 };
@@ -62,11 +95,11 @@ class AddEventDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit AddEventDialog(const QDate& date, bool isEditing, QWidget *parent = nullptr);
-    explicit AddEventDialog(Event* event, bool isEditing, QWidget *parent = nullptr);
+    explicit AddEventDialog(const QDate& date, QWidget *parent = nullptr);
+    explicit AddEventDialog(AbstractEvent* event, QWidget *parent = nullptr);
     ~AddEventDialog();
 
-    Event* GetEvent() const { return event; }
+    AbstractEvent* GetEvent() const { return event; }
 
 protected:
     void accept() override;
@@ -74,7 +107,7 @@ protected:
 private:
     Ui::AddEventDialog *ui;
     bool is_editing;
-    Event* event;
+    AbstractEvent* event;
     QDate begin, end;
 
     QStackedLayout* layout_repeat;
@@ -90,6 +123,7 @@ private slots:
 
     void on_comboBox_repeatType_currentIndexChanged(int index);
     void on_comboBox_endType_currentIndexChanged(int index);
+    void on_groupBox_clicked(bool checked);
 };
 
 #endif // ADDEVENTDIALOG_H

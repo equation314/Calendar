@@ -23,7 +23,7 @@ void DayWidget::setup()
     layout->setMargin(0);
     layout->setSpacing(0);
     this->setLayout(layout);
-
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
 
     layout->addWidget(title, 0, 0, 1, 1);
     layout->addWidget(content, 1, 0, 1, 1);
@@ -32,8 +32,16 @@ void DayWidget::setup()
     title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     title->setAlignment(Qt::AlignCenter);
 
-    SetTitleBackgroundColor(QColor(78, 144, 216));
-    SetContentBackgroundColor(QColor(47, 101, 188));
+    SetThemeColor(Qt::white);
+
+    connect(title,   &LabelButton::pressed, content, &LabelButton::ShowPressedStyle);
+    connect(content, &LabelButton::pressed, title,   &LabelButton::ShowPressedStyle);
+
+    connect(title,   &LabelButton::released, content, &LabelButton::ShowReleasedStyle);
+    connect(content, &LabelButton::released, title,   &LabelButton::ShowReleasedStyle);
+
+    /*SetTitleBackgroundColor(QColor(78, 144, 216));
+    SetContentBackgroundColor(QColor(47, 101, 188));*/
 
     //title->SetPressedColor(Color(64, 127, 195));
     //content->SetPressedColor();
@@ -41,15 +49,21 @@ void DayWidget::setup()
 
 void DayWidget::mousePressEvent(QMouseEvent *ev)
 {
-    title->SetPressedStyle();
-    content->SetPressedStyle();
+    if (ev->button() == Qt::LeftButton)
+    {
+        title->ShowPressedStyle();
+        content->ShowPressedStyle();
+    }
     QWidget::mousePressEvent(ev);
 }
 
 void DayWidget::mouseReleaseEvent(QMouseEvent *ev)
 {
-    title->SetReleasedStyle();
-    content->SetReleasedStyle();
-    emit clicked();
+    if (ev->button() == Qt::LeftButton)
+    {
+        title->ShowReleasedStyle();
+        content->ShowReleasedStyle();
+        emit clicked();
+    }
     QWidget::mouseReleaseEvent(ev);
 }

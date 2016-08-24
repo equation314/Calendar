@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>YearRepeatWidget</class>
  <widget class="QWidget" name="YearRepeatWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>311</width>
+    <height>90</height>
+   </rect>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="1">
     <widget class="QRadioButton" name="radioButton_day">
@@ -60,13 +68,6 @@
      </item>
     </widget>
    </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QComboBox" name="comboBox_month">
-     <property name="sizeAdjustPolicy">
-      <enum>QComboBox::AdjustToContents</enum>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="4" rowspan="3">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -79,6 +80,13 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QComboBox" name="comboBox_month">
+     <property name="maxVisibleItems">
+      <number>12</number>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

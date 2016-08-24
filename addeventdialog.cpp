@@ -1,5 +1,7 @@
-#include "event.h"
+#include "const.h"
 #include "addeventdialog.h"
+#include "recurrentevent.h"
+#include "continuousevent.h"
 #include "ui_weekrepeatwidget.h"
 #include "ui_monthrepeatwidget.h"
 #include "ui_yearrepeatwidget.h"
@@ -74,6 +76,32 @@ MonthRepeatWidget::MonthRepeatWidget(QWidget *parent) :
     });
 }
 
+int MonthRepeatWidget::MonthType() { return ui->radioButton_day->isChecked() ? 0 : 1; }
+int MonthRepeatWidget::MonthDay()
+{
+    if (ui->comboBox_day->currentIndex() == 31) return 0; // last day
+    return ui->comboBox_day->currentIndex() + 1;
+}
+int MonthRepeatWidget::MonthWeekday() { return ui->comboBox_weekday_2->currentIndex() + 1; }
+int MonthRepeatWidget::MonthWeekdayNum()
+{
+    if (ui->comboBox_weekday_1->currentIndex() == 5) return 0; // last week
+    return ui->comboBox_weekday_1->currentIndex() + 1;
+}
+
+void MonthRepeatWidget::SetMonthDay(int x)
+{
+    if (!x) ui->comboBox_day->setCurrentIndex(31);
+    else ui->comboBox_day->setCurrentIndex(x - 1);
+}
+void MonthRepeatWidget::SetMonthWeekday(int x) { ui->comboBox_weekday_2->setCurrentIndex(x - 1); }
+void MonthRepeatWidget::SetMonthWeekdayNum(int x)
+{
+    if (!x) ui->comboBox_weekday_1->setCurrentIndex(5);
+    else ui->comboBox_weekday_1->setCurrentIndex(x - 1);
+}
+
+
 
 
 
@@ -104,20 +132,49 @@ YearRepeatWidget::YearRepeatWidget(QWidget *parent) :
     });
 }
 
+int YearRepeatWidget::MonthType() { return ui->radioButton_day->isChecked() ? 0 : 1; }
+int YearRepeatWidget::MonthDay()
+{
+    if (ui->comboBox_day->currentIndex() == 31) return 0; // last day
+    return ui->comboBox_day->currentIndex() + 1;
+}
+int YearRepeatWidget::MonthWeekday() { return ui->comboBox_weekday_2->currentIndex() + 1; }
+int YearRepeatWidget::MonthWeekdayNum()
+{
+    if (ui->comboBox_weekday_1->currentIndex() == 5) return 0; // last week
+    return ui->comboBox_weekday_1->currentIndex() + 1;
+}
+int YearRepeatWidget::YearMonth() { return ui->comboBox_month->currentIndex() + 1; }
+
+void YearRepeatWidget::SetMonthDay(int x)
+{
+    if (!x) ui->comboBox_day->setCurrentIndex(31);
+    else ui->comboBox_day->setCurrentIndex(x - 1);
+}
+void YearRepeatWidget::SetMonthWeekday(int x) { ui->comboBox_weekday_2->setCurrentIndex(x - 1); }
+void YearRepeatWidget::SetMonthWeekdayNum(int x)
+{
+    if (!x) ui->comboBox_weekday_1->setCurrentIndex(5);
+    else ui->comboBox_weekday_1->setCurrentIndex(x - 1);
+}
+void YearRepeatWidget::SetYearMonth(int x) { ui->comboBox_month->setCurrentIndex(x - 1); }
 
 
-AddEventDialog::AddEventDialog(Event* event, const bool isEditing, QWidget *parent) :
+
+
+
+AddEventDialog::AddEventDialog(AbstractEvent* event, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddEventDialog),
-    is_editing(isEditing), event(event), begin(event->Begin()), end(event->End())
+    is_editing(true), event(event), begin(event->Begin()), end(event->End())
 {
     setup();
 }
 
-AddEventDialog::AddEventDialog(const QDate& date, bool isEditing, QWidget *parent) :
+AddEventDialog::AddEventDialog(const QDate& date, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddEventDialog),
-    is_editing(isEditing), event(nullptr), begin(date), end(date)
+    is_editing(false), event(nullptr), begin(date), end(date)
 {
     setup();
 }
@@ -131,25 +188,11 @@ void AddEventDialog::setup()
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
-    if (is_editing)
-        this->setWindowTitle(tr("修改事件"));
-    else
-    {
-        this->setWindowTitle(tr("新建事件"));
-        ui->pushButton_delete->hide();
-    }
 
     ui->dateEdit_begin->setDate(begin);
     ui->dateEdit_end->setDate(end);
 
-    if (event)
-    {
-        ui->lineEdit_title->setText(event->Title());
-        ui->lineEdit_place->setText(event->Place());
-        ui->plainTextEdit_deail->setPlainText(event->Detail());
-    }
-
-    ui->comboBox_endType->addItem(end.toString("yyyy/M/d"));
+    ui->comboBox_endType->addItem(end.toString(Qt::SystemLocaleShortDate));
     ui->spinBox_repeatTimes->hide();
     ui->label_5->hide();
 
@@ -171,6 +214,57 @@ void AddEventDialog::setup()
     layout_repeat->addWidget(year_repeat_widget);
 
     this->ui->lineEdit_title->setFocus();
+
+    if (!is_editing)
+        this->setWindowTitle(tr("新建事件"));
+    else
+    {
+        this->setWindowTitle(tr("修改事件"));
+        ui->lineEdit_title->setText(event->Title());
+        ui->lineEdit_place->setText(event->Place());
+        ui->plainTextEdit_deail->setPlainText(event->Detail());
+        ui->groupBox->setEnabled(false);
+        if (event->Type() == AbstractEvent::RecurrentEvent)
+        {
+            this->setWindowTitle(tr("修改重复事件"));
+            ui->dateEdit_begin->setEnabled(false);
+            ui->dateEdit_end->setEnabled(false);
+
+            RecurrentEvent* revent = static_cast<RecurrentEvent*>(event);
+            ui->groupBox->setChecked(true);
+            ui->spinBox_interval->setValue(revent->Interval());
+            ui->comboBox_repeatType->setCurrentIndex((int)revent->GetRecurrentType());
+            ui->comboBox_endType->setCurrentIndex(revent->EndType());
+            if (revent->EndType() == 1) ui->spinBox_repeatTimes->setValue(revent->RepeatTimes());
+            switch (revent->GetRecurrentType())
+            {
+            case RecurrentEvent::Day:
+                break;
+            case RecurrentEvent::Week:
+                week_repeat_widget->SetCheckStatus(revent->DayMark());
+                break;
+            case RecurrentEvent::Month:
+                if (!revent->MonthWeekday())
+                    month_repeat_widget->SetMonthDay(revent->MonthDay());
+                else
+                {
+                    month_repeat_widget->SetMonthWeekday(revent->MonthWeekday());
+                    month_repeat_widget->SetMonthWeekdayNum(revent->MonthWeekdayNum());
+                }
+                break;
+            case RecurrentEvent::Year:
+                year_repeat_widget->SetYearMonth(revent->YearMonth());
+                if (!revent->MonthWeekday())
+                    year_repeat_widget->SetMonthDay(revent->MonthDay());
+                else
+                {
+                    year_repeat_widget->SetMonthWeekday(revent->MonthWeekday());
+                    year_repeat_widget->SetMonthWeekdayNum(revent->MonthWeekdayNum());
+                }
+                break;
+            }
+        }
+    }
 }
 
 void AddEventDialog::accept()
@@ -178,15 +272,61 @@ void AddEventDialog::accept()
     if (ui->lineEdit_title->text().isEmpty())
     {
         QMessageBox::critical(this, "事件无效", "请输入主题！");
+        ui->lineEdit_title->setFocus();
         return;
     }
-    if (ui->groupBox->isChecked())
+    if (ui->groupBox->isEnabled() && ui->groupBox->isChecked())
     {
-
+        RecurrentEvent* revent = new RecurrentEvent(begin, end);
+        revent->SetTitle(ui->lineEdit_title->text());
+        revent->SetPlace(ui->lineEdit_place->text());
+        revent->SetDetail(ui->plainTextEdit_deail->toPlainText());
+        revent->SetInterval(ui->spinBox_interval->value());
+        switch (ui->comboBox_repeatType->currentIndex())
+        {
+        case 0: // day
+            revent->SetRecurrentType(RecurrentEvent::Day);
+            break;
+        case 1: // week
+            revent->SetRecurrentType(RecurrentEvent::Week);
+            revent->SetDayMark(week_repeat_widget->DayMark());
+            if (!revent->DayMark())
+            {
+                if (event == nullptr) delete revent;
+                QMessageBox::critical(this, "事件无效", "请选择一周中的至少一天！");
+                return;
+            }
+            break;
+        case 2: // month
+            revent->SetRecurrentType(RecurrentEvent::Month);
+            if (!month_repeat_widget->MonthType())
+                revent->SetMonthDay(month_repeat_widget->MonthDay());
+            else
+            {
+                revent->SetMonthWeekday(month_repeat_widget->MonthWeekday());
+                revent->SetMonthWeekdayNum(month_repeat_widget->MonthWeekdayNum());
+            }
+            break;
+        case 3: // year
+            revent->SetRecurrentType(RecurrentEvent::Year);
+            revent->SetYearMonth(year_repeat_widget->YearMonth());
+            if (!year_repeat_widget->MonthType())
+                revent->SetMonthDay(year_repeat_widget->MonthDay());
+            else
+            {
+                revent->SetMonthWeekday(year_repeat_widget->MonthWeekday());
+                revent->SetMonthWeekdayNum(year_repeat_widget->MonthWeekdayNum());
+            }
+            break;
+        }
+        revent->SetEndType(ui->comboBox_endType->currentIndex());
+        if (revent->EndType() == 1) revent->SetRepeatTimes(ui->spinBox_repeatTimes->value());
+        event = revent;
+        event->SetLabelColor(Const::COLOR_LIST[10]);
     }
     else
     {
-        if (event == nullptr) event = new Event(begin, end, static_cast<QWidget*>(this->parent()));
+        if (event == nullptr) event = new ContinuousEvent(begin, end);
         event->ResetBeginEnd(begin, end);
         event->SetTitle(ui->lineEdit_title->text());
         event->SetPlace(ui->lineEdit_place->text());
@@ -233,6 +373,7 @@ void AddEventDialog::on_comboBox_repeatType_currentIndexChanged(int index)
 
 void AddEventDialog::on_comboBox_endType_currentIndexChanged(int index)
 {
+    ui->dateEdit_end->setEnabled(index == 2);
     if (index == 1)
     {
         ui->spinBox_repeatTimes->show();
@@ -242,5 +383,18 @@ void AddEventDialog::on_comboBox_endType_currentIndexChanged(int index)
     {
         ui->spinBox_repeatTimes->hide();
         ui->label_5->hide();
+    }
+}
+
+void AddEventDialog::on_groupBox_clicked(bool checked)
+{
+    if (checked)
+    {
+        on_comboBox_endType_currentIndexChanged(ui->comboBox_endType->currentIndex());
+    }
+    else
+    {
+        ui->dateEdit_begin->setEnabled(true);
+        ui->dateEdit_end->setEnabled(true);
     }
 }

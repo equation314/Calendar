@@ -1,6 +1,8 @@
 #ifndef LABELBUTTON_H
 #define LABELBUTTON_H
 
+#include "abstractevent.h"
+
 #include <QLabel>
 #include <QMouseEvent>
 
@@ -11,14 +13,14 @@ public:
     explicit LabelButton(QWidget *parent = nullptr);
     explicit LabelButton(const QString& text, QWidget *parent = nullptr);
 
-    void SetHover(bool hover) { show_hover = hover;}
+    QColor BackgroundColor() const { return background_color; }
 
+    void SetMouseEnterColorShow(bool show) { show_enter_color = show;}
     void SetTextColor(const QColor& color)
     {
         text_color = color;
         this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name()));
     }
-
     void SetBackgroundColor(const QColor& color)
     {
         background_color = color;
@@ -27,9 +29,9 @@ public:
 
 
 public slots:
-    void SetHoveringStyle();
-    void SetPressedStyle();
-    void SetReleasedStyle();
+    void ShowEnterStyle();
+    void ShowPressedStyle();
+    void ShowReleasedStyle();
 
 protected:
     virtual void resizeEvent(QResizeEvent *event) override;
@@ -42,16 +44,31 @@ private:
     QString text;
     QColor text_color;
     QColor background_color;
-    bool show_hover;
+    bool show_enter_color;
 
     void setup();
 
 signals:
-    void mouseLeft();
-    void mouseHovering();
+    void mouseLeave();
+    void mouseEnter();
     void clicked();
     void pressed();
     void released();
+};
+
+class LabelButtonWithEvent : public LabelButton
+{
+public:
+    explicit LabelButtonWithEvent(QWidget *parent = nullptr) :
+        LabelButton(parent) {}
+    explicit LabelButtonWithEvent(const QString& text, AbstractEvent* event, QWidget *parent = nullptr) :
+        LabelButton(text, parent), event(event) {}
+
+    AbstractEvent* Event() const { return event; }
+    void SetEvent(AbstractEvent* event) { this->event = event; }
+
+private:
+    AbstractEvent* event;
 };
 
 #endif // LABELBUTTON_H

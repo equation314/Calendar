@@ -39,14 +39,14 @@ FileListWidget::FileListWidget(QWidget* parent) :
     });
 }
 
-void FileListWidget::AddFile(const QString& file)
+void FileListWidget::AddFile(const QString& filePath)
 {
-    QFileInfo info(file);
+    QFileInfo info(filePath);
     QFileIconProvider iconProvider;
     QIcon icon = iconProvider.icon(info);
     QListWidgetItem* item = new QListWidgetItem(QIcon(icon.pixmap(64,64)), info.fileName());
     this->addItem(item);
-    file_url_list.push_back(QUrl::fromLocalFile(file));
+    file_url_list.push_back(QUrl::fromLocalFile(filePath));
     this->show();
 }
 
@@ -88,6 +88,6 @@ void FileListWidget::onDeleteFile()
     delete this->takeItem(rowByAction);
     file_url_list.erase(file_url_list.begin() + rowByAction);
     if (!this->count()) this->hide();
-    qDebug()<<filePath<<' '<<rowByAction<<' '<<file_url_list.size();
+    //qDebug()<<filePath<<' '<<rowByAction<<' '<<file_url_list.size();
     emit fileRemoved(QFileInfo(filePath).fileName());
 }

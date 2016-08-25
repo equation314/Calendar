@@ -10,7 +10,7 @@ class FileListWidget : public QListWidget
 public:
     FileListWidget(QWidget* parent = nullptr);
 
-    void AddFile(const QString &file);
+    void AddFile(const QString &filePath);
 
 protected:
     virtual void mousePressEvent(QMouseEvent* event) override;

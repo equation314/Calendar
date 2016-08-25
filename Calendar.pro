@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui widgets
 
 TARGET = Calendar
 TEMPLATE = app
@@ -42,3 +40,6 @@ FORMS    += forms/mainwindow.ui \
     forms/monthrepeatwidget.ui \
     forms/yearrepeatwidget.ui \
     forms/daydetaildialog.ui
+
+RESOURCES += \
+    resource/icon.qrc

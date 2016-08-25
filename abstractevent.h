@@ -11,8 +11,9 @@ class AbstractEvent : public QObject
 public:
     enum EventType { ContinuousEvent, RecurrentEvent };
 
-    explicit AbstractEvent(const QDate& begin, const QDate& end);//QWidget* parent = nullptr);
-     virtual ~AbstractEvent();
+    explicit AbstractEvent();
+    explicit AbstractEvent(const QDate& begin, const QDate& end);
+    virtual ~AbstractEvent();
 
     QDate Begin() const { return begin; }
     QDate End() const { return end; }
@@ -20,8 +21,8 @@ public:
     QString Place() const { return place; }
     QString Detail() const { return detail; }
     QColor LabelColor() const { return color; }
-    int FileCount() const { return file_list.size(); }
-    QString FileAt(int i) const { return file_list[i]; }
+    int FileCount() const { return file_name_list.size(); }
+    QString FilePathAt(int i) const;
 
     void ResetBeginEnd(const QDate& begin, const QDate& end)
     {
@@ -33,21 +34,25 @@ public:
     void SetDetail(const QString& text) { detail = text; }
     void SetLabelColor(const QColor& col) { color = col; }
 
-    void AddFile(const QString& file);
+    void AddFile(const QString& filePath);
+    void RemoveFile(const QString &fileName);
+    void RemoveAllFiles();
+    void Clone(AbstractEvent* event);
 
     virtual EventType Type() const = 0;
     virtual bool InList(const QDate& date) const = 0;
 
-    void RemoveFile(const QString &fileName);
-    void RemoveAllFiles();
+    friend QDataStream& operator <<(QDataStream& dataStream, AbstractEvent* event);
+    friend QDataStream& operator >>(QDataStream& dataStream, AbstractEvent** event);
 
 protected:
     QDate begin, end;
-
-private:
     QString title, place, detail, dir_name;
     QColor color;
-    QStringList file_list;
+    QStringList file_name_list;
+
+    virtual void save(QDataStream &dataStream) const = 0;
+    virtual void load(QDataStream &dataStream) = 0;
 };
 
 #endif // ABSTRACTEVENT_H

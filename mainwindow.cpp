@@ -5,10 +5,12 @@
 #include "continuousevent.h"
 #include "daydetaildialog.h"
 
+#include <QDir>
 #include <QDebug>
 #include <QFileInfo>
-#include <QColorDialog>
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QColorDialog>
 
 using namespace std;
 
@@ -19,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     week_first_day(1)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     ui->label_date->setText(m_date.toString("MMMM yyyy"));
     QLabel* corner = new QLabel(this);
     corner->setStyleSheet("QLabel{background:white;}");
@@ -52,19 +55,24 @@ MainWindow::MainWindow(QWidget *parent) :
             connect(day_table[i][j], &DayWidget::dropIn, this, &MainWindow::onAddFile);
             connect(day_table[i][j], &QWidget::customContextMenuRequested, this, &MainWindow::onDayWidgetContextMenu);
         }
+    importData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
     createActions();
     loadTable();
 }
 
 MainWindow::~MainWindow()
 {
-    for (auto i : event_list) delete i;
-    event_list.clear();
+    clearAll();
     delete ui;
 }
 
 void MainWindow::createActions()
 {
+    ui->toolBar->addAction(new QAction(QIcon(":/icons/menu.png"), ""));
+    ui->toolBar->addAction(new QAction(QIcon(":/icons/left.png"), ""));
+    ui->toolBar->addAction(new QAction(QIcon(":/icons/right.png"), ""));
+    ui->toolBar->addAction(new QAction(QIcon(":/icons/date.png"), ""));
+
     menu = new QMenu(this);
     menu_color = new ColorMenu("设置背景颜色(&C)", this);
     action_add_event = new QAction("添加事件(&A)", this);
@@ -76,6 +84,15 @@ void MainWindow::createActions()
     connect(action_delete_one_event, &QAction::triggered, this, &MainWindow::onDeleteOneEvent);
     connect(menu_color, &ColorMenu::colorSelected, this, &MainWindow::onSelectColor);
     connect(menu_color, &ColorMenu::otherColorSelected, this, &MainWindow::onSelectOtherColor);
+}
+
+void MainWindow::clearAll()
+{
+    for (auto i : event_labels) i->deleteLater();
+    for (auto i : event_list) i->deleteLater();
+    event_labels.clear();
+    event_list.clear();
+    day_color.clear();
 }
 
 void MainWindow::loadTable()
@@ -101,12 +118,13 @@ void MainWindow::loadTable()
         {
             day_table[i][j]->ClearEvents();
             day_table[i][j]->SetDate(day);
-            day_table[i][j]->SetDark(day.month() != first.month());
+
+            bool isDark = day.month() != first.month();
 
             if (day_color.find(day) != day_color.end())
-                day_table[i][j]->SetThemeColor(day_color[day]);
+                day_table[i][j]->SetBackgroundThemeColor(day_color[day], isDark);
             else
-                day_table[i][j]->SetThemeColor(QColor(47, 101, 188));
+                day_table[i][j]->SetBackgroundThemeColor(QColor(47, 101, 188), isDark);
 
             if (Const::IsWeekend(day.dayOfWeek()))
                 day_table[i][j]->SetTitleTextColor(QColor(255, 0, 0));
@@ -185,6 +203,55 @@ void MainWindow::loadEvents()
     }
 }
 
+void MainWindow::importData(const QString& fileName, bool showMessageBox)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        if (showMessageBox) QMessageBox::critical(0, "导入数据失败", QString("无法从数据文件 \"%1\" 导入！").arg(fileName));
+        return;
+    }
+
+    clearAll();
+    QDataStream in(&file);
+    int size;
+    in >> size;
+    for (int i = 0; i < size; i++)
+    {
+        AbstractEvent* event;
+        in >> &event;
+        event_list.push_back(event);
+    }
+    in >> size;
+    for (int i = 0; i < size; i++)
+    {
+        QDate date; QColor color;
+        in >> date >> color;
+        day_color[date] = color;
+    }
+    file.close();
+    loadTable();
+}
+
+void MainWindow::exportData(const QString& fileName, bool showMessageBox)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        if (showMessageBox) QMessageBox::critical(0, "导出数据失败", QString("无法导出到数据文件 \"%1\"！").arg(fileName));
+        return;
+    }
+
+    QDataStream out(&file);
+    out << (int)event_list.size();
+    for (auto i : event_list) out << i;
+    out << (int)day_color.size();
+    for (auto i : day_color) out << i.first << i.second;
+    file.close();
+}
+
+
+
 static AbstractEvent* eventByAction;
 static LabelButton* eventLabelByAction;
 static QDate dateByAction;
@@ -254,6 +321,22 @@ void MainWindow::on_pushButton_right_clicked()
     m_date = m_date.addMonths(1);
     loadTable();
     ui->label_date->setText(m_date.toString("MMMM yyyy"));
+}
+
+void MainWindow::on_pushButton_import_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("导入数据文件"),
+                                                          QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE,
+                                                          tr("日历数据文件 (*.dat)"));
+    if (!fileName.isEmpty()) importData(fileName, true);
+}
+
+void MainWindow::on_pushButton_export_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("导出数据文件"),
+                                                          QDir::homePath(),
+                                                          tr("日历数据文件 (*.dat)"));
+    if (!fileName.isEmpty()) exportData(fileName, true);
 }
 
 void MainWindow::onAddEvent()
@@ -346,6 +429,7 @@ void MainWindow::onAddFile(const QString& filePath)
     event->SetTitle(QString("文件 \"%2\"").arg(QFileInfo(filePath).fileName()));
     event->AddFile(filePath);
     event_list.push_back(event);
+
     loadTable();
 }
 
@@ -354,4 +438,10 @@ void MainWindow::onAddFileToEvent(const QString& filePath)
     LabelButtonWithEvent* sender = static_cast<LabelButtonWithEvent*>(QObject::sender());
     sender->Event()->AddFile(filePath);
     loadTable();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    exportData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
+    QMainWindow::closeEvent(event);
 }

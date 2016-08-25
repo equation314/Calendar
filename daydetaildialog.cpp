@@ -17,7 +17,6 @@ DayDetailDialog::DayDetailDialog(DayWidget* date, QWidget *parent) :
 
     ui->label_day->setText(QString("%1 %2").arg(date->Date().toString(Qt::SystemLocaleLongDate))
                                            .arg(QDate::longDayName(date->Date().dayOfWeek())));
-
     loadLabels();
 }
 

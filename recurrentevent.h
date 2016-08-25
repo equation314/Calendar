@@ -1,6 +1,7 @@
 #ifndef RECURRENTEVENT_H
 #define RECURRENTEVENT_H
 
+#include "const.h"
 #include "abstractevent.h"
 
 #include <set>
@@ -11,11 +12,12 @@ class RecurrentEvent : public AbstractEvent
 public:
     enum RecurrentType { Day, Week, Month, Year };
 
-    RecurrentEvent(const QDate& begin, const QDate& end);
+    explicit RecurrentEvent();
+    explicit RecurrentEvent(const QDate& begin, const QDate& end);
     ~RecurrentEvent() {}
 
-    virtual EventType Type() const override { return EventType::RecurrentEvent; }
-    virtual bool InList(const QDate& date) const override;
+    EventType Type() const override { return EventType::RecurrentEvent; }
+    bool InList(const QDate& date) const override;
 
     // Getter member functions
     RecurrentType GetRecurrentType() const { return type; }
@@ -39,8 +41,7 @@ public:
     void SetEndType(int x)
     {
         end_type = x;
-        if (end_type == 2) repeat_end = end;
-        else repeat_end = QDate(7999, 12, 31);
+        if (end_type == 2) repeat_end = end; else repeat_end = Const::MAX_DATE;
     }
     void SetRepeatTimes(int x);
 
@@ -53,8 +54,10 @@ private:
     int year_month;
     int end_type, repeat_times;
     QDate repeat_end;
-
     std::set<QDate> skip_set;
+
+    virtual void save(QDataStream &dataStream) const override;
+    virtual void load(QDataStream &dataStream) override;
 };
 
 #endif // RECURRENTEVENT_H

@@ -1,5 +1,11 @@
-#include "const.h"
 #include "recurrentevent.h"
+
+RecurrentEvent::RecurrentEvent() :
+    AbstractEvent(),
+    interval(1), month_weekday(0), repeat_end(Const::MAX_DATE)
+{
+
+}
 
 RecurrentEvent::RecurrentEvent(const QDate& begin, const QDate& end) :
     AbstractEvent(begin, end),
@@ -48,6 +54,8 @@ bool RecurrentEvent::InList(const QDate& date) const
             for (QDate i = date; i.month() == date.month(); i = i.addDays(-7), x++);
             return x == month_weekday_num;
         }
+    default:
+        return false;
     }
 }
 
@@ -57,4 +65,37 @@ void RecurrentEvent::SetRepeatTimes(int x)
     for (repeat_end = begin; x; repeat_end = repeat_end.addDays(1))
         if (InList(repeat_end)) x--;
     repeat_end.addDays(-1);
+}
+
+void RecurrentEvent::save(QDataStream &dataStream) const
+{
+    dataStream << (int)type;
+    dataStream << interval << day_mark << end_times;
+    dataStream << month_day << month_weekday << month_weekday_num;
+    dataStream << year_month;
+    dataStream << end_type << repeat_times;
+    dataStream << repeat_end;
+    dataStream << skip_set.size();
+    for (auto i : skip_set) dataStream << i;
+}
+
+void RecurrentEvent::load(QDataStream &dataStream)
+{
+    int x;
+    dataStream >> x;
+    type = (RecurrentType)x;
+    dataStream >> interval >> day_mark >> end_times;
+    dataStream >> month_day >> month_weekday >> month_weekday_num;
+    dataStream >> year_month;
+    dataStream >> end_type >> repeat_times;
+    dataStream >> repeat_end;
+    int size;
+    dataStream >> size;
+    skip_set.clear();
+    for (int i = 0; i < size; i++)
+    {
+        QDate date;
+        dataStream >> date;
+        skip_set.insert(date);
+    }
 }

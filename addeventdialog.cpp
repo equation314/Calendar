@@ -167,7 +167,7 @@ void YearRepeatWidget::SetYearMonth(int x) { ui->comboBox_month->setCurrentIndex
 AddEventDialog::AddEventDialog(AbstractEvent* event, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddEventDialog),
-    is_editing(true), event(event), begin(event->Begin()), end(event->End())
+    is_editing(true), event(event), tmp_event(event), begin(event->Begin()), end(event->End())
 {
     setup();
 }
@@ -175,7 +175,7 @@ AddEventDialog::AddEventDialog(AbstractEvent* event, QWidget *parent) :
 AddEventDialog::AddEventDialog(const QDate& date, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddEventDialog),
-    is_editing(false), event(nullptr), begin(date), end(date)
+    is_editing(false), event(nullptr), tmp_event(nullptr), begin(date), end(date)
 {
     setup();
 }
@@ -273,7 +273,7 @@ void AddEventDialog::setup()
 
         connect(file_list_widget, &FileListWidget::fileRemoved, event, &AbstractEvent::RemoveFile);
         for (int i = 0; i < event->FileCount(); i++)
-            file_list_widget->AddFile(event->FileAt(i));
+            file_list_widget->AddFile(event->FilePathAt(i));
     }
 }
 
@@ -287,7 +287,17 @@ void AddEventDialog::accept()
     }
     if (ui->groupBox->isEnabled() && ui->groupBox->isChecked())
     {
-        RecurrentEvent* revent = new RecurrentEvent(begin, end);
+        RecurrentEvent* revent;
+        if (!event)
+        {
+            if (tmp_event)
+            {
+                revent = new RecurrentEvent();
+                revent->Clone(tmp_event);
+            }
+            else
+                revent = new RecurrentEvent(begin, end);
+        }
         revent->SetTitle(ui->lineEdit_title->text());
         revent->SetPlace(ui->lineEdit_place->text());
         revent->SetDetail(ui->plainTextEdit_deail->toPlainText());
@@ -336,7 +346,17 @@ void AddEventDialog::accept()
     }
     else
     {
-        if (event == nullptr) event = new ContinuousEvent(begin, end);
+        if (!event)
+        {
+            if (tmp_event)
+            {
+                event = new ContinuousEvent();
+                event->Clone(tmp_event);
+            }
+            //    event = static_cast<ContinuousEvent*>(tmp_event);
+            else
+                event = new ContinuousEvent(begin, end);
+        }
         event->ResetBeginEnd(begin, end);
         event->SetTitle(ui->lineEdit_title->text());
         event->SetPlace(ui->lineEdit_place->text());
@@ -347,10 +367,10 @@ void AddEventDialog::accept()
 
 void AddEventDialog::reject()
 {
-    if (!is_editing && event != nullptr)
+    if (!is_editing && tmp_event)
     {
-        event->RemoveAllFiles();
-        event->deleteLater();
+        tmp_event->RemoveAllFiles();
+        tmp_event->deleteLater();
     }
     QDialog::reject();
 }
@@ -424,12 +444,12 @@ void AddEventDialog::on_pushButton_addFile_clicked()
     QString file = QFileDialog::getOpenFileName(this, "选择附件", QDir::homePath(), "所有文件 (*)");
     if (!file.isEmpty())
     {
-        if (event == nullptr)
+        if (!tmp_event)
         {
-            event = new ContinuousEvent(begin, end);
-            connect(file_list_widget, &FileListWidget::fileRemoved, event, &AbstractEvent::RemoveFile);
+            tmp_event = new ContinuousEvent(begin, end);
+            connect(file_list_widget, &FileListWidget::fileRemoved, tmp_event, &AbstractEvent::RemoveFile);
         }
-        event->AddFile(file);
-        file_list_widget->AddFile(event->FileAt(event->FileCount() - 1));
+        tmp_event->AddFile(file);
+        file_list_widget->AddFile(tmp_event->FilePathAt(tmp_event->FileCount() - 1));
     }
 }

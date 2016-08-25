@@ -6,13 +6,16 @@
 class ContinuousEvent : public AbstractEvent
 {
 public:
-    ContinuousEvent(const QDate& begin, const QDate& end);
+    explicit ContinuousEvent() : AbstractEvent() {}
+    explicit ContinuousEvent(const QDate& begin, const QDate& end);
     ~ContinuousEvent() {}
 
     virtual EventType Type() const override { return EventType::ContinuousEvent; }
     virtual bool InList(const QDate& date) const override;
 
 private:
+    void save(QDataStream &dataStream) const override;
+    void load(QDataStream &dataStream) override;
 };
 
 #endif // CONTINUOUSEVENT_H

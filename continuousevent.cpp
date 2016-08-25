@@ -10,3 +10,13 @@ bool ContinuousEvent::InList(const QDate& date) const
 {
     return begin <= date && date <= end;
 }
+
+void ContinuousEvent::save(QDataStream &dataStream) const
+{
+
+}
+
+void ContinuousEvent::load(QDataStream &dataStream)
+{
+
+}

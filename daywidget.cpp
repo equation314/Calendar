@@ -34,7 +34,7 @@ void DayWidget::setup()
     title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     title->setAlignment(Qt::AlignCenter);
 
-    SetThemeColor(Qt::white);
+    SetBackgroundThemeColor(Qt::white);
 
     connect(title,   &LabelButton::pressed, content, &LabelButton::ShowPressedStyle);
     connect(content, &LabelButton::pressed, title,   &LabelButton::ShowPressedStyle);
@@ -44,12 +44,6 @@ void DayWidget::setup()
 
     connect(title,   &LabelButton::dropIn, this, &DayWidget::dropIn);
     connect(content, &LabelButton::dropIn, this, &DayWidget::dropIn);
-
-    /*SetTitleBackgroundColor(QColor(78, 144, 216));
-    SetContentBackgroundColor(QColor(47, 101, 188));*/
-
-    //title->SetPressedColor(Color(64, 127, 195));
-    //content->SetPressedColor();
 }
 
 void DayWidget::mousePressEvent(QMouseEvent *ev)

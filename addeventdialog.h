@@ -109,7 +109,7 @@ protected:
 private:
     Ui::AddEventDialog *ui;
     bool is_editing;
-    AbstractEvent* event;
+    AbstractEvent *event, *tmp_event;
     QDate begin, end;
 
     QStackedLayout* layout_repeat;

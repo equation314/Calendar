@@ -31,6 +31,9 @@ public slots:
     void onDeleteEvent();
     void onDeleteOneEvent();
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 private:
     Ui::MainWindow *ui;
     QDate m_date;
@@ -51,12 +54,17 @@ private:
     int columnFromDay(int day) const { return (day - week_first_day + Const::WEEK_DAYS) % Const::WEEK_DAYS; }
 
     void createActions();
+    void clearAll();
     void loadTable();
     void loadEvents();
+    void importData(const QString &fileName, bool showMessageBox = false);
+    void exportData(const QString &fileName, bool showMessageBox = false);
 
 private slots:
     void on_pushButton_left_clicked();
     void on_pushButton_right_clicked();
+    void on_pushButton_import_clicked();
+    void on_pushButton_export_clicked();
 
     void onDayWidgetContextMenu(const QPoint &pos);
     void onSelectColor(int colorId);

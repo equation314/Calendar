@@ -24,6 +24,8 @@ public:
 
 public slots:
     void onEventLabelContextMenu(const QPoint &pos);
+    void onAddFile(const QString &filePath);
+    void onAddFileToEvent(const QString &filePath);
     void onAddEvent();
     void onEditEvent();
     void onDeleteEvent();
@@ -63,6 +65,7 @@ private slots:
 
 signals:
     void tableUpdated();
+
 };
 
 #endif // MAINWINDOW_H

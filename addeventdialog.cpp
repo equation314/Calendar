@@ -8,6 +8,7 @@
 #include "ui_addeventdialog.h"
 
 #include <QDebug>
+#include <QFileDialog>
 #include <QMessageBox>
 
 WeekRepeatWidget::WeekRepeatWidget(QWidget *parent) :
@@ -213,10 +214,15 @@ void AddEventDialog::setup()
     year_repeat_widget = new YearRepeatWidget(ui->groupBox);
     layout_repeat->addWidget(year_repeat_widget);
 
-    this->ui->lineEdit_title->setFocus();
+    ui->lineEdit_title->setFocus();
+
+    file_list_widget = new FileListWidget(this);
+    ui->gridLayout_file->addWidget(file_list_widget, 1, 0, 1, 3);
 
     if (!is_editing)
+    {
         this->setWindowTitle(tr("新建事件"));
+    }
     else
     {
         this->setWindowTitle(tr("修改事件"));
@@ -264,6 +270,10 @@ void AddEventDialog::setup()
                 break;
             }
         }
+
+        connect(file_list_widget, &FileListWidget::fileRemoved, event, &AbstractEvent::RemoveFile);
+        for (int i = 0; i < event->FileCount(); i++)
+            file_list_widget->AddFile(event->FileAt(i));
     }
 }
 
@@ -335,6 +345,16 @@ void AddEventDialog::accept()
     QDialog::accept();
 }
 
+void AddEventDialog::reject()
+{
+    if (!is_editing && event != nullptr)
+    {
+        event->RemoveAllFiles();
+        event->deleteLater();
+    }
+    QDialog::reject();
+}
+
 
 
 void AddEventDialog::on_dateEdit_begin_dateChanged(const QDate &date)
@@ -396,5 +416,20 @@ void AddEventDialog::on_groupBox_clicked(bool checked)
     {
         ui->dateEdit_begin->setEnabled(true);
         ui->dateEdit_end->setEnabled(true);
+    }
+}
+
+void AddEventDialog::on_pushButton_addFile_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, "选择附件", QDir::homePath(), "所有文件 (*)");
+    if (!file.isEmpty())
+    {
+        if (event == nullptr)
+        {
+            event = new ContinuousEvent(begin, end);
+            connect(file_list_widget, &FileListWidget::fileRemoved, event, &AbstractEvent::RemoveFile);
+        }
+        event->AddFile(file);
+        file_list_widget->AddFile(event->FileAt(event->FileCount() - 1));
     }
 }

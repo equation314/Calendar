@@ -48,19 +48,10 @@ void DayDetailDialog::loadLabels()
     for (int i = 0; i < date->EventCount(); i++)
     {
         AbstractEvent* event = date->EventAt(i);
-        LabelButtonWithEvent* label = new LabelButtonWithEvent(event->Title(), event, this);
-        label_list.push_back(label);
-
-        qDebug()<<i<<' '<<event->Title()<<' '<<date->Date()<<event->InList(date->Date());
-
+        LabelButtonWithEvent* label = new LabelButtonWithEvent(event->Title(), event, this->parent);
         label->setFixedHeight(40);
-        label->SetMouseEnterColorShow(true);
-        label->setContextMenuPolicy(Qt::CustomContextMenu);
-        label->SetBackgroundColor(event->LabelColor());
+        label_list.push_back(label);
         ui->verticalLayout->addWidget(label);
-
-        connect(label, &QWidget::customContextMenuRequested, this->parent, &MainWindow::onEventLabelContextMenu);
-        connect(label, &LabelButton::clicked, this->parent, &MainWindow::onEditEvent);
     }
     ui->verticalLayout->addItem(spacer);
 }

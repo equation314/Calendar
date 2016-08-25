@@ -29,7 +29,6 @@ static const QList<QColor> COLOR_LIST =
     QColor(91, 39, 131)
 };
 
-
 inline bool IsWeekend(int day)
 {
     return day % WEEK_DAYS == 0 || day % WEEK_DAYS == 6;

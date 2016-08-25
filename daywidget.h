@@ -68,6 +68,7 @@ private:
 
 signals:
     void clicked();
+    void dropIn(const QString& filePath);
 };
 
 #endif // DAYWIDGET_H

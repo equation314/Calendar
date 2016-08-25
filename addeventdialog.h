@@ -2,6 +2,7 @@
 #define ADDEVENTDIALOG_H
 
 #include "abstractevent.h"
+#include "filelistwidget.h"
 
 #include <QDate>
 #include <QDialog>
@@ -103,6 +104,7 @@ public:
 
 protected:
     void accept() override;
+    void reject() override;
 
 private:
     Ui::AddEventDialog *ui;
@@ -114,6 +116,7 @@ private:
     WeekRepeatWidget* week_repeat_widget;
     MonthRepeatWidget* month_repeat_widget;
     YearRepeatWidget* year_repeat_widget;
+    FileListWidget* file_list_widget;
 
     void setup();
 
@@ -124,6 +127,7 @@ private slots:
     void on_comboBox_repeatType_currentIndexChanged(int index);
     void on_comboBox_endType_currentIndexChanged(int index);
     void on_groupBox_clicked(bool checked);
+    void on_pushButton_addFile_clicked();
 };
 
 #endif // ADDEVENTDIALOG_H

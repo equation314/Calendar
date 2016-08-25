@@ -20,7 +20,8 @@ public:
     QString Place() const { return place; }
     QString Detail() const { return detail; }
     QColor LabelColor() const { return color; }
-
+    int FileCount() const { return file_list.size(); }
+    QString FileAt(int i) const { return file_list[i]; }
 
     void ResetBeginEnd(const QDate& begin, const QDate& end)
     {
@@ -32,15 +33,21 @@ public:
     void SetDetail(const QString& text) { detail = text; }
     void SetLabelColor(const QColor& col) { color = col; }
 
+    void AddFile(const QString& file);
+
     virtual EventType Type() const = 0;
     virtual bool InList(const QDate& date) const = 0;
+
+    void RemoveFile(const QString &fileName);
+    void RemoveAllFiles();
 
 protected:
     QDate begin, end;
 
 private:
-    QString title, place, detail;
+    QString title, place, detail, dir_name;
     QColor color;
+    QStringList file_list;
 };
 
 #endif // ABSTRACTEVENT_H

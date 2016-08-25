@@ -1,5 +1,8 @@
 #include "labelbutton.h"
+#include "mainwindow.h"
 
+#include <QMimeData>
+#include <QFileInfo>
 #include <QDebug>
 
 LabelButton::LabelButton(QWidget *parent) :
@@ -21,6 +24,7 @@ void LabelButton::setup()
     this->setIndent(3);
     this->setMouseTracking(true);
     this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+
     ShowReleasedStyle();
 }
 
@@ -74,4 +78,36 @@ void LabelButton::mouseReleaseEvent(QMouseEvent *event)
     emit released();
     if (event->button() == Qt::LeftButton) emit clicked();
     QLabel::mouseReleaseEvent(event);
+}
+
+void LabelButton::dragEnterEvent(QDragEnterEvent* event)
+{
+    auto data = event->mimeData();
+    if (data->hasUrls() && data->urls().size() == 1 && QFileInfo(data->urls().at(0).toLocalFile()).isFile())
+        event->acceptProposedAction();
+    else
+        event->ignore();
+}
+
+void LabelButton::dropEvent(QDropEvent* event)
+{
+    auto data = event->mimeData();
+    if (data->hasUrls() && data->urls().size() == 1)
+    {
+        QString file = data->urls().first().toLocalFile();
+        if (QFileInfo(file).isFile()) emit dropIn(file);
+    }
+}
+
+LabelButtonWithEvent::LabelButtonWithEvent(const QString &text, AbstractEvent *event, QWidget *parent) :
+    LabelButton(text, parent), event(event)
+{
+    this->setAcceptDrops(true);
+    this->SetMouseEnterColorShow(true);
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->SetBackgroundColor(event->LabelColor());
+
+    connect(this, &QWidget::customContextMenuRequested, static_cast<MainWindow*>(parent), &MainWindow::onEventLabelContextMenu);
+    connect(this, &LabelButton::clicked, static_cast<MainWindow*>(parent), &MainWindow::onEditEvent);
+    connect(this, &LabelButton::dropIn, static_cast<MainWindow*>(parent), &MainWindow::onAddFileToEvent);
 }

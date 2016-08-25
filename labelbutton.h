@@ -39,6 +39,8 @@ protected:
     virtual void mouseMoveEvent(QMouseEvent *event) override;
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
+    virtual void dragEnterEvent(QDragEnterEvent *event) override;
+    virtual void dropEvent(QDropEvent *event) override;
 
 private:
     QString text;
@@ -54,15 +56,13 @@ signals:
     void clicked();
     void pressed();
     void released();
+    void dropIn(const QString& filePath);
 };
 
 class LabelButtonWithEvent : public LabelButton
 {
 public:
-    explicit LabelButtonWithEvent(QWidget *parent = nullptr) :
-        LabelButton(parent) {}
-    explicit LabelButtonWithEvent(const QString& text, AbstractEvent* event, QWidget *parent = nullptr) :
-        LabelButton(text, parent), event(event) {}
+    explicit LabelButtonWithEvent(const QString& text, AbstractEvent* event, QWidget *parent = nullptr);
 
     AbstractEvent* Event() const { return event; }
     void SetEvent(AbstractEvent* event) { this->event = event; }

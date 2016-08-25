@@ -2,12 +2,13 @@
 #include "ui_mainwindow.h"
 #include "addeventdialog.h"
 #include "recurrentevent.h"
+#include "continuousevent.h"
 #include "daydetaildialog.h"
 
 #include <QDebug>
-#include <QSignalMapper>
+#include <QFileInfo>
 #include <QColorDialog>
-#include <QTableWidget>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
         {
             day_table[i][j] = new DayWidget(this);
             connect(day_table[i][j], &DayWidget::clicked, this, &MainWindow::onShowDayDetail);
+            connect(day_table[i][j], &DayWidget::dropIn, this, &MainWindow::onAddFile);
             connect(day_table[i][j], &QWidget::customContextMenuRequested, this, &MainWindow::onDayWidgetContextMenu);
         }
     createActions();
@@ -151,14 +153,9 @@ void MainWindow::loadEvents()
 
                     LabelButtonWithEvent* label = new LabelButtonWithEvent(event->Title(), event, this);
                     label->setMaximumHeight(20);
-                    label->SetMouseEnterColorShow(true);
-                    label->setContextMenuPolicy(Qt::CustomContextMenu);
-                    label->SetBackgroundColor(event->LabelColor());
                     event_labels.push_back(label);
                     ui->layout_table->addWidget(label, i * 4 + num + 2, j + 1, 1, span);
 
-                    connect(label, &QWidget::customContextMenuRequested, this, &MainWindow::onEventLabelContextMenu);
-                    connect(label, &LabelButton::clicked, this, &MainWindow::onEditEvent);
                     connect(label, &LabelButton::mouseLeave, this, [this]()
                     {
                         LabelButtonWithEvent* sender = static_cast<LabelButtonWithEvent*>(QObject::sender());
@@ -280,9 +277,12 @@ void MainWindow::onEditEvent()
 
 void MainWindow::onDeleteEvent()
 {
+    if (QMessageBox::question(this, "确认删除", QString("确实要删除事件 \"%1\" 和它的所有附件吗？").arg(eventByAction->Title())) != QMessageBox::Yes)
+        return;
     for (auto i = event_list.begin(); i != event_list.end(); i++)
         if (*i == eventByAction)
         {
+            (*i)->RemoveAllFiles();
             delete *i;
             event_list.erase(i);
             break;
@@ -336,4 +336,22 @@ void MainWindow::onShowDayDetail()
     connect(this, &MainWindow::tableUpdated, &dialog, &DayDetailDialog::loadLabels);
 
     dialog.exec();
+}
+
+void MainWindow::onAddFile(const QString& filePath)
+{
+    DayWidget* sender = static_cast<DayWidget*>(QObject::sender());
+
+    ContinuousEvent* event = new ContinuousEvent(sender->Date(), sender->Date());
+    event->SetTitle(QString("文件 \"%2\"").arg(QFileInfo(filePath).fileName()));
+    event->AddFile(filePath);
+    event_list.push_back(event);
+    loadTable();
+}
+
+void MainWindow::onAddFileToEvent(const QString& filePath)
+{
+    LabelButtonWithEvent* sender = static_cast<LabelButtonWithEvent*>(QObject::sender());
+    sender->Event()->AddFile(filePath);
+    loadTable();
 }

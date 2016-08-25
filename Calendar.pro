@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     continuousevent.cpp \
     recurrentevent.cpp \
     daydetaildialog.cpp \
-    colormenu.cpp
+    colormenu.cpp \
+    filelistwidget.cpp
 
 HEADERS  += mainwindow.h \
     daywidget.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     continuousevent.h \
     recurrentevent.h \
     daydetaildialog.h \
-    colormenu.h
+    colormenu.h \
+    filelistwidget.h
 
 FORMS    += forms/mainwindow.ui \
     forms/addeventdialog.ui \

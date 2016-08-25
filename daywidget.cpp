@@ -24,6 +24,8 @@ void DayWidget::setup()
     layout->setSpacing(0);
     this->setLayout(layout);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
+    title->setAcceptDrops(true);
+    content->setAcceptDrops(true);
 
     layout->addWidget(title, 0, 0, 1, 1);
     layout->addWidget(content, 1, 0, 1, 1);
@@ -39,6 +41,9 @@ void DayWidget::setup()
 
     connect(title,   &LabelButton::released, content, &LabelButton::ShowReleasedStyle);
     connect(content, &LabelButton::released, title,   &LabelButton::ShowReleasedStyle);
+
+    connect(title,   &LabelButton::dropIn, this, &DayWidget::dropIn);
+    connect(content, &LabelButton::dropIn, this, &DayWidget::dropIn);
 
     /*SetTitleBackgroundColor(QColor(78, 144, 216));
     SetContentBackgroundColor(QColor(47, 101, 188));*/

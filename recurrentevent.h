@@ -27,7 +27,6 @@ public:
     int YearMonth() const { return year_month; }
     int EndType() const { return end_type; }
     int RepeatTimes() const { return repeat_times; }
-    int SkipSize() const { return skip_set.size();}
 
     // Setter member functions
     void SetRecurrentType(RecurrentType x) { type = x; }

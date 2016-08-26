@@ -4,5 +4,6 @@
         <file>left.png</file>
         <file>right.png</file>
         <file>date.png</file>
+        <file>add.png</file>
     </qresource>
 </RCC>

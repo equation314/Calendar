@@ -6,7 +6,6 @@
 class ContinuousEvent : public AbstractEvent
 {
 public:
-    explicit ContinuousEvent() : AbstractEvent() {}
     explicit ContinuousEvent(const QDate& begin, const QDate& end);
     ~ContinuousEvent() {}
 

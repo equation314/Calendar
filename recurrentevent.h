@@ -12,7 +12,6 @@ class RecurrentEvent : public AbstractEvent
 public:
     enum RecurrentType { Day, Week, Month, Year };
 
-    explicit RecurrentEvent();
     explicit RecurrentEvent(const QDate& begin, const QDate& end);
     ~RecurrentEvent() {}
 

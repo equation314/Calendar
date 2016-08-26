@@ -1,3 +1,4 @@
+#include "setting.h"
 #include "filelistwidget.h"
 
 #include <QDrag>
@@ -10,23 +11,23 @@
 #include <QDesktopServices>
 #include <QCoreApplication>
 
+static int rowByAction;
+
 FileListWidget::FileListWidget(QWidget* parent) :
     QListWidget(parent)
 {
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    this->setIconSize(QSize(64, 64));
-    this->setTextElideMode(Qt::ElideLeft);
-    this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
-    this->setResizeMode(QListView::Adjust);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
+    this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    this->setTextElideMode(Qt::ElideLeft);
+    this->setResizeMode(QListView::Adjust);
+    this->setIconSize(QSize(64, 64));
+    this->setDragEnabled(true);
     this->hide();
 
-    menu = new QMenu(this);
     action_open_file = new QAction("打开文件(&O)", this);
     action_delete_file = new QAction("删除文件(&D)", this);
-    menu->addAction(action_open_file);
-    menu->addAction(action_delete_file);
 
     connect(action_open_file, &QAction::triggered, this, &FileListWidget::onOpenFile);
     connect(action_delete_file, &QAction::triggered, this, &FileListWidget::onDeleteFile);
@@ -44,28 +45,33 @@ void FileListWidget::AddFile(const QString& filePath)
     QFileInfo info(filePath);
     QFileIconProvider iconProvider;
     QIcon icon = iconProvider.icon(info);
-    QListWidgetItem* item = new QListWidgetItem(QIcon(icon.pixmap(64,64)), info.fileName());
+    QListWidgetItem* item = new QListWidgetItem(icon, info.fileName());
     this->addItem(item);
     file_url_list.push_back(QUrl::fromLocalFile(filePath));
     this->show();
 }
 
-void FileListWidget::mousePressEvent(QMouseEvent *event)
+void FileListWidget::startDrag(Qt::DropActions supportedActions)
 {
-    QListWidgetItem* item = this->itemAt(event->pos());
-    if (item && event->button() == Qt::LeftButton)
+    if (!Setting::EnableDragsAndDrops)
     {
-        QDrag* drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
-
-        mimeData->setUrls({file_url_list[this->row(item)]});
-        drag->setMimeData(mimeData);
-        drag->exec(Qt::CopyAction | Qt::MoveAction);
+        QListWidget::startDrag(supportedActions);
+        return;
     }
-    QListWidget::mousePressEvent(event);
+    Setting::EnableDragsAndDrops = false;
+
+    QDrag* drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+    QFileInfo info(file_url_list[this->currentRow()].toLocalFile());
+    QFileIconProvider iconProvider;
+
+    mimeData->setUrls({file_url_list[this->currentRow()]});
+    drag->setMimeData(mimeData);
+    drag->setPixmap(iconProvider.icon(info).pixmap(this->iconSize()));
+    drag->exec(Qt::CopyAction);
+
+    Setting::EnableDragsAndDrops = true;
 }
-
-
 
 void FileListWidget::onContextMenuEvent(const QPoint& pos)
 {
@@ -73,7 +79,10 @@ void FileListWidget::onContextMenuEvent(const QPoint& pos)
     if (item)
     {
         rowByAction = this->row(item);
-        menu->popup(QCursor::pos());
+        QMenu menu(this);
+        menu.addAction(action_open_file);
+        menu.addAction(action_delete_file);
+        menu.exec(QCursor::pos());
     }
 }
 
@@ -88,6 +97,5 @@ void FileListWidget::onDeleteFile()
     delete this->takeItem(rowByAction);
     file_url_list.erase(file_url_list.begin() + rowByAction);
     if (!this->count()) this->hide();
-    //qDebug()<<filePath<<' '<<rowByAction<<' '<<file_url_list.size();
     emit fileRemoved(QFileInfo(filePath).fileName());
 }

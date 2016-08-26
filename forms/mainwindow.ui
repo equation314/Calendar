@@ -10,44 +10,29 @@
     <height>564</height>
    </rect>
   </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
   <property name="windowTitle">
    <string>Calendar</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QWidget
-{
-	font-family: &quot;微软雅黑&quot;;
-}</string>
-  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QPushButton" name="pushButton_left">
+    <item row="1" column="0" colspan="3">
+     <layout class="QGridLayout" name="layout_table">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+     </layout>
+    </item>
+    <item row="0" column="0" colspan="3">
+     <widget class="QLabel" name="label_date">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <property name="minimumSize">
-       <size>
-        <width>23</width>
-        <height>23</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>23</width>
-        <height>23</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>&lt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QLabel" name="label_date">
       <property name="font">
        <font>
         <family>微软雅黑</family>
@@ -57,63 +42,8 @@
       <property name="text">
        <string/>
       </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="pushButton_right">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>23</width>
-        <height>23</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>23</width>
-        <height>23</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="5">
-     <layout class="QGridLayout" name="layout_table">
-      <property name="spacing">
-       <number>2</number>
-      </property>
-     </layout>
-    </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="pushButton_export">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>导出(&amp;E)...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pushButton_import">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>导入(&amp;I)...</string>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </item>
@@ -136,33 +66,118 @@
     <bool>false</bool>
    </attribute>
   </widget>
-  <action name="actionImport">
-   <property name="text">
-    <string>导入(&amp;I)</string>
+  <action name="action_menu">
+   <property name="icon">
+    <iconset resource="../resource/icon.qrc">
+     <normaloff>:/icons/menu.png</normaloff>:/icons/menu.png</iconset>
    </property>
   </action>
-  <action name="actionExport">
-   <property name="text">
-    <string>导出(&amp;E)</string>
+  <action name="action_date">
+   <property name="icon">
+    <iconset resource="../resource/icon.qrc">
+     <normaloff>:/icons/date.png</normaloff>:/icons/date.png</iconset>
    </property>
   </action>
-  <action name="actionExit">
+  <action name="action_left">
+   <property name="icon">
+    <iconset resource="../resource/icon.qrc">
+     <normaloff>:/icons/left.png</normaloff>:/icons/left.png</iconset>
+   </property>
+   <property name="shortcut">
+    <string>Left, Up, PgUp</string>
+   </property>
+  </action>
+  <action name="action_right">
+   <property name="icon">
+    <iconset resource="../resource/icon.qrc">
+     <normaloff>:/icons/right.png</normaloff>:/icons/right.png</iconset>
+   </property>
+   <property name="shortcut">
+    <string>Right, Down, PgDown</string>
+   </property>
+  </action>
+  <action name="action_add">
+   <property name="icon">
+    <iconset resource="../resource/icon.qrc">
+     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+   </property>
+  </action>
+  <action name="action_import">
+   <property name="text">
+    <string>导入(&amp;I)...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_export">
+   <property name="text">
+    <string>导出(&amp;E)...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="action_dragDrop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>允许拖拽文件(&amp;D)</string>
+   </property>
+  </action>
+  <action name="action_preference">
+   <property name="text">
+    <string>偏好设置(&amp;P)...</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>关于(&amp;A)...</string>
+   </property>
+  </action>
+  <action name="action_exit">
    <property name="text">
     <string>退出(&amp;X)</string>
    </property>
-  </action>
-  <action name="actionPreference">
-   <property name="text">
-    <string>偏好设置(&amp;P)</string>
+   <property name="shortcut">
+    <string>Alt+F4</string>
    </property>
   </action>
-  <action name="actionAbout">
+  <action name="action_today">
    <property name="text">
-    <string>关于(&amp;A)</string>
+    <string>返回今天(&amp;T)</string>
+   </property>
+  </action>
+  <action name="action_select_date">
+   <property name="text">
+    <string>选择日期(&amp;S)...</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
- <connections/>
+ <resources>
+  <include location="../resource/icon.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>action_exit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>281</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

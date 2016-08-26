@@ -6,15 +6,8 @@
 #include <QDebug>
 #include <QMessageBox>
 
-AbstractEvent::AbstractEvent() :
-    color(QColor(34, 177, 76))
-{
-
-}
-
-
 AbstractEvent::AbstractEvent(const QDate& begin, const QDate& end) :
-    begin(begin), end(end), color(QColor(34, 177, 76))
+    begin(begin), end(end)
 {
 
 }
@@ -91,16 +84,16 @@ QDataStream& operator <<(QDataStream& dataStream, AbstractEvent* event)
 QDataStream& operator >>(QDataStream& dataStream, AbstractEvent** event)
 {
     int type;
+    QDate begin, end;
     AbstractEvent* aevent;
-    dataStream >> type;
+    dataStream >> type >> begin >> end;
     if ((AbstractEvent::EventType)type == AbstractEvent::ContinuousEvent)
-        aevent = new ContinuousEvent;
+        aevent = new ContinuousEvent(begin, end);
     else if ((AbstractEvent::EventType)type == AbstractEvent::RecurrentEvent)
-        aevent = new RecurrentEvent;
+        aevent = new RecurrentEvent(begin, end);
     else
         return dataStream;
 
-    dataStream >> aevent->begin >> aevent->end;
     dataStream >> aevent->title >> aevent->place >> aevent->detail >> aevent->dir_name;
     dataStream >> aevent->color;
     dataStream >> aevent->file_name_list;

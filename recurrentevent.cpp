@@ -1,17 +1,11 @@
+#include "setting.h"
 #include "recurrentevent.h"
-
-RecurrentEvent::RecurrentEvent() :
-    AbstractEvent(),
-    interval(1), month_weekday(0), repeat_end(Const::MAX_DATE)
-{
-
-}
 
 RecurrentEvent::RecurrentEvent(const QDate& begin, const QDate& end) :
     AbstractEvent(begin, end),
     interval(1), month_weekday(0), repeat_end(end)
 {
-
+    color = Setting::RecurrentEventColor;
 }
 
 bool RecurrentEvent::InList(const QDate& date) const
@@ -26,8 +20,8 @@ bool RecurrentEvent::InList(const QDate& date) const
     case Week:
     {
         int x;
-        if (date.weekNumber() == begin.weekNumber() && begin.daysTo(date) < 7) x = 0;
-        else x = (begin.addDays(Const::WEEK_DAYS - begin.dayOfWeek() + 1).daysTo(date)) / Const::WEEK_DAYS + 1;
+        QDate nextWeekFirstDay = begin.addDays((Setting::WeekFirstDay - begin.dayOfWeek() + Const::WEEK_DAYS) % Const::WEEK_DAYS);
+        if (nextWeekFirstDay > date) x = 0; else x = nextWeekFirstDay.daysTo(date) / Const::WEEK_DAYS + 1;
         if (x % interval) return false;
 
         return (day_mark >> date.dayOfWeek()) & 1;

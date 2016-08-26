@@ -9,6 +9,7 @@
 class LabelButton : public QLabel
 {
     Q_OBJECT
+
 public:
     explicit LabelButton(QWidget *parent = nullptr);
     explicit LabelButton(const QString& text, QWidget *parent = nullptr);
@@ -59,13 +60,14 @@ signals:
     void dropIn(const QString& filePath);
 };
 
-class LabelButtonWithEvent : public LabelButton
+class EventLabelButton : public LabelButton
 {
 public:
-    explicit LabelButtonWithEvent(const QString& text, AbstractEvent* event, QWidget *parent = nullptr);
+    explicit EventLabelButton(const QString& text, AbstractEvent* event, QWidget *parent = nullptr);
 
     AbstractEvent* Event() const { return event; }
     void SetEvent(AbstractEvent* event) { this->event = event; }
+    void SetAcceptDrops(bool on) { this->setAcceptDrops(on); }
 
 private:
     AbstractEvent* event;

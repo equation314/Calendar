@@ -22,6 +22,7 @@ class AddEventDialog;
 class WeekRepeatWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit WeekRepeatWidget(QWidget *parent = nullptr);
     ~WeekRepeatWidget() { delete ui; }
@@ -49,6 +50,7 @@ private:
 class MonthRepeatWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit MonthRepeatWidget(QWidget *parent = nullptr);
     ~MonthRepeatWidget() { delete ui; }
@@ -71,6 +73,7 @@ private:
 class YearRepeatWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit YearRepeatWidget(QWidget *parent = nullptr);
     ~YearRepeatWidget() { delete ui; }
@@ -95,6 +98,7 @@ private:
 class AddEventDialog : public QDialog
 {
     Q_OBJECT
+
 public:
     explicit AddEventDialog(const QDate& date, QWidget *parent = nullptr);
     explicit AddEventDialog(AbstractEvent* event, QWidget *parent = nullptr);

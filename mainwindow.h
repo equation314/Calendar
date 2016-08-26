@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "const.h"
+#include "setting.h"
 #include "colormenu.h"
 #include "daywidget.h"
 #include "abstractevent.h"
@@ -18,6 +19,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -36,22 +38,21 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    QDate m_date;
-    std::vector<LabelButtonWithEvent*> event_labels;
+    QDate current_date;
+    std::vector<EventLabelButton*> event_labels;
     std::vector<AbstractEvent*> event_list;
     std::map<QDate, QColor> day_color;
-    int week_first_day;
 
+    QLabel* corner_label;
     DayWidget* day_table[Const::MONTH_WEEKS][Const::WEEK_DAYS];
     LabelButton* vertical_header[Const::MONTH_WEEKS];
     LabelButton* horizontal_header[Const::WEEK_DAYS];
 
-    QMenu* menu;
-    ColorMenu* menu_color;
+    ColorMenu* color_menu;
     QAction *action_delete_event, *action_delete_one_event, *action_add_event;
 
-    int dayFromColumn(int column) const { return (column + week_first_day) % Const::WEEK_DAYS; }
-    int columnFromDay(int day) const { return (day - week_first_day + Const::WEEK_DAYS) % Const::WEEK_DAYS; }
+    int dayFromColumn(int column) const { return (column + Setting::WeekFirstDay) % Const::WEEK_DAYS; }
+    int columnFromDay(int day) const { return (day - Setting::WeekFirstDay + Const::WEEK_DAYS) % Const::WEEK_DAYS; }
 
     void createActions();
     void clearAll();
@@ -61,15 +62,26 @@ private:
     void exportData(const QString &fileName, bool showMessageBox = false);
 
 private slots:
-    void on_pushButton_left_clicked();
-    void on_pushButton_right_clicked();
-    void on_pushButton_import_clicked();
-    void on_pushButton_export_clicked();
-
     void onDayWidgetContextMenu(const QPoint &pos);
-    void onSelectColor(int colorId);
-    void onSelectOtherColor();
+
+    void onColorSelected(const QColor& color);
     void onShowDayDetail();
+
+    void on_action_menu_triggered();
+    void on_action_date_triggered();
+    void on_action_left_triggered();
+    void on_action_right_triggered();
+    void on_action_add_triggered();
+
+    void on_action_import_triggered();
+    void on_action_export_triggered();
+    void on_action_dragDrop_triggered(bool checked);
+    void on_action_about_triggered();
+
+    void on_action_today_triggered();
+    void on_action_select_date_triggered();
+
+    void on_action_preference_triggered();
 
 signals:
     void tableUpdated();

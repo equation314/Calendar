@@ -14,6 +14,7 @@ class DayDetailDialog;
 class DayDetailDialog : public QDialog
 {
     Q_OBJECT
+
 public:
     explicit DayDetailDialog(DayWidget* date, QWidget *parent = 0);
     ~DayDetailDialog();

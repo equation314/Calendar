@@ -11,11 +11,17 @@
 class DayWidget : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit DayWidget(QWidget *parent = nullptr);
     explicit DayWidget(const QDate& date, QWidget *parent = nullptr);
     ~DayWidget() {}
 
+    void setAcceptDrops(bool on)
+    {
+        title->setAcceptDrops(on);
+        content->setAcceptDrops(on);
+    }
     void SetDate(const QDate& date)
     {
         this->date = date;

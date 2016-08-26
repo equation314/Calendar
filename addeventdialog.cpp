@@ -290,13 +290,8 @@ void AddEventDialog::accept()
         RecurrentEvent* revent;
         if (!event)
         {
-            if (tmp_event)
-            {
-                revent = new RecurrentEvent();
-                revent->Clone(tmp_event);
-            }
-            else
-                revent = new RecurrentEvent(begin, end);
+            revent = new RecurrentEvent(begin, end);
+            if (tmp_event) revent->Clone(tmp_event);
         }
         revent->SetTitle(ui->lineEdit_title->text());
         revent->SetPlace(ui->lineEdit_place->text());
@@ -342,20 +337,13 @@ void AddEventDialog::accept()
         revent->SetEndType(ui->comboBox_endType->currentIndex());
         if (revent->EndType() == 1) revent->SetRepeatTimes(ui->spinBox_repeatTimes->value());
         event = revent;
-        event->SetLabelColor(Const::COLOR_LIST[10]);
     }
     else
     {
         if (!event)
         {
-            if (tmp_event)
-            {
-                event = new ContinuousEvent();
-                event->Clone(tmp_event);
-            }
-            //    event = static_cast<ContinuousEvent*>(tmp_event);
-            else
-                event = new ContinuousEvent(begin, end);
+            event = new ContinuousEvent(begin, end);
+            if (tmp_event) event->Clone(tmp_event);
         }
         event->ResetBeginEnd(begin, end);
         event->SetTitle(ui->lineEdit_title->text());

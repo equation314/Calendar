@@ -1,3 +1,4 @@
+#include "setting.h"
 #include "labelbutton.h"
 #include "mainwindow.h"
 
@@ -83,7 +84,7 @@ void LabelButton::mouseReleaseEvent(QMouseEvent *event)
 void LabelButton::dragEnterEvent(QDragEnterEvent* event)
 {
     auto data = event->mimeData();
-    if (data->hasUrls() && data->urls().size() == 1 && QFileInfo(data->urls().at(0).toLocalFile()).isFile())
+    if (Setting::EnableDragsAndDrops && data->hasUrls() && data->urls().size() == 1 && QFileInfo(data->urls().at(0).toLocalFile()).isFile())
         event->acceptProposedAction();
     else
         event->ignore();
@@ -99,13 +100,14 @@ void LabelButton::dropEvent(QDropEvent* event)
     }
 }
 
-LabelButtonWithEvent::LabelButtonWithEvent(const QString &text, AbstractEvent *event, QWidget *parent) :
+EventLabelButton::EventLabelButton(const QString &text, AbstractEvent *event, QWidget *parent) :
     LabelButton(text, parent), event(event)
 {
     this->setAcceptDrops(true);
     this->SetMouseEnterColorShow(true);
     this->setContextMenuPolicy(Qt::CustomContextMenu);
     this->SetBackgroundColor(event->LabelColor());
+    this->setFont(Setting::EventFont);
 
     connect(this, &QWidget::customContextMenuRequested, static_cast<MainWindow*>(parent), &MainWindow::onEventLabelContextMenu);
     connect(this, &LabelButton::clicked, static_cast<MainWindow*>(parent), &MainWindow::onEditEvent);

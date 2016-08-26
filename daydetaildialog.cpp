@@ -1,3 +1,4 @@
+#include "setting.h"
 #include "addeventdialog.h"
 #include "recurrentevent.h"
 #include "continuousevent.h"
@@ -47,9 +48,10 @@ void DayDetailDialog::loadLabels()
     for (int i = 0; i < date->EventCount(); i++)
     {
         AbstractEvent* event = date->EventAt(i);
-        LabelButtonWithEvent* label = new LabelButtonWithEvent(event->Title(), event, this->parent);
+        EventLabelButton* label = new EventLabelButton(event->Title(), event, this->parent);
         label->setFixedHeight(40);
         label_list.push_back(label);
+        label->setAcceptDrops(Setting::EnableDragsAndDrops);
         ui->verticalLayout->addWidget(label);
     }
     ui->verticalLayout->addItem(spacer);

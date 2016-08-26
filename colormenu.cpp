@@ -2,6 +2,7 @@
 #include "colormenu.h"
 
 #include <QLabel>
+#include <QColorDialog>
 #include <QWidgetAction>
 #include <QSignalMapper>
 
@@ -36,6 +37,18 @@ ColorMenu::ColorMenu(const QString& text, QWidget* parent) :
     this->addSeparator();
     this->addAction(actionOtherColor);
 
-    connect(colorActionMap, SIGNAL(mapped(int)), this, SIGNAL(colorSelected(int)));
-    connect(actionOtherColor, SIGNAL(triggered()), this, SIGNAL(otherColorSelected()));
+    connect(colorActionMap, SIGNAL(mapped(int)), this, SLOT(onSelectColor(int)));
+    connect(actionOtherColor, SIGNAL(triggered()), this, SLOT(onSelectOtherColor()));
+}
+
+void ColorMenu::onSelectColor(int id)
+{
+    selected_color = Const::COLOR_LIST[id];
+    emit colorSelected(selected_color);
+}
+
+void ColorMenu::onSelectOtherColor()
+{
+    selected_color = QColorDialog::getColor(default_color, static_cast<QWidget*>(this->parent()));
+    if (selected_color.isValid()) emit colorSelected(selected_color);
 }

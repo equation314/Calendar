@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets
+QT       += core gui widgets xml
 
 TARGET = Calendar
 TEMPLATE = app
@@ -20,7 +20,10 @@ SOURCES += main.cpp\
     recurrentevent.cpp \
     daydetaildialog.cpp \
     colormenu.cpp \
-    filelistwidget.cpp
+    filelistwidget.cpp \
+    dateselectdialog.cpp \
+    setting.cpp \
+    preferencedialog.cpp
 
 HEADERS  += mainwindow.h \
     daywidget.h \
@@ -32,14 +35,19 @@ HEADERS  += mainwindow.h \
     recurrentevent.h \
     daydetaildialog.h \
     colormenu.h \
-    filelistwidget.h
+    filelistwidget.h \
+    dateselectdialog.h \
+    setting.h \
+    preferencedialog.h
 
 FORMS    += forms/mainwindow.ui \
     forms/addeventdialog.ui \
     forms/weekrepeatwidget.ui \
     forms/monthrepeatwidget.ui \
     forms/yearrepeatwidget.ui \
-    forms/daydetaildialog.ui
+    forms/daydetaildialog.ui \
+    forms/dateselectdialog.ui \
+    forms/preferencedialog.ui
 
 RESOURCES += \
     resource/icon.qrc

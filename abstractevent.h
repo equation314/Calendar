@@ -8,10 +8,11 @@
 class AbstractEvent : public QObject
 {
     Q_OBJECT
+
 public:
     enum EventType { ContinuousEvent, RecurrentEvent };
 
-    explicit AbstractEvent();
+    explicit AbstractEvent() {}
     explicit AbstractEvent(const QDate& begin, const QDate& end);
     virtual ~AbstractEvent();
 

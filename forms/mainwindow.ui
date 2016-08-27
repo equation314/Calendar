@@ -28,7 +28,7 @@
     <item row="0" column="0" colspan="3">
      <widget class="QLabel" name="label_date">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -68,19 +68,19 @@
   </widget>
   <action name="action_menu">
    <property name="icon">
-    <iconset resource="../resource/icon.qrc">
+    <iconset resource="../resource/res.qrc">
      <normaloff>:/icons/menu.png</normaloff>:/icons/menu.png</iconset>
    </property>
   </action>
   <action name="action_date">
    <property name="icon">
-    <iconset resource="../resource/icon.qrc">
+    <iconset resource="../resource/res.qrc">
      <normaloff>:/icons/date.png</normaloff>:/icons/date.png</iconset>
    </property>
   </action>
   <action name="action_left">
    <property name="icon">
-    <iconset resource="../resource/icon.qrc">
+    <iconset resource="../resource/res.qrc">
      <normaloff>:/icons/left.png</normaloff>:/icons/left.png</iconset>
    </property>
    <property name="shortcut">
@@ -89,7 +89,7 @@
   </action>
   <action name="action_right">
    <property name="icon">
-    <iconset resource="../resource/icon.qrc">
+    <iconset resource="../resource/res.qrc">
      <normaloff>:/icons/right.png</normaloff>:/icons/right.png</iconset>
    </property>
    <property name="shortcut">
@@ -98,7 +98,7 @@
   </action>
   <action name="action_add">
    <property name="icon">
-    <iconset resource="../resource/icon.qrc">
+    <iconset resource="../resource/res.qrc">
      <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
    </property>
   </action>
@@ -160,7 +160,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="../resource/icon.qrc"/>
+  <include location="../resource/res.qrc"/>
  </resources>
  <connections>
   <connection>

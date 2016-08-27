@@ -18,8 +18,6 @@ DayDetailDialog::DayDetailDialog(DayWidget* date, QWidget *parent) :
 
     QFont font = ui->label_day->font();
     font.setFamily(Setting::InterfaceFont.family());
-    /*font.sets
-    ui->label_day->setFont(font);*/
     ui->label_day->setFont(font);
     ui->label_day->setText(QString("%1").arg(Translator::Locale(Setting::Language).toString(date->Date(), QLocale::LongFormat)));
 
@@ -60,5 +58,4 @@ void DayDetailDialog::loadLabels()
         ui->verticalLayout->addWidget(label);
     }
     ui->verticalLayout->addItem(spacer);
-    //ui->scrollArea->adjustSize();
 }

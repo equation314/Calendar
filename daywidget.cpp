@@ -1,6 +1,6 @@
 #include "daywidget.h"
 
-#include <QGridLayout>
+#include <QPainter>
 
 DayWidget::DayWidget(QWidget *parent) :
     QWidget(parent),
@@ -16,9 +16,37 @@ DayWidget::DayWidget(const QDate& date, QWidget *parent) :
     setup();
 }
 
+void DayWidget::SetDate(const QDate &date)
+{
+    this->date = date;
+    if (date.day() == 1)
+        title->setText(date.toString("M/d"));
+    else
+        title->setText(QString::number(date.day()));
+
+    if (date == QDate::currentDate())
+    {
+        layout->setMargin(3);
+        title->setFixedHeight(22);
+    }
+    else
+    {
+        layout->setMargin(0);
+        title->setFixedHeight(25);
+    }
+}
+
+void DayWidget::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+    QPainter painter(this);
+    painter.setBrush(Qt::red);
+    painter.drawRect(QRect(0, 0, this->width(), this->height()));
+}
+
 void DayWidget::setup()
 {
-    QGridLayout* layout = new QGridLayout(this);
+    layout = new QGridLayout(this);
     layout->setMargin(0);
     layout->setSpacing(0);
     this->setLayout(layout);
@@ -26,8 +54,8 @@ void DayWidget::setup()
     title->setAcceptDrops(true);
     content->setAcceptDrops(true);
 
-    layout->addWidget(title, 0, 0, 1, 1);
-    layout->addWidget(content, 1, 0, 1, 1);
+    layout->addWidget(title);
+    layout->addWidget(content);
 
     title->setFixedHeight(25);
     title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -45,23 +73,23 @@ void DayWidget::setup()
     connect(content, &LabelButton::dropIn, this, &DayWidget::dropIn);
 }
 
-void DayWidget::mousePressEvent(QMouseEvent *ev)
+void DayWidget::mousePressEvent(QMouseEvent *event)
 {
-    if (ev->button() == Qt::LeftButton)
+    if (event->button() == Qt::LeftButton)
     {
         title->ShowPressedStyle();
         content->ShowPressedStyle();
     }
-    QWidget::mousePressEvent(ev);
+    QWidget::mousePressEvent(event);
 }
 
-void DayWidget::mouseReleaseEvent(QMouseEvent *ev)
+void DayWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (ev->button() == Qt::LeftButton)
+    if (event->button() == Qt::LeftButton)
     {
         title->ShowReleasedStyle();
         content->ShowReleasedStyle();
         emit clicked();
     }
-    QWidget::mouseReleaseEvent(ev);
+    QWidget::mouseReleaseEvent(event);
 }

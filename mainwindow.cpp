@@ -33,7 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     translator.InstallToApplication(Setting::Language);
 
     ui->setupUi(this);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
+    this->setAttribute(Qt::WA_TranslucentBackground);
     this->setFont(Setting::InterfaceFont);
 
     corner_label = new QLabel(this);
@@ -85,6 +86,7 @@ void MainWindow::createActions()
     ui->toolBar->addAction(ui->action_left);
     ui->toolBar->addAction(ui->action_right);
     ui->toolBar->addAction(ui->action_add);
+    ui->toolBar->addWidget(ui->label_date);
 
     action_add_event = new QAction(this);
     action_delete_event = new QAction(this);
@@ -115,8 +117,11 @@ void MainWindow::loadTable()
     font.setFamily(Setting::InterfaceFont.family());
     ui->label_date->setFont(font);
     ui->label_date->setText(Translator::Locale(Setting::Language).toString(current_date, "MMMM yyyy"));
+
     ui->action_dragDrop->setChecked(Setting::EnableDragsAndDrops);
     ui->layout_table->setSpacing(Setting::CellSpace);
+    ui->toolBar->setStyleSheet(QString("QToolBar{background:%1;}").arg(Setting::CellColor.lighter(135).name()));
+
     for (int i = 0; i < Const::WEEK_DAYS; i++)
     {
         horizontal_header[i]->setText(Translator::Locale(Setting::Language).dayName(!i ? 7 : i, QLocale::ShortFormat));

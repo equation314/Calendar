@@ -7,6 +7,8 @@
 #include <QWidget>
 #include <QLabel>
 #include <QDate>
+#include <QDebug>
+#include <QGridLayout>
 
 class DayWidget : public QWidget
 {
@@ -22,14 +24,7 @@ public:
         title->setAcceptDrops(on);
         content->setAcceptDrops(on);
     }
-    void SetDate(const QDate& date)
-    {
-        this->date = date;
-        if (date.day() == 1)
-            title->setText(date.toString("M/d"));
-        else
-            title->setText(QString::number(date.day()));
-    }
+    void SetDate(const QDate& date);
     void SetBackgroundThemeColor(const QColor &color, bool isDark = false)
     {
         SetTitleBackgroundColor(isDark ? color : color.lighter(135));
@@ -59,17 +54,20 @@ public:
 public slots:
 
 protected:
-    void mousePressEvent(QMouseEvent *ev) override;
-    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
 
 private:
     QDate date;
     LabelButton *title, *content;
     std::vector<AbstractEvent*> event_list;
     QColor title_color, content_color;
+    QGridLayout *layout;
 
     void setup();
 
+    void drawShadow(QPainter &painter);
 signals:
     void clicked();
     void dropIn(const QString& filePath);

@@ -37,6 +37,9 @@ public slots:
 
 protected:
     void closeEvent(QCloseEvent* event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
@@ -74,6 +77,7 @@ private slots:
     void on_action_left_triggered();
     void on_action_right_triggered();
     void on_action_add_triggered();
+    void on_action_movable_triggered(bool checked);
 
     void on_action_import_triggered();
     void on_action_export_triggered();

@@ -6,7 +6,7 @@
 const QLocale Translator::LANGUAGE_LOCALE[3] =
 {
    QLocale(QLocale::Chinese, QLocale::SimplifiedChineseScript, QLocale::China),
-   QLocale(QLocale::Chinese, QLocale::TraditionalChineseScript, QLocale::Taiwan),
+   QLocale(QLocale::Chinese, QLocale::TraditionalChineseScript, QLocale::HongKong),
    QLocale(QLocale::English)
 };
 
@@ -28,23 +28,23 @@ void Translator::InstallToApplication(Language lang)
     {
     case SimplifiedChinese:
         trans = new QTranslator;
-        trans->load(":/trans/zh_CN.qm");
+        trans->load(":/trans/trans/zh_CN.qm");
         trans_list.push_back(trans);
         qApp->installTranslator(trans);
 
         trans = new QTranslator;
-        trans->load(":/trans/qt_zh_CN.qm");
+        trans->load(":/trans/trans/qt_zh_CN.qm");
         trans_list.push_back(trans);
         qApp->installTranslator(trans);
         break;
     case TraditionalChinese:
         trans = new QTranslator;
-        trans->load(":/trans/zh_TW.qm");
+        trans->load(":/trans/trans/zh_TW.qm");
         trans_list.push_back(trans);
         qApp->installTranslator(trans);
 
         trans = new QTranslator;
-        trans->load(":/trans/qt_zh_TW.qm");
+        trans->load(":/trans/trans/qt_zh_TW.qm");
         trans_list.push_back(trans);
         qApp->installTranslator(trans);
         break;

@@ -31,7 +31,7 @@ public:
         SetContentBackgroundColor(isDark ? color.darker(135) : color);
     }
     void SetTitleTextColor(const QColor &color) { title->SetTextColor(color); }
-    void SetContentTextColor(const QColor &color) { content->SetBackgroundColor(color); }
+    void SetContentTextColor(const QColor &color) { content->SetTextColor(color); }
     void SetTitleBackgroundColor(const QColor &color)
     {
         title_color = color;

@@ -1,3 +1,4 @@
+#include "setting.h"
 #include "daywidget.h"
 
 #include <QPainter>
@@ -41,7 +42,7 @@ void DayWidget::paintEvent(QPaintEvent *event)
     QWidget::paintEvent(event);
     QPainter painter(this);
     painter.setBrush(Qt::red);
-    painter.drawRect(QRect(0, 0, this->width(), this->height()));
+    painter.drawRect(QRect(-1, -1, this->width() + 1, this->height() + 1));
 }
 
 void DayWidget::setup()
@@ -75,21 +76,23 @@ void DayWidget::setup()
 
 void DayWidget::mousePressEvent(QMouseEvent *event)
 {
+    if (!Setting::Movable) { event->ignore(); return;}
+    QWidget::mousePressEvent(event);
     if (event->button() == Qt::LeftButton)
     {
         title->ShowPressedStyle();
         content->ShowPressedStyle();
     }
-    QWidget::mousePressEvent(event);
 }
 
 void DayWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (!Setting::Movable) { event->ignore(); return;}
+    QWidget::mouseReleaseEvent(event);
     if (event->button() == Qt::LeftButton)
     {
         title->ShowReleasedStyle();
         content->ShowReleasedStyle();
         emit clicked();
     }
-    QWidget::mouseReleaseEvent(event);
 }

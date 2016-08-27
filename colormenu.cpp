@@ -54,6 +54,7 @@ void ColorMenu::setup()
 
 void ColorMenu::onSelectColor(int id)
 {
+    color_selected = true;
     emit colorSelected(selected_color = Const::COLOR_LIST[id]);
 }
 
@@ -63,6 +64,7 @@ void ColorMenu::onSelectOtherColor()
     if (color.isValid())
     {
         selected_color = color;
+        color_selected = true;
         emit colorSelected(selected_color);
     }
 }

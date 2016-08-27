@@ -69,7 +69,7 @@ void RecurrentEvent::save(QDataStream &dataStream) const
     dataStream << year_month;
     dataStream << end_type << repeat_times;
     dataStream << repeat_end;
-    dataStream << skip_set.size();
+    dataStream << (int)skip_set.size();
     for (auto i : skip_set) dataStream << i;
 }
 

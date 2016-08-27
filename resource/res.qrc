@@ -1,19 +1,20 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>menu.png</file>
-        <file>left.png</file>
-        <file>right.png</file>
-        <file>date.png</file>
-        <file>add.png</file>
+        <file>icons/menu.png</file>
+        <file>icons/left.png</file>
+        <file>icons/right.png</file>
+        <file>icons/date.png</file>
+        <file>icons/add.png</file>
+        <file>icons/move.png</file>
     </qresource>
     <qresource prefix="/trans">
-        <file>zh_CN.qm</file>
-        <file>zh_CN.ts</file>
-        <file>zh_TW.qm</file>
-        <file>zh_TW.ts</file>
-        <file>qt_zh_CN.qm</file>
-        <file>qt_zh_TW.qm</file>
-        <file>qt_zh_TW.ts</file>
-        <file>qt_zh_CN.ts</file>
+        <file>trans/zh_CN.qm</file>
+        <file>trans/zh_CN.ts</file>
+        <file>trans/zh_TW.qm</file>
+        <file>trans/zh_TW.ts</file>
+        <file>trans/qt_zh_CN.qm</file>
+        <file>trans/qt_zh_TW.qm</file>
+        <file>trans/qt_zh_TW.ts</file>
+        <file>trans/qt_zh_CN.ts</file>
     </qresource>
 </RCC>

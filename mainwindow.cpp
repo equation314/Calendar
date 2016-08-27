@@ -14,7 +14,7 @@
 #include <QDateEdit>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QTranslator>
+#include <QDesktopWidget>
 
 using namespace std;
 
@@ -33,9 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     translator.InstallToApplication(Setting::Language);
 
     ui->setupUi(this);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);// | Qt::WindowTransparentForInput);
     this->setAttribute(Qt::WA_TranslucentBackground);
+
     this->setFont(Setting::InterfaceFont);
+    this->move((QApplication::desktop()->width()  - this->width())  / 2,
+               (QApplication::desktop()->height() - this->height()) / 2);
 
     corner_label = new QLabel(this);
     corner_label->setFixedWidth(40);
@@ -79,6 +82,32 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+static QPoint dragPosition;
+static bool isDrag;
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        isDrag = true;
+        dragPosition = event->globalPos() - this->pos();
+    }
+    QWidget::mousePressEvent(event);
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!Setting::Movable) { event->ignore(); return; }
+    if (isDrag && event->buttons() == Qt::LeftButton && ui->toolBar->geometry().contains(event->pos()))
+        move(event->globalPos() - dragPosition);
+    QWidget::mouseMoveEvent(event);
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+    isDrag = false;
+    QWidget::mouseMoveEvent(event);
+}
+
 void MainWindow::createActions()
 {
     ui->toolBar->addAction(ui->action_menu);
@@ -86,6 +115,7 @@ void MainWindow::createActions()
     ui->toolBar->addAction(ui->action_left);
     ui->toolBar->addAction(ui->action_right);
     ui->toolBar->addAction(ui->action_add);
+    ui->toolBar->addAction(ui->action_movable);
     ui->toolBar->addWidget(ui->label_date);
 
     action_add_event = new QAction(this);
@@ -110,21 +140,24 @@ void MainWindow::loadTable()
 {
     translator.InstallToApplication(Setting::Language);
     ui->retranslateUi(this);
-
     this->setWindowOpacity(Setting::Opacity / 10.0);
+
     QGuiApplication::setFont(Setting::InterfaceFont);
     QFont font = ui->label_date->font();
     font.setFamily(Setting::InterfaceFont.family());
+    font.setPointSize(Setting::InterfaceFont.pointSize() * 2);
     ui->label_date->setFont(font);
     ui->label_date->setText(Translator::Locale(Setting::Language).toString(current_date, "MMMM yyyy"));
 
+    ui->action_movable->setToolTip(Setting::Movable ? tr("Fix") : tr("Move"));
     ui->action_dragDrop->setChecked(Setting::EnableDragsAndDrops);
     ui->layout_table->setSpacing(Setting::CellSpace);
-    ui->toolBar->setStyleSheet(QString("QToolBar{background:%1;}").arg(Setting::CellColor.lighter(135).name()));
+    ui->toolBar->setStyleSheet(QString("QToolBar{background:%1;}").arg(Setting::CellColor.light(140).name()));
 
     for (int i = 0; i < Const::WEEK_DAYS; i++)
     {
         horizontal_header[i]->setText(Translator::Locale(Setting::Language).dayName(!i ? 7 : i, QLocale::ShortFormat));
+        horizontal_header[i]->SetBackgroundColor(Setting::CellColor.darker(135));
         if (Const::IsWeekend(i))
             horizontal_header[i]->SetTextColor(Qt::red);
         else
@@ -133,9 +166,11 @@ void MainWindow::loadTable()
     if (Setting::ShowWeekNumber)
     {
         corner_label->setFixedWidth(40);
+        corner_label->setStyleSheet(QString("background:%1;").arg(Setting::CellColor.darker(140).name()));
         for (int i = 0; i < Const::MONTH_WEEKS; i++)
         {
             vertical_header[i]->show();
+            vertical_header[i]->SetBackgroundColor(Setting::CellColor.darker(140));
             vertical_header[i]->SetTextColor(Qt::black);
         }
     }
@@ -301,6 +336,7 @@ void MainWindow::exportData(const QString& fileName, bool showMessageBox)
 
 void MainWindow::onDayWidgetContextMenu(const QPoint& pos)
 {
+    if (!Setting::Movable) return;
     dayWidgetByAction = static_cast<DayWidget*>(QObject::sender());
     if (!dayWidgetByAction->rect().contains(pos)) return;
 
@@ -318,8 +354,7 @@ void MainWindow::onDayWidgetContextMenu(const QPoint& pos)
     menu.addMenu(&color_menu);
 
     menu.exec(QCursor::pos());
-
-    if (color_menu.SelectedColor() != day_color[dateByAction])
+    if (color_menu.ColorSelected())
     {
         day_color[dateByAction] = color_menu.SelectedColor();
         loadTable();
@@ -328,6 +363,7 @@ void MainWindow::onDayWidgetContextMenu(const QPoint& pos)
 
 void MainWindow::onEventLabelContextMenu(const QPoint& pos)
 {
+    if (!Setting::Movable) return;
     EventLabelButton* label = static_cast<EventLabelButton*>(QObject::sender());
     AbstractEvent* event = label->Event();
     QPoint mousePos = label->pos() + pos;
@@ -367,7 +403,7 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
 
     menu.exec(QCursor::pos());
 
-    if (color_menu.SelectedColor() != eventByAction->LabelColor())
+    if (color_menu.ColorSelected())
     {
         eventByAction->SetLabelColor(color_menu.SelectedColor());
         loadTable();
@@ -505,6 +541,12 @@ void MainWindow::on_action_add_triggered()
             dateByAction.setDate(current_date.year(), current_date.month(), 1);
     }
     onAddEvent();
+}
+
+void MainWindow::on_action_movable_triggered(bool checked)
+{
+    Setting::Movable = checked;
+    ui->action_movable->setToolTip(checked ? tr("Fix") : tr("Move"));
 }
 
 void MainWindow::on_action_import_triggered()

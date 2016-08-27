@@ -30,54 +30,60 @@ void LabelButton::setup()
 
 void LabelButton::ShowEnterStyle()
 {
+    if (!Setting::Movable) return;
     if (show_enter_color)
         this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(110).name()));
 }
 
 void LabelButton::ShowPressedStyle()
 {
+    if (!Setting::Movable) return;
     this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(120).name()));
 }
 
 void LabelButton::ShowReleasedStyle()
 {
+    if (!Setting::Movable) return;
     this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name()));
 }
 
-void LabelButton::resizeEvent(QResizeEvent *event)
+void LabelButton::resizeEvent(QResizeEvent* event)
 {
     if (!text.isEmpty())
         this->setText(QFontMetrics(this->font()).elidedText(text, Qt::ElideRight, this->width() - 3));
     QLabel::resizeEvent(event);
 }
 
-void LabelButton::leaveEvent(QEvent *event)
+void LabelButton::leaveEvent(QEvent* event)
 {
+    QLabel::leaveEvent(event);
     ShowReleasedStyle();
     emit mouseLeave();
-    QLabel::leaveEvent(event);
 }
 
-void LabelButton::mouseMoveEvent(QMouseEvent *event)
+void LabelButton::mouseMoveEvent(QMouseEvent* event)
 {
+    if (!Setting::Movable) { event->ignore(); return;}
+    QLabel::mouseMoveEvent(event);
     ShowEnterStyle();
     emit mouseEnter();
-    QLabel::mouseMoveEvent(event);
 }
 
-void LabelButton::mousePressEvent(QMouseEvent *event)
+void LabelButton::mousePressEvent(QMouseEvent* event)
 {
+    if (!Setting::Movable) { event->ignore(); return;}
+    QLabel::mousePressEvent(event);
     ShowPressedStyle();
     emit pressed();
-    QLabel::mousePressEvent(event);
 }
 
-void LabelButton::mouseReleaseEvent(QMouseEvent *event)
+void LabelButton::mouseReleaseEvent(QMouseEvent* event)
 {
+    if (!Setting::Movable) { event->ignore(); return;}
+    QLabel::mouseReleaseEvent(event);
     ShowReleasedStyle();
     emit released();
     if (event->button() == Qt::LeftButton) emit clicked();
-    QLabel::mouseReleaseEvent(event);
 }
 
 void LabelButton::dragEnterEvent(QDragEnterEvent* event)

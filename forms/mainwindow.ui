@@ -50,9 +50,6 @@
    </layout>
   </widget>
   <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
    <property name="movable">
     <bool>false</bool>
    </property>
@@ -69,19 +66,28 @@
   <action name="action_menu">
    <property name="icon">
     <iconset resource="../resource/res.qrc">
-     <normaloff>:/icons/menu.png</normaloff>:/icons/menu.png</iconset>
+     <normaloff>:/icons/icons/menu.png</normaloff>:/icons/icons/menu.png</iconset>
+   </property>
+   <property name="toolTip">
+    <string>Main Menu</string>
    </property>
   </action>
   <action name="action_date">
    <property name="icon">
     <iconset resource="../resource/res.qrc">
-     <normaloff>:/icons/date.png</normaloff>:/icons/date.png</iconset>
+     <normaloff>:/icons/icons/date.png</normaloff>:/icons/icons/date.png</iconset>
+   </property>
+   <property name="toolTip">
+    <string>Goto</string>
    </property>
   </action>
   <action name="action_left">
    <property name="icon">
     <iconset resource="../resource/res.qrc">
-     <normaloff>:/icons/left.png</normaloff>:/icons/left.png</iconset>
+     <normaloff>:/icons/icons/left.png</normaloff>:/icons/icons/left.png</iconset>
+   </property>
+   <property name="toolTip">
+    <string>Last Month</string>
    </property>
    <property name="shortcut">
     <string>Left, Up, PgUp</string>
@@ -90,7 +96,10 @@
   <action name="action_right">
    <property name="icon">
     <iconset resource="../resource/res.qrc">
-     <normaloff>:/icons/right.png</normaloff>:/icons/right.png</iconset>
+     <normaloff>:/icons/icons/right.png</normaloff>:/icons/icons/right.png</iconset>
+   </property>
+   <property name="toolTip">
+    <string>Next Month</string>
    </property>
    <property name="shortcut">
     <string>Right, Down, PgDown</string>
@@ -99,7 +108,19 @@
   <action name="action_add">
    <property name="icon">
     <iconset resource="../resource/res.qrc">
-     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+     <normaloff>:/icons/icons/add.png</normaloff>:/icons/icons/add.png</iconset>
+   </property>
+   <property name="toolTip">
+    <string>Add Event</string>
+   </property>
+  </action>
+  <action name="action_movable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource/res.qrc">
+     <normaloff>:/icons/icons/move.png</normaloff>:/icons/icons/move.png</iconset>
    </property>
   </action>
   <action name="action_import">

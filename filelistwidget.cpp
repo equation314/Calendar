@@ -21,7 +21,7 @@ FileListWidget::FileListWidget(QWidget* parent) :
     this->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     this->setTextElideMode(Qt::ElideLeft);
     this->setResizeMode(QListView::Adjust);
-    this->setIconSize(QSize(64, 64));
+    this->setIconSize(QSize(32, 32));
     this->setDragEnabled(true);
     this->hide();
 

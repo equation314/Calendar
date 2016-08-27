@@ -52,7 +52,7 @@ void AbstractEvent::Clone(AbstractEvent *event)
 
 bool AbstractEvent::AddFile(const QString &filePath)
 {
-    if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand()).arg(qrand());
+    if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand() % 32768).arg(qrand() % 32768);
     if (!QDir::current().exists("data/" + dir_name)) QDir::current().mkpath("data/" + dir_name);
 
     QString fileName = QFileInfo(filePath).fileName();

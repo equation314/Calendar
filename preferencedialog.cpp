@@ -140,7 +140,7 @@ void PreferenceDialog::on_pushButton_cellColor_clicked()
     color_menu->SetDefaultColor(button_color[buttonByAction = ui->pushButton_cellColor]);
     QPoint pos = ui->groupBox_3->mapToGlobal(ui->pushButton_cellColor->geometry().bottomLeft());
     color_menu->exec(pos);
-    if (color_menu->SelectedColor().isValid())
+    if (color_menu->ColorSelected())
         setButtonColor(ui->pushButton_cellColor, color_menu->SelectedColor());
 }
 
@@ -149,7 +149,7 @@ void PreferenceDialog::on_pushButton_eventColor_1_clicked()
     color_menu->SetDefaultColor(button_color[buttonByAction = ui->pushButton_eventColor_1]);
     QPoint pos = ui->groupBox_4->mapToGlobal(ui->pushButton_eventColor_1->geometry().bottomLeft());
     color_menu->exec(pos);
-    if (color_menu->SelectedColor().isValid())
+    if (color_menu->ColorSelected())
         setButtonColor(ui->pushButton_eventColor_1, color_menu->SelectedColor());
 }
 
@@ -158,7 +158,7 @@ void PreferenceDialog::on_pushButton_eventColor_2_clicked()
     color_menu->SetDefaultColor(button_color[buttonByAction = ui->pushButton_eventColor_2]);
     QPoint pos = ui->groupBox_4->mapToGlobal(ui->pushButton_eventColor_2->geometry().bottomLeft());
     color_menu->exec(pos);
-    if (color_menu->SelectedColor().isValid())
+    if (color_menu->ColorSelected())
         setButtonColor(ui->pushButton_eventColor_2, color_menu->SelectedColor());
 }
 

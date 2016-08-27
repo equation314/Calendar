@@ -51,8 +51,8 @@ FORMS    += forms/mainwindow.ui \
     forms/preferencedialog.ui
 
 TRANSLATIONS += \
-    resource/zh_CN.ts \
-    resource/zh_TW.ts
+    resource/trans/zh_CN.ts \
+    resource/trans/zh_TW.ts
 
 RESOURCES += \
     resource/res.qrc

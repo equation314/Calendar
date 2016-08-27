@@ -11,6 +11,7 @@ class Setting
     Setting();
 
 public:
+    static bool Movable;
     static bool EnableDragsAndDrops;
     static bool ShowWeekNumber;
     static int WeekFirstDay;

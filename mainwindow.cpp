@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QDesktopWidget>
+#include <QSystemTrayIcon>
 
 using namespace std;
 
@@ -33,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     translator.InstallToApplication(Setting::Language);
 
     ui->setupUi(this);
-    this->setWindowFlags(Qt::FramelessWindowHint);// | Qt::WindowTransparentForInput);
+
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     this->setFont(Setting::InterfaceFont);
@@ -74,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     createActions();
     importData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
+    loadTable();
 }
 
 MainWindow::~MainWindow()
@@ -98,14 +101,24 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (!Setting::Movable) { event->ignore(); return; }
     if (isDrag && event->buttons() == Qt::LeftButton && ui->toolBar->geometry().contains(event->pos()))
+    {
+        QGuiApplication::setOverrideCursor(Qt::SizeAllCursor);
         move(event->globalPos() - dragPosition);
+    }
     QWidget::mouseMoveEvent(event);
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     isDrag = false;
+    QGuiApplication::setOverrideCursor(Qt::ArrowCursor);
     QWidget::mouseMoveEvent(event);
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    exportData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
+    QApplication::quit();
 }
 
 void MainWindow::createActions()
@@ -118,10 +131,30 @@ void MainWindow::createActions()
     ui->toolBar->addAction(ui->action_movable);
     ui->toolBar->addWidget(ui->label_date);
 
+    action_show_day = new QAction(this);
     action_add_event = new QAction(this);
     action_delete_event = new QAction(this);
     action_delete_one_event = new QAction(this);
 
+    QSystemTrayIcon* tray = new QSystemTrayIcon(this);
+    main_menu = new QMenu(this);
+    main_menu->addAction(ui->action_import);
+    main_menu->addAction(ui->action_export);
+    main_menu->addSeparator();
+    main_menu->addAction(ui->action_dragDrop);
+    main_menu->addSeparator();
+    main_menu->addAction(ui->action_preference);
+    main_menu->addAction(ui->action_about);
+    main_menu->addSeparator();
+    main_menu->addAction(ui->action_exit);
+
+    tray->setIcon(QPixmap(":/icons/icons/date.png"));
+    tray->setContextMenu(main_menu);
+    tray->setToolTip(tr("Calendar"));
+    tray->show();
+
+    connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::show);
+    connect(action_show_day, &QAction::triggered, this, &MainWindow::onShowDayDetail);
     connect(action_add_event, &QAction::triggered, this, &MainWindow::onAddEvent);
     connect(action_delete_event, &QAction::triggered, this, &MainWindow::onDeleteEvent);
     connect(action_delete_one_event, &QAction::triggered, this, &MainWindow::onDeleteOneEvent);
@@ -312,7 +345,6 @@ void MainWindow::importData(const QString& fileName, bool showMessageBox)
         day_color[date] = color;
     }
     file.close();
-    loadTable();
 }
 
 void MainWindow::exportData(const QString& fileName, bool showMessageBox)
@@ -336,34 +368,37 @@ void MainWindow::exportData(const QString& fileName, bool showMessageBox)
 
 void MainWindow::onDayWidgetContextMenu(const QPoint& pos)
 {
-    if (!Setting::Movable) return;
-    dayWidgetByAction = static_cast<DayWidget*>(QObject::sender());
-    if (!dayWidgetByAction->rect().contains(pos)) return;
+    DayWidget* sender = static_cast<DayWidget*>(QObject::sender());
+    if (!sender->rect().contains(pos)) return;
 
+    dayWidgetByAction = sender;
     eventByAction = nullptr;
-    dateByAction = dayWidgetByAction->Date();
+    dateByAction = sender->Date();
 
     action_add_event->setText(tr("&Add Event..."));
+    action_show_day->setText(tr("&Show All Events..."));
 
     ColorMenu color_menu(tr("Backgruond &Color"), this);
-    color_menu.SetDefaultColor(dayWidgetByAction->ThemeColor());
+    color_menu.SetDefaultColor(sender->ThemeColor());
 
     QMenu menu(this);
     menu.addAction(action_add_event);
+    menu.addAction(action_show_day);
     menu.addSeparator();
     menu.addMenu(&color_menu);
 
     menu.exec(QCursor::pos());
+
     if (color_menu.ColorSelected())
     {
         day_color[dateByAction] = color_menu.SelectedColor();
         loadTable();
     }
+    dayWidgetByAction = nullptr;
 }
 
 void MainWindow::onEventLabelContextMenu(const QPoint& pos)
 {
-    if (!Setting::Movable) return;
     EventLabelButton* label = static_cast<EventLabelButton*>(QObject::sender());
     AbstractEvent* event = label->Event();
     QPoint mousePos = label->pos() + pos;
@@ -456,7 +491,8 @@ void MainWindow::onDeleteOneEvent()
 
 void MainWindow::onShowDayDetail()
 {
-    DayWidget* sender = static_cast<DayWidget*>(QObject::sender());
+    DayWidget* sender = dayWidgetByAction;
+    if (sender == nullptr) sender = static_cast<DayWidget*>(QObject::sender());
     DayDetailDialog dialog(sender, this);
 
     dateByAction = sender->Date();
@@ -471,40 +507,22 @@ void MainWindow::onAddFile(const QString& filePath)
 
     ContinuousEvent* event = new ContinuousEvent(sender->Date(), sender->Date());
     event->SetTitle(QString(tr("File \"%2\"")).arg(QFileInfo(filePath).fileName()));
-    event->AddFile(filePath);
+    event->AddFile(filePath, this);
     event_list.push_back(event);
-
     loadTable();
 }
 
 void MainWindow::onAddFileToEvent(const QString& filePath)
 {
     EventLabelButton* sender = static_cast<EventLabelButton*>(QObject::sender());
-    sender->Event()->AddFile(filePath);
+    sender->Event()->AddFile(filePath, this);
     loadTable();
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    exportData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
-    QMainWindow::closeEvent(event);
 }
 
 void MainWindow::on_action_menu_triggered()
 {
-    QMenu menu(this);
-    menu.addAction(ui->action_import);
-    menu.addAction(ui->action_export);
-    menu.addSeparator();
-    menu.addAction(ui->action_dragDrop);
-    menu.addSeparator();
-    menu.addAction(ui->action_preference);
-    menu.addAction(ui->action_about);
-    menu.addSeparator();
-    menu.addAction(ui->action_exit);
-
     QRect rect = ui->toolBar->actionGeometry(ui->action_menu);
-    menu.exec(this->pos() + rect.bottomLeft());
+    main_menu->exec(this->pos() + rect.bottomLeft());
 }
 
 void MainWindow::on_action_date_triggered()
@@ -554,7 +572,11 @@ void MainWindow::on_action_import_triggered()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import Data File"),
                                                           QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE,
                                                           tr("Calendar Data File (*.cdat)"));
-    if (!fileName.isEmpty()) importData(fileName, true);
+    if (!fileName.isEmpty())
+    {
+        importData(fileName, true);
+        loadTable();
+    }
 }
 
 void MainWindow::on_action_export_triggered()

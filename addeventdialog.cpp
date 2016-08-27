@@ -436,7 +436,7 @@ void AddEventDialog::on_pushButton_addFile_clicked()
             tmp_event = new ContinuousEvent(begin, end);
             connect(file_list_widget, &FileListWidget::fileRemoved, tmp_event, &AbstractEvent::RemoveFile);
         }
-        if (tmp_event->AddFile(file))
+        if (tmp_event->AddFile(file, this))
             file_list_widget->AddFile(tmp_event->FilePathAt(tmp_event->FileCount() - 1));
     }
 }

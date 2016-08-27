@@ -19,7 +19,7 @@ const QList<QColor> COLOR_LIST =
     QColor(120, 120, 120),
     QColor(185, 122, 87),
     QColor(136, 0, 21),
-    QColor(237, 28, 36),
+    QColor(242, 66, 74),
     QColor(255, 128, 169),
     QColor(255, 127, 39),
     QColor(255, 221, 7),

@@ -50,7 +50,7 @@ void AbstractEvent::Clone(AbstractEvent *event)
     file_name_list = event->file_name_list;
 }
 
-bool AbstractEvent::AddFile(const QString &filePath)
+bool AbstractEvent::AddFile(const QString &filePath, QWidget* parent)
 {
     if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand() % 32768).arg(qrand() % 32768);
     if (!QDir::current().exists("data/" + dir_name)) QDir::current().mkpath("data/" + dir_name);
@@ -59,13 +59,13 @@ bool AbstractEvent::AddFile(const QString &filePath)
     QString newFilePath = QString("%1/%2/%3/%4").arg(QDir::currentPath()).arg("data").arg(dir_name).arg(fileName);
     if (QFile(newFilePath).exists())
     {
-        QMessageBox::critical(0, tr("Import File Failed"), QString(tr("The file \"%1\" is already in this event!")).arg(fileName));
+        QMessageBox::critical(parent, tr("Import File Failed"), QString(tr("The file \"%1\" is already in this event!")).arg(fileName));
         return false;
     }
     if (QFile::copy(filePath, newFilePath))
     {
         file_name_list.push_back(fileName);
-        QMessageBox::information(0, tr("File Imported Successfully"), QString(tr("Successfully imported the file \"%1\".")).arg(fileName));
+        QMessageBox::information(parent, tr("File Imported Successfully"), QString(tr("Successfully imported the file \"%1\".")).arg(fileName));
     }
     return true;
 }

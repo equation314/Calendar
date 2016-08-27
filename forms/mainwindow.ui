@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>768</width>
-    <height>564</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -44,6 +44,9 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="indent">
+       <number>10</number>
       </property>
      </widget>
     </item>
@@ -89,9 +92,6 @@
    <property name="toolTip">
     <string>Last Month</string>
    </property>
-   <property name="shortcut">
-    <string>Left, Up, PgUp</string>
-   </property>
   </action>
   <action name="action_right">
    <property name="icon">
@@ -100,9 +100,6 @@
    </property>
    <property name="toolTip">
     <string>Next Month</string>
-   </property>
-   <property name="shortcut">
-    <string>Right, Down, PgDown</string>
    </property>
   </action>
   <action name="action_add">
@@ -127,16 +124,10 @@
    <property name="text">
     <string>&amp;Import...</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="action_export">
    <property name="text">
     <string>&amp;Export...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="action_dragDrop">
@@ -163,9 +154,6 @@
   <action name="action_exit">
    <property name="text">
     <string>E&amp;xit</string>
-   </property>
-   <property name="shortcut">
-    <string>Alt+F4</string>
    </property>
   </action>
   <action name="action_today">

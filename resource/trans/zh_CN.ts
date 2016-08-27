@@ -200,28 +200,24 @@
     <name>MainWindow</name>
     <message>
         <location filename="../../forms/mainwindow.ui" line="17"/>
+        <location filename="../../mainwindow.cpp" line="153"/>
         <source>Calendar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="72"/>
+        <location filename="../../forms/mainwindow.ui" line="75"/>
         <source>Main Menu</source>
         <translation>主菜单</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="81"/>
+        <location filename="../../forms/mainwindow.ui" line="84"/>
         <source>Goto</source>
         <translation>前往</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="90"/>
+        <location filename="../../forms/mainwindow.ui" line="93"/>
         <source>Last Month</source>
         <translation>上个月</translation>
-    </message>
-    <message>
-        <location filename="../../forms/mainwindow.ui" line="93"/>
-        <source>Left, Up, PgUp</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../forms/mainwindow.ui" line="102"/>
@@ -229,168 +225,153 @@
         <translation>下个月</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="105"/>
-        <source>Right, Down, PgDown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../forms/mainwindow.ui" line="114"/>
+        <location filename="../../forms/mainwindow.ui" line="111"/>
         <source>Add Event</source>
         <translation>添加事件</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="128"/>
+        <location filename="../../forms/mainwindow.ui" line="125"/>
         <source>&amp;Import...</source>
         <translation>导入(&amp;I)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="131"/>
-        <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../forms/mainwindow.ui" line="136"/>
+        <location filename="../../forms/mainwindow.ui" line="130"/>
         <source>&amp;Export...</source>
         <translation>导出(&amp;E)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="139"/>
-        <source>Ctrl+Shift+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../forms/mainwindow.ui" line="150"/>
+        <location filename="../../forms/mainwindow.ui" line="141"/>
         <source>Enable &amp;Drag and Drop Files</source>
         <translation>允许拖拽文件(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="155"/>
+        <location filename="../../forms/mainwindow.ui" line="146"/>
         <source>&amp;Preference...</source>
         <translation>偏好设置(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="160"/>
+        <location filename="../../forms/mainwindow.ui" line="151"/>
         <source>&amp;About...</source>
         <translation>关于(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="165"/>
+        <location filename="../../forms/mainwindow.ui" line="156"/>
         <source>E&amp;xit</source>
         <translation>退出(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="168"/>
-        <source>Alt+F4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../forms/mainwindow.ui" line="173"/>
+        <location filename="../../forms/mainwindow.ui" line="161"/>
         <source>Goto &amp;Today</source>
         <translation>返回今天(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="178"/>
+        <location filename="../../forms/mainwindow.ui" line="166"/>
         <source>Goto &amp;Date...</source>
         <translation>选择日期(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="348"/>
-        <location filename="../../mainwindow.cpp" line="375"/>
+        <location filename="../../mainwindow.cpp" line="381"/>
+        <location filename="../../mainwindow.cpp" line="410"/>
         <source>Backgruond &amp;Color</source>
         <translation>背景颜色(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="346"/>
+        <location filename="../../mainwindow.cpp" line="378"/>
         <source>&amp;Add Event...</source>
         <oldsource>&amp;Add Event</oldsource>
         <translation>添加事件(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="389"/>
+        <location filename="../../mainwindow.cpp" line="424"/>
         <source>&amp;Remove Event</source>
         <translation>删除事件(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="397"/>
+        <location filename="../../mainwindow.cpp" line="432"/>
         <source>Remove &amp;Single Event</source>
         <translation>删除单个事件(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="293"/>
+        <location filename="../../mainwindow.cpp" line="326"/>
         <source>Fail to Import Data</source>
         <translation>导入数据失败</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="120"/>
-        <location filename="../../mainwindow.cpp" line="549"/>
+        <location filename="../../mainwindow.cpp" line="185"/>
+        <location filename="../../mainwindow.cpp" line="567"/>
         <source>Fix</source>
         <translation>固定</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="120"/>
-        <location filename="../../mainwindow.cpp" line="549"/>
+        <location filename="../../mainwindow.cpp" line="185"/>
+        <location filename="../../mainwindow.cpp" line="567"/>
         <source>Move</source>
         <translation>移动</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="293"/>
+        <location filename="../../mainwindow.cpp" line="326"/>
         <source>Cannot import data from &quot;%1&quot;!</source>
         <translation>无法从数据文件 &quot;%1&quot; 导入！</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="323"/>
+        <location filename="../../mainwindow.cpp" line="355"/>
         <source>Fail to Export Data</source>
         <translation>导出数据失败</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="323"/>
+        <location filename="../../mainwindow.cpp" line="355"/>
         <source>Cannot export data to &quot;%1&quot;!</source>
         <translation>&quot;无法导出到数据文件 &quot;%1&quot;！</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="396"/>
+        <location filename="../../mainwindow.cpp" line="379"/>
+        <source>&amp;Show All Events...</source>
+        <translation>显示所有事件（&amp;S)...</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="431"/>
         <source>Remove the Whole Event &amp;Sequence</source>
         <translation>删除整个事件序列(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="434"/>
+        <location filename="../../mainwindow.cpp" line="469"/>
         <source>Remove Event</source>
         <translation>删除事件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="434"/>
+        <location filename="../../mainwindow.cpp" line="469"/>
         <source>Are you sure you want to remove the event &quot;%1&quot; and it&apos;s all attachments?</source>
         <translation>确实要删除事件 &quot;%1&quot; 和它的所有附件吗？</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="473"/>
+        <location filename="../../mainwindow.cpp" line="509"/>
         <source>File &quot;%2&quot;</source>
         <translation>文件 &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="554"/>
+        <location filename="../../mainwindow.cpp" line="572"/>
         <source>Import Data File</source>
         <translation>导入数据文件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="556"/>
-        <location filename="../../mainwindow.cpp" line="564"/>
+        <location filename="../../mainwindow.cpp" line="574"/>
+        <location filename="../../mainwindow.cpp" line="586"/>
         <source>Calendar Data File (*.cdat)</source>
         <translation>日历数据文件 (*.cdat)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="562"/>
+        <location filename="../../mainwindow.cpp" line="584"/>
         <source>Export Data File</source>
         <translatorcomment>日历数据文件 (*.dat)</translatorcomment>
         <translation>导出数据文件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="587"/>
+        <location filename="../../mainwindow.cpp" line="609"/>
         <source>About Calendar</source>
         <translation>关于 Calendar</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="588"/>
+        <location filename="../../mainwindow.cpp" line="610"/>
         <source>&lt;h2&gt;Calendar Program&lt;br/&gt;&lt;/h2&gt;&lt;p&gt;Programing and Training Project 1&lt;/p&gt;&lt;p&gt;Based on Qt 5.7.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version: %1&lt;/p&gt;&lt;p&gt;Built time: %2 - %3&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2016 Yuekai Jia, CST, Tsinghua University&lt;/p&gt;&lt;p&gt;All Right Reserved.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Project Index: &lt;a href=&quot;https://github.com/equation314/Calendar&quot;&gt;https://github.com/equation314/Calendar&lt;/a&gt;&lt;/p&gt;</source>
         <translation>&lt;h2&gt;Calendar 日历程序&lt;br/&gt;&lt;/h2&gt;&lt;p&gt;程序设计训练 Project 1&lt;/p&gt;&lt;p&gt;基于 Qt 5.7.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;版本: %1&lt;/p&gt;&lt;p&gt;构建时间: %2 - %3&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2016 清华大学 计算机系 贾越凯。&lt;/p&gt;&lt;p&gt;保留所有权利。&lt;br/&gt;&lt;/p&gt;&lt;p&gt;项目主页: &lt;a href=&quot;https://github.com/equation314/Calendar&quot;&gt;https://github.com/equation314/Calendar&lt;/a&gt;&lt;/p&gt;</translation>
     </message>

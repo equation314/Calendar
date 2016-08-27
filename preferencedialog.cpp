@@ -19,7 +19,8 @@ PreferenceDialog::PreferenceDialog(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 
-    for (int i = 1; i <= 7; i++) ui->comboBox_weekFirstDay->addItem(QDate::longDayName(i));
+    for (int i = 1; i <= 7; i++)
+        ui->comboBox_weekFirstDay->addItem(Translator::Locale(Setting::Language).dayName(i, QLocale::LongFormat));
 
     loadSetting();
 }
@@ -88,7 +89,7 @@ void PreferenceDialog::accept()
     Setting::EnableDragsAndDrops = ui->checkBox_dragDrop->isChecked();
     Setting::ShowWeekNumber = ui->checkBox_showWeek->isChecked();
     Setting::WeekFirstDay = ui->comboBox_weekFirstDay->currentIndex() + 1;
-    Setting::Language = ui->comboBox_language->currentIndex();
+    Setting::Language = (Translator::Language)ui->comboBox_language->currentIndex();
     Setting::Opacity = 10 - ui->comboBox_opacity->currentIndex();
     Setting::CellSpace = ui->comboBox_cellSpace->currentIndex();
 
@@ -105,18 +106,18 @@ void PreferenceDialog::accept()
 
 void PreferenceDialog::on_pushButton_import_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("导入配置文件"),
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Import Configuration File"),
                                                           QDir::currentPath() + "/" + Const::SETTING_FILE,
-                                                          tr("配置文件 (*.xml)"));
+                                                          tr("Configuration File (*.xml)"));
     if (!fileName.isEmpty()) Setting::LoadSetting(fileName);
     loadSetting();
 }
 
 void PreferenceDialog::on_pushButton_export_clicked()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("导出配置文件"),
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Configuration File"),
                                                           QDir::homePath() + "/" + Const::SETTING_FILE,
-                                                          tr("配置文件 (*.xml)"));
+                                                          tr("Configuration File (*.xml)"));
     if (!fileName.isEmpty()) Setting::SaveSetting(fileName);
 }
 
@@ -133,7 +134,7 @@ void PreferenceDialog::on_pushButton_eventFont_clicked()
     QFont font = QFontDialog::getFont(&ok, button_font[ui->pushButton_eventFont], this);
     if (ok) setButtonFont(ui->pushButton_eventFont, font);
 }
-#include <QDebug>
+
 void PreferenceDialog::on_pushButton_cellColor_clicked()
 {
     color_menu->SetDefaultColor(button_color[buttonByAction = ui->pushButton_cellColor]);

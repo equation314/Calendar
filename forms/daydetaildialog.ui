@@ -3,7 +3,7 @@
  <class>DayDetailDialog</class>
  <widget class="QDialog" name="DayDetailDialog">
   <property name="windowTitle">
-   <string>查看事件</string>
+   <string>Events View</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_0">
    <item>
@@ -41,8 +41,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>274</width>
-        <height>195</height>
+        <width>73</width>
+        <height>69</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout"/>

@@ -1,7 +1,6 @@
 #include "daywidget.h"
 
 #include <QGridLayout>
-#include <QDebug>
 
 DayWidget::DayWidget(QWidget *parent) :
     QWidget(parent),

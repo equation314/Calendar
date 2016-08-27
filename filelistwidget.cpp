@@ -3,7 +3,6 @@
 
 #include <QDrag>
 #include <QMenu>
-#include <QDebug>
 #include <QAction>
 #include <QMimeData>
 #include <QMouseEvent>
@@ -26,8 +25,8 @@ FileListWidget::FileListWidget(QWidget* parent) :
     this->setDragEnabled(true);
     this->hide();
 
-    action_open_file = new QAction("打开文件(&O)", this);
-    action_delete_file = new QAction("删除文件(&D)", this);
+    action_open_file = new QAction(tr("&Open File..."), this);
+    action_delete_file = new QAction(tr("&Remove File"), this);
 
     connect(action_open_file, &QAction::triggered, this, &FileListWidget::onOpenFile);
     connect(action_delete_file, &QAction::triggered, this, &FileListWidget::onDeleteFile);

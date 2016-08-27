@@ -8,7 +8,7 @@
 bool Setting::EnableDragsAndDrops = true;
 bool Setting::ShowWeekNumber = true;
 int Setting::WeekFirstDay = 1;
-int Setting::Language = 0;
+Translator::Language Setting::Language = Translator::SimplifiedChinese;
 int Setting::Opacity = 10;
 int Setting::CellSpace = 2;
 QFont Setting::InterfaceFont = QFont("微软雅黑", 9);
@@ -43,7 +43,7 @@ void Setting::LoadSetting(const QString &fileName)
             WeekFirstDay = node.attribute("value").toInt();
 
         if (node.tagName() == "Language" && node.hasAttribute("value"))
-            Language = node.attribute("value").toInt();
+            Language = (Translator::Language)node.attribute("value").toInt();
 
         if (node.tagName() == "Opacity" && node.hasAttribute("value"))
             Opacity = node.attribute("value").toInt();

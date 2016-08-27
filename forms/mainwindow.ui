@@ -104,7 +104,7 @@
   </action>
   <action name="action_import">
    <property name="text">
-    <string>导入(&amp;I)...</string>
+    <string>&amp;Import...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -112,7 +112,7 @@
   </action>
   <action name="action_export">
    <property name="text">
-    <string>导出(&amp;E)...</string>
+    <string>&amp;Export...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+S</string>
@@ -126,22 +126,22 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>允许拖拽文件(&amp;D)</string>
+    <string>Enable &amp;Drag and Drop Files</string>
    </property>
   </action>
   <action name="action_preference">
    <property name="text">
-    <string>偏好设置(&amp;P)...</string>
+    <string>&amp;Preference...</string>
    </property>
   </action>
   <action name="action_about">
    <property name="text">
-    <string>关于(&amp;A)...</string>
+    <string>&amp;About...</string>
    </property>
   </action>
   <action name="action_exit">
    <property name="text">
-    <string>退出(&amp;X)</string>
+    <string>E&amp;xit</string>
    </property>
    <property name="shortcut">
     <string>Alt+F4</string>
@@ -149,12 +149,12 @@
   </action>
   <action name="action_today">
    <property name="text">
-    <string>返回今天(&amp;T)</string>
+    <string>Goto &amp;Today</string>
    </property>
   </action>
   <action name="action_select_date">
    <property name="text">
-    <string>选择日期(&amp;S)...</string>
+    <string>Goto &amp;Date...</string>
    </property>
   </action>
  </widget>

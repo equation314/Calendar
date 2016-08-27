@@ -1,6 +1,8 @@
 #ifndef SETTING_H
 #define SETTING_H
 
+#include "translator.h"
+
 #include <QFont>
 #include <QColor>
 
@@ -12,7 +14,7 @@ public:
     static bool EnableDragsAndDrops;
     static bool ShowWeekNumber;
     static int WeekFirstDay;
-    static int Language;
+    static Translator::Language Language;
     static int Opacity;
     static int CellSpace;
     static QFont InterfaceFont;

@@ -9,7 +9,6 @@ QT       += core gui widgets xml
 TARGET = Calendar
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
     mainwindow.cpp \
     daywidget.cpp \
@@ -23,7 +22,8 @@ SOURCES += main.cpp\
     filelistwidget.cpp \
     dateselectdialog.cpp \
     setting.cpp \
-    preferencedialog.cpp
+    preferencedialog.cpp \
+    translator.cpp
 
 HEADERS  += mainwindow.h \
     daywidget.h \
@@ -38,7 +38,8 @@ HEADERS  += mainwindow.h \
     filelistwidget.h \
     dateselectdialog.h \
     setting.h \
-    preferencedialog.h
+    preferencedialog.h \
+    translator.h
 
 FORMS    += forms/mainwindow.ui \
     forms/addeventdialog.ui \
@@ -49,5 +50,9 @@ FORMS    += forms/mainwindow.ui \
     forms/dateselectdialog.ui \
     forms/preferencedialog.ui
 
+TRANSLATIONS += \
+    resource/zh_CN.ts \
+    resource/zh_TW.ts
+
 RESOURCES += \
-    resource/icon.qrc
+    resource/res.qrc

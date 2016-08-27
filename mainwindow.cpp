@@ -14,6 +14,7 @@
 #include <QDateEdit>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QTranslator>
 
 using namespace std;
 
@@ -27,11 +28,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     current_date(QDate::currentDate())
 {
-    ui->setupUi(this);
-    this->setWindowFlags(Qt::FramelessWindowHint);
-
     Setting::LoadSetting(Const::SETTING_FILE);
     QGuiApplication::setFont(Setting::InterfaceFont);
+    translator.InstallToApplication(Setting::Language);
+
+    ui->setupUi(this);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->setFont(Setting::InterfaceFont);
 
     corner_label = new QLabel(this);
@@ -41,7 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     for (int i = 0; i < Const::WEEK_DAYS; i++)
     {
-        horizontal_header[i] = new LabelButton(QDate::shortDayName(!i ? 7 : i), this);
+        horizontal_header[i] = new LabelButton(this);
         horizontal_header[i]->setAlignment(Qt::AlignCenter);
         horizontal_header[i]->setFixedHeight(30);
     }
@@ -66,9 +68,8 @@ MainWindow::MainWindow(QWidget *parent) :
             connect(day_table[i][j], &DayWidget::dropIn, this, &MainWindow::onAddFile);
             connect(day_table[i][j], &QWidget::customContextMenuRequested, this, &MainWindow::onDayWidgetContextMenu);
         }
-    importData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
     createActions();
-    loadTable();
+    importData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
 }
 
 MainWindow::~MainWindow()
@@ -85,15 +86,13 @@ void MainWindow::createActions()
     ui->toolBar->addAction(ui->action_right);
     ui->toolBar->addAction(ui->action_add);
 
-    color_menu = new ColorMenu("设置背景颜色(&C)", this);
-    action_add_event = new QAction("添加事件(&A)", this);
-    action_delete_event = new QAction("删除事件(&D)", this);
-    action_delete_one_event = new QAction("删除单个事件(&S)", this);
+    action_add_event = new QAction(this);
+    action_delete_event = new QAction(this);
+    action_delete_one_event = new QAction(this);
 
     connect(action_add_event, &QAction::triggered, this, &MainWindow::onAddEvent);
     connect(action_delete_event, &QAction::triggered, this, &MainWindow::onDeleteEvent);
     connect(action_delete_one_event, &QAction::triggered, this, &MainWindow::onDeleteOneEvent);
-    connect(color_menu, &ColorMenu::colorSelected, this, &MainWindow::onColorSelected);
 }
 
 void MainWindow::clearAll()
@@ -107,15 +106,20 @@ void MainWindow::clearAll()
 
 void MainWindow::loadTable()
 {
+    translator.InstallToApplication(Setting::Language);
+    ui->retranslateUi(this);
+
     this->setWindowOpacity(Setting::Opacity / 10.0);
     QGuiApplication::setFont(Setting::InterfaceFont);
     QFont font = ui->label_date->font();
     font.setFamily(Setting::InterfaceFont.family());
-    ui->action_dragDrop->setChecked(Setting::EnableDragsAndDrops);
     ui->label_date->setFont(font);
+    ui->label_date->setText(Translator::Locale(Setting::Language).toString(current_date, "MMMM yyyy"));
+    ui->action_dragDrop->setChecked(Setting::EnableDragsAndDrops);
     ui->layout_table->setSpacing(Setting::CellSpace);
     for (int i = 0; i < Const::WEEK_DAYS; i++)
     {
+        horizontal_header[i]->setText(Translator::Locale(Setting::Language).dayName(!i ? 7 : i, QLocale::ShortFormat));
         if (Const::IsWeekend(i))
             horizontal_header[i]->SetTextColor(Qt::red);
         else
@@ -136,7 +140,6 @@ void MainWindow::loadTable()
         for (int i = 0; i < Const::MONTH_WEEKS; i++) vertical_header[i]->hide();
     }
 
-    ui->label_date->setText(current_date.toString("MMMM yyyy"));
     for (int i = 0; i < Const::WEEK_DAYS; i++)
     {
         int day = dayFromColumn(i);
@@ -247,7 +250,7 @@ void MainWindow::importData(const QString& fileName, bool showMessageBox)
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly))
     {
-        if (showMessageBox) QMessageBox::critical(0, "导入数据失败", QString("无法从数据文件 \"%1\" 导入！").arg(fileName));
+        if (showMessageBox) QMessageBox::critical(0, tr("Fail to Import Data"), QString(tr("Cannot import data from \"%1\"!")).arg(fileName));
         return;
     }
 
@@ -277,7 +280,7 @@ void MainWindow::exportData(const QString& fileName, bool showMessageBox)
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly))
     {
-        if (showMessageBox) QMessageBox::critical(0, "导出数据失败", QString("无法导出到数据文件 \"%1\"！").arg(fileName));
+        if (showMessageBox) QMessageBox::critical(0, tr("Fail to Export Data"), QString(tr("Cannot export data to \"%1\"!")).arg(fileName));
         return;
     }
 
@@ -298,14 +301,24 @@ void MainWindow::onDayWidgetContextMenu(const QPoint& pos)
 
     eventByAction = nullptr;
     dateByAction = dayWidgetByAction->Date();
-    color_menu->SetDefaultColor(dayWidgetByAction->ThemeColor());
+
+    action_add_event->setText(tr("&Add Event..."));
+
+    ColorMenu color_menu(tr("Backgruond &Color"), this);
+    color_menu.SetDefaultColor(dayWidgetByAction->ThemeColor());
 
     QMenu menu(this);
     menu.addAction(action_add_event);
     menu.addSeparator();
-    menu.addMenu(color_menu);
+    menu.addMenu(&color_menu);
 
     menu.exec(QCursor::pos());
+
+    if (color_menu.SelectedColor() != day_color[dateByAction])
+    {
+        day_color[dateByAction] = color_menu.SelectedColor();
+        loadTable();
+    }
 }
 
 void MainWindow::onEventLabelContextMenu(const QPoint& pos)
@@ -317,7 +330,9 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
 
     eventLabelByAction = label;
     eventByAction = event;
-    color_menu->SetDefaultColor(label->BackgroundColor());
+
+    ColorMenu color_menu(tr("Backgruond &Color"), this);
+    color_menu.SetDefaultColor(label->BackgroundColor());
 
     if (label->parent() == ui->centralWidget)
     {
@@ -330,21 +345,28 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
     QMenu menu(this);
     if (event->Type() == AbstractEvent::ContinuousEvent)
     {
-        action_delete_event->setText("删除事件(&D)");
+        action_delete_event->setText(tr("&Remove Event"));
         menu.addAction(action_delete_event);
         menu.addSeparator();
-        menu.addMenu(color_menu);
+        menu.addMenu(&color_menu);
     }
     else if (event->Type() == AbstractEvent::RecurrentEvent)
     {
-        action_delete_event->setText("删除整个事件序列(&D)");
+        action_delete_event->setText(tr("Remove the Whole Event &Sequence"));
+        action_delete_one_event->setText(tr("Remove &Single Event"));
         menu.addAction(action_delete_event);
         menu.addAction(action_delete_one_event);
         menu.addSeparator();
-        menu.addMenu(color_menu);
+        menu.addMenu(&color_menu);
     }
 
     menu.exec(QCursor::pos());
+
+    if (color_menu.SelectedColor() != eventByAction->LabelColor())
+    {
+        eventByAction->SetLabelColor(color_menu.SelectedColor());
+        loadTable();
+    }
 }
 
 void MainWindow::onAddEvent()
@@ -368,7 +390,7 @@ void MainWindow::onEditEvent()
 
 void MainWindow::onDeleteEvent()
 {
-    if (QMessageBox::question(this, "确认删除", QString("确实要删除事件 \"%1\" 和它的所有附件吗？").arg(eventByAction->Title())) != QMessageBox::Yes)
+    if (QMessageBox::question(this, tr("Remove Event"), QString(tr("Are you sure you want to remove the event \"%1\" and it's all attachments?")).arg(eventByAction->Title())) != QMessageBox::Yes)
         return;
     for (auto i = event_list.begin(); i != event_list.end(); i++)
         if (*i == eventByAction)
@@ -391,18 +413,6 @@ void MainWindow::onDeleteOneEvent()
     loadTable();
 }
 
-void MainWindow::onColorSelected(const QColor& color)
-{
-    if (color.isValid())
-    {
-        if (eventByAction)
-            eventByAction->SetLabelColor(color);
-        else
-            day_color[dateByAction] = color;
-        loadTable();
-    }
-}
-
 void MainWindow::onShowDayDetail()
 {
     DayWidget* sender = static_cast<DayWidget*>(QObject::sender());
@@ -419,7 +429,7 @@ void MainWindow::onAddFile(const QString& filePath)
     DayWidget* sender = static_cast<DayWidget*>(QObject::sender());
 
     ContinuousEvent* event = new ContinuousEvent(sender->Date(), sender->Date());
-    event->SetTitle(QString("文件 \"%2\"").arg(QFileInfo(filePath).fileName()));
+    event->SetTitle(QString(tr("File \"%2\"")).arg(QFileInfo(filePath).fileName()));
     event->AddFile(filePath);
     event_list.push_back(event);
 
@@ -494,17 +504,17 @@ void MainWindow::on_action_add_triggered()
 
 void MainWindow::on_action_import_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("导入数据文件"),
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Import Data File"),
                                                           QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE,
-                                                          tr("日历数据文件 (*.dat)"));
+                                                          tr("Calendar Data File (*.cdat)"));
     if (!fileName.isEmpty()) importData(fileName, true);
 }
 
 void MainWindow::on_action_export_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("导出数据文件"),
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export Data File"),
                                                           QDir::homePath(),
-                                                          tr("日历数据文件 (*.dat)"));
+                                                          tr("Calendar Data File (*.cdat)"));
     if (!fileName.isEmpty()) exportData(fileName, true);
 }
 
@@ -527,17 +537,17 @@ void MainWindow::on_action_preference_triggered()
 void MainWindow::on_action_about_triggered()
 {
     QMessageBox msgBox(this);
-    msgBox.setWindowTitle("关于 Calendar");
-    msgBox.setText(QString(
-                      "<h2>Calendar 日历程序<br/></h2>"
-                      "<p>程序设计训练 Project 1</p>"
-                      "<p>基于 Qt 5.7.0<br/></p>"
-                      "<p>版本: %1</p>"
-                      "<p>构建时间: %2 - %3<br/></p>"
-                      "<p>Copyright © 2016 清华大学 计算机系 贾越凯。</p>"
-                      "<p>保留所有权利。<br/></p>"
-                      "<p>项目主页: <a href=\"https://github.com/equation314/Calendar\">https://github.com/equation314/Calendar</a></p>"
-                      ).arg("V1.0.0").arg(__DATE__).arg(__TIME__));
+    msgBox.setWindowTitle(tr("About Calendar"));
+    msgBox.setText(QString(tr(
+                      "<h2>Calendar Program<br/></h2>"
+                      "<p>Programing and Training Project 1</p>"
+                      "<p>Based on Qt 5.7.0<br/></p>"
+                      "<p>Version: %1</p>"
+                      "<p>Built time: %2 - %3<br/></p>"
+                      "<p>Copyright © 2016 Yuekai Jia, CST, Tsinghua University</p>"
+                      "<p>All Right Reserved.<br/></p>"
+                      "<p>Project Index: <a href=\"https://github.com/equation314/Calendar\">https://github.com/equation314/Calendar</a></p>"
+                      )).arg("1.0.0").arg(__DATE__).arg(__TIME__));
     msgBox.exec();
 }
 

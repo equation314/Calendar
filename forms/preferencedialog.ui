@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>偏好设置</string>
+   <string>Preference</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_9">
    <item row="0" column="0" colspan="3">
@@ -21,7 +21,7 @@
      </property>
      <widget class="QWidget" name="tab_1">
       <attribute name="title">
-       <string>界面</string>
+       <string>&amp;Interface</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_7">
        <item row="3" column="0">
@@ -40,13 +40,13 @@
        <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_2">
          <property name="title">
-          <string>行为</string>
+          <string>&amp;Behavior</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBox_dragDrop">
             <property name="text">
-             <string>允许拖拽文件</string>
+             <string>Enable &amp;drag and drop files</string>
             </property>
            </widget>
           </item>
@@ -56,7 +56,7 @@
        <item row="1" column="0">
         <widget class="QGroupBox" name="groupBox_1">
          <property name="title">
-          <string>外观</string>
+          <string>&amp;Appearance</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="2" rowspan="2">
@@ -75,14 +75,14 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>不透明度:</string>
+             <string>Opacity:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>字体:</string>
+             <string>Font:</string>
             </property>
            </widget>
           </item>
@@ -118,7 +118,7 @@
             </property>
             <item>
              <property name="text">
-              <string>0% (不透明)</string>
+              <string>100% (Opaque)</string>
              </property>
             </item>
             <item>
@@ -168,7 +168,7 @@
             </item>
             <item>
              <property name="text">
-              <string>100% (完全透明)</string>
+              <string>0% (Transparent)</string>
              </property>
             </item>
            </widget>
@@ -179,13 +179,13 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_0">
          <property name="title">
-          <string>显示</string>
+          <string>&amp;Display</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="1" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>一周的第一天:</string>
+             <string>The first day of a week:</string>
             </property>
            </widget>
           </item>
@@ -195,7 +195,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
-             <string>语言:</string>
+             <string>Language:</string>
             </property>
            </widget>
           </item>
@@ -204,6 +204,11 @@
             <item>
              <property name="text">
               <string>简体中文</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>繁體中文</string>
              </property>
             </item>
             <item>
@@ -229,7 +234,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBox_showWeek">
             <property name="text">
-             <string>显示周数</string>
+             <string>Display the &amp;week number</string>
             </property>
            </widget>
           </item>
@@ -240,7 +245,7 @@
      </widget>
      <widget class="QWidget" name="tab_2">
       <attribute name="title">
-       <string>单元格</string>
+       <string>&amp;Cell</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="0">
@@ -259,11 +264,17 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>单元格</string>
+          <string>&amp;Cell</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="1">
            <widget class="QComboBox" name="comboBox_cellSpace">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <item>
              <property name="text">
               <string>0</string>
@@ -319,14 +330,14 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>间隙:</string>
+             <string>Space:</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>颜色:</string>
+             <string>Color:</string>
             </property>
            </widget>
           </item>
@@ -369,7 +380,7 @@
      </widget>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
-       <string>事件</string>
+       <string>&amp;Events</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="1" column="0">
@@ -388,7 +399,7 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
-          <string>事件</string>
+          <string>&amp;Events</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="3" rowspan="3">
@@ -426,21 +437,21 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>普通事件颜色:</string>
+             <string>Normal events color:</string>
             </property>
            </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>重复事件颜色:</string>
+             <string>Recurrent events color:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>字体:</string>
+             <string>Font:</string>
             </property>
            </widget>
           </item>
@@ -499,14 +510,14 @@
    <item row="2" column="0">
     <widget class="QPushButton" name="pushButton_import">
      <property name="text">
-      <string>  导入(&amp;I)</string>
+      <string>&amp;Import...</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
     <widget class="QPushButton" name="pushButton_export">
      <property name="text">
-      <string> 导出(&amp;E)</string>
+      <string>&amp;Export...</string>
      </property>
     </widget>
    </item>

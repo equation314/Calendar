@@ -6,10 +6,21 @@
 #include <QWidgetAction>
 #include <QSignalMapper>
 
-ColorMenu::ColorMenu(const QString& text, QWidget* parent) :
-    QMenu(text, parent)
+ColorMenu::ColorMenu(QWidget* parent) :
+    QMenu(parent)
 {
-    QAction* actionOtherColor = new QAction("其他(&O)...", this);
+    setup();
+}
+
+ColorMenu::ColorMenu(const QString& title, QWidget* parent) :
+    QMenu(title, parent)
+{
+    setup();
+}
+
+void ColorMenu::setup()
+{
+    QAction* actionOtherColor = new QAction(tr("&Other..."), this);
     QSignalMapper *colorActionMap = new QSignalMapper(this);
     for (int i = 0; i < Const::COLOR_LIST.size(); i++)
     {
@@ -43,12 +54,15 @@ ColorMenu::ColorMenu(const QString& text, QWidget* parent) :
 
 void ColorMenu::onSelectColor(int id)
 {
-    selected_color = Const::COLOR_LIST[id];
-    emit colorSelected(selected_color);
+    emit colorSelected(selected_color = Const::COLOR_LIST[id]);
 }
 
 void ColorMenu::onSelectOtherColor()
 {
-    selected_color = QColorDialog::getColor(default_color, static_cast<QWidget*>(this->parent()));
-    if (selected_color.isValid()) emit colorSelected(selected_color);
+    QColor color= QColorDialog::getColor(default_color, static_cast<QWidget*>(this->parent()));
+    if (color.isValid())
+    {
+        selected_color = color;
+        emit colorSelected(selected_color);
+    }
 }

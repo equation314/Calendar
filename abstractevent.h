@@ -35,7 +35,7 @@ public:
     void SetDetail(const QString& text) { detail = text; }
     void SetLabelColor(const QColor& col) { color = col; }
 
-    void AddFile(const QString& filePath);
+    bool AddFile(const QString& filePath);
     void RemoveFile(const QString &fileName);
     void RemoveAllFiles();
     void Clone(AbstractEvent* event);

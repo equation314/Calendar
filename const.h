@@ -3,15 +3,16 @@
 
 #include <QDate>
 #include <QColor>
+#include <QLocale>
 
 namespace Const
 {
-static const int WEEK_DAYS = 7;
-static const int MONTH_WEEKS = 6;
-static const QDate MAX_DATE(7999, 12, 31);
-static const QString DEFAULT_DATA_FILE = "user.dat";
-static const QString SETTING_FILE = "setting.xml";
-static const QList<QColor> COLOR_LIST =
+const int WEEK_DAYS = 7;
+const int MONTH_WEEKS = 6;
+const QDate MAX_DATE(7999, 12, 31);
+const QString DEFAULT_DATA_FILE = "user.cdat";
+const QString SETTING_FILE = "setting.xml";
+const QList<QColor> COLOR_LIST =
 {
     QColor(255, 255, 255),
     QColor(170, 170, 170),

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>选择日期</string>
+   <string>Select Date </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -29,7 +29,7 @@
    <item>
     <widget class="QCalendarWidget" name="calendarWidget">
      <property name="firstDayOfWeek">
-      <enum>Qt::Sunday</enum>
+      <enum>Qt::Monday</enum>
      </property>
     </widget>
    </item>

@@ -9,7 +9,7 @@ class FileListWidget : public QListWidget
     Q_OBJECT
 
 public:
-    FileListWidget(QWidget* parent = nullptr);
+    explicit FileListWidget(QWidget* parent = nullptr);
 
     void AddFile(const QString &filePath);
 

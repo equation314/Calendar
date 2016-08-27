@@ -1,4 +1,4 @@
-#include "const.h"
+#include "setting.h"
 #include "addeventdialog.h"
 #include "recurrentevent.h"
 #include "continuousevent.h"
@@ -17,9 +17,11 @@ WeekRepeatWidget::WeekRepeatWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    checkBox[0] = new QCheckBox(tr("工作日"), this);
+    checkBox[0] = new QCheckBox(tr("Working days"), this);
     ui->gridLayout->addWidget(checkBox[0], 1, 3, 1, 1);
-    for (int i = 1; i <= 7; i++) checkBox[i] = new QCheckBox(QDate::shortDayName(i), this);
+    for (int i = 1; i <= 7; i++)
+        checkBox[i] = new QCheckBox(Translator::Locale(Setting::Language).dayName(i, QLocale::ShortFormat), this);
+
     for (int i = 0; i < 4; i++) ui->gridLayout->addWidget(checkBox[i + 1], 0, i, 1, 1);
     for (int i = 0; i < 3; i++) ui->gridLayout->addWidget(checkBox[i + 5], 1, i, 1, 1);
 
@@ -58,10 +60,8 @@ MonthRepeatWidget::MonthRepeatWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    for (int i = 1; i <= 31; i++) ui->comboBox_day->addItem(QString("第 %1 天").arg(i));
-    ui->comboBox_day->addItem("最后一天");
-
-    for (int i = 1; i <= 7; i++) ui->comboBox_weekday_2->addItem(QDate::longDayName(i));
+    for (int i = 1; i <= 7; i++)
+        ui->comboBox_weekday_2->addItem(Translator::Locale(Setting::Language).dayName(i, QLocale::LongFormat));
 
     connect(ui->comboBox_day, &QComboBox::currentTextChanged, this, [this]()
     {
@@ -112,12 +112,11 @@ YearRepeatWidget::YearRepeatWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    for (int i = 1; i <= 12; i++) ui->comboBox_month->addItem(QDate::longMonthName(i));
+    for (int i = 1; i <= 12; i++)
+        ui->comboBox_month->addItem(Translator::Locale(Setting::Language).monthName(i, QLocale::LongFormat));
 
-    for (int i = 1; i <= 31; i++) ui->comboBox_day->addItem(QString("第 %1 天").arg(i));
-    ui->comboBox_day->addItem("最后一天");
-
-    for (int i = 1; i <= 7; i++) ui->comboBox_weekday_2->addItem(QDate::longDayName(i));
+    for (int i = 1; i <= 7; i++)
+        ui->comboBox_weekday_2->addItem(Translator::Locale(Setting::Language).dayName(i, QLocale::LongFormat));
 
     connect(ui->comboBox_day, &QComboBox::currentTextChanged, this, [this]()
     {
@@ -221,18 +220,18 @@ void AddEventDialog::setup()
 
     if (!is_editing)
     {
-        this->setWindowTitle(tr("新建事件"));
+        this->setWindowTitle(tr("New Event"));
     }
     else
     {
-        this->setWindowTitle(tr("修改事件"));
+        this->setWindowTitle(tr("Edit Event"));
         ui->lineEdit_title->setText(event->Title());
         ui->lineEdit_place->setText(event->Place());
         ui->plainTextEdit_deail->setPlainText(event->Detail());
         ui->groupBox->setEnabled(false);
         if (event->Type() == AbstractEvent::RecurrentEvent)
         {
-            this->setWindowTitle(tr("修改重复事件"));
+            this->setWindowTitle(tr("Edit Recurrent Event"));
             ui->dateEdit_begin->setEnabled(false);
             ui->dateEdit_end->setEnabled(false);
 
@@ -281,7 +280,7 @@ void AddEventDialog::accept()
 {
     if (ui->lineEdit_title->text().isEmpty())
     {
-        QMessageBox::critical(this, "事件无效", "请输入主题！");
+        QMessageBox::critical(this, tr("Invalid Event"), tr("Please input the title!"));
         ui->lineEdit_title->setFocus();
         return;
     }
@@ -308,7 +307,7 @@ void AddEventDialog::accept()
             if (!revent->DayMark())
             {
                 if (event == nullptr) delete revent;
-                QMessageBox::critical(this, "事件无效", "请选择一周中的至少一天！");
+                QMessageBox::critical(this, tr("Invalid Event"), tr("Please select at least one aay of a week!"));
                 return;
             }
             break;
@@ -429,7 +428,7 @@ void AddEventDialog::on_groupBox_clicked(bool checked)
 
 void AddEventDialog::on_pushButton_addFile_clicked()
 {
-    QString file = QFileDialog::getOpenFileName(this, "选择附件", QDir::homePath(), "所有文件 (*)");
+    QString file = QFileDialog::getOpenFileName(this, tr("Select Attachment"), QDir::homePath(), tr("All Files (*)"));
     if (!file.isEmpty())
     {
         if (!tmp_event)
@@ -437,7 +436,7 @@ void AddEventDialog::on_pushButton_addFile_clicked()
             tmp_event = new ContinuousEvent(begin, end);
             connect(file_list_widget, &FileListWidget::fileRemoved, tmp_event, &AbstractEvent::RemoveFile);
         }
-        tmp_event->AddFile(file);
-        file_list_widget->AddFile(tmp_event->FilePathAt(tmp_event->FileCount() - 1));
+        if (tmp_event->AddFile(file))
+            file_list_widget->AddFile(tmp_event->FilePathAt(tmp_event->FileCount() - 1));
     }
 }

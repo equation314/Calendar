@@ -6,13 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>350</width>
     <height>488</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>2</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
-    <width>320</width>
+    <width>350</width>
     <height>0</height>
    </size>
   </property>
@@ -23,7 +29,7 @@
    <item row="6" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>重复</string>
+      <string>&amp;Repeat</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -43,7 +49,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>每</string>
+           <string>Every</string>
           </property>
          </widget>
         </item>
@@ -65,24 +71,27 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
           <item>
            <property name="text">
-            <string>天</string>
+            <string>day</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>周</string>
+            <string>week</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>月</string>
+            <string>month</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>年</string>
+            <string>year</string>
            </property>
           </item>
          </widget>
@@ -110,7 +119,7 @@
         <item>
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>结束:</string>
+           <string>End:</string>
           </property>
          </widget>
         </item>
@@ -121,12 +130,12 @@
           </property>
           <item>
            <property name="text">
-            <string>从不</string>
+            <string>Never</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>在此次数后</string>
+            <string>After the times</string>
            </property>
           </item>
          </widget>
@@ -144,7 +153,7 @@
         <item>
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>次</string>
+           <string>times</string>
           </property>
          </widget>
         </item>
@@ -169,7 +178,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="QLineEdit" name="lineEdit_place">
      <property name="placeholderText">
-      <string>地点</string>
+      <string>Place</string>
      </property>
     </widget>
    </item>
@@ -200,7 +209,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QLineEdit" name="lineEdit_title">
      <property name="placeholderText">
-      <string>主题</string>
+      <string>Title</string>
      </property>
     </widget>
    </item>
@@ -213,7 +222,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>结束:</string>
+      <string>To:</string>
      </property>
     </widget>
    </item>
@@ -226,7 +235,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>开始:</string>
+      <string>From:</string>
      </property>
     </widget>
    </item>
@@ -236,7 +245,7 @@
       <bool>false</bool>
      </property>
      <property name="placeholderText">
-      <string>事件描述</string>
+      <string>Detail</string>
      </property>
     </widget>
    </item>
@@ -254,7 +263,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>添加附件</string>
+        <string>&amp;Add...</string>
        </property>
       </widget>
      </item>
@@ -267,7 +276,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>附件:</string>
+        <string>Attachments:</string>
        </property>
       </widget>
      </item>

@@ -3,7 +3,6 @@
 #include "continuousevent.h"
 
 #include <QDir>
-#include <QDebug>
 #include <QMessageBox>
 
 AbstractEvent::AbstractEvent(const QDate& begin, const QDate& end) :
@@ -51,7 +50,7 @@ void AbstractEvent::Clone(AbstractEvent *event)
     file_name_list = event->file_name_list;
 }
 
-void AbstractEvent::AddFile(const QString &filePath)
+bool AbstractEvent::AddFile(const QString &filePath)
 {
     if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand()).arg(qrand());
     if (!QDir::current().exists("data/" + dir_name)) QDir::current().mkpath("data/" + dir_name);
@@ -60,14 +59,15 @@ void AbstractEvent::AddFile(const QString &filePath)
     QString newFilePath = QString("%1/%2/%3/%4").arg(QDir::currentPath()).arg("data").arg(dir_name).arg(fileName);
     if (QFile(newFilePath).exists())
     {
-        QMessageBox::critical(0, "导入文件失败", QString("文件 \"%1\" 已在该事件中！").arg(fileName));
-        return;
+        QMessageBox::critical(0, tr("Import File Failed"), QString(tr("The file \"%1\" is already in this event!")).arg(fileName));
+        return false;
     }
     if (QFile::copy(filePath, newFilePath))
     {
         file_name_list.push_back(fileName);
-        QMessageBox::information(0, "导入文件成功", QString("文件 \"%1\" 导入成功。").arg(fileName));
+        QMessageBox::information(0, tr("File Imported Successfully"), QString(tr("Successfully imported the file \"%1\".")).arg(fileName));
     }
+    return true;
 }
 
 QDataStream& operator <<(QDataStream& dataStream, AbstractEvent* event)

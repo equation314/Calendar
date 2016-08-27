@@ -4,7 +4,6 @@
 
 #include <QMimeData>
 #include <QFileInfo>
-#include <QDebug>
 
 LabelButton::LabelButton(QWidget *parent) :
     QLabel(parent),

@@ -1,6 +1,5 @@
 #include "dateselectdialog.h"
 #include "ui_dateselectdialog.h"
-#include <QDebug>
 
 DateSelectDialog::DateSelectDialog(const QDate& date, QWidget *parent) :
     QDialog(parent),

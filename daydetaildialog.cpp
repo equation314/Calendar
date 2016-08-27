@@ -1,10 +1,10 @@
 #include "setting.h"
+#include "mainwindow.h"
 #include "addeventdialog.h"
 #include "recurrentevent.h"
 #include "continuousevent.h"
 #include "daydetaildialog.h"
 #include "ui_daydetaildialog.h"
-#include "mainwindow.h"
 
 #include <QSignalMapper>
 
@@ -16,8 +16,13 @@ DayDetailDialog::DayDetailDialog(DayWidget* date, QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 
-    ui->label_day->setText(QString("%1 %2").arg(date->Date().toString(Qt::SystemLocaleLongDate))
-                                           .arg(QDate::longDayName(date->Date().dayOfWeek())));
+    QFont font = ui->label_day->font();
+    font.setFamily(Setting::InterfaceFont.family());
+    /*font.sets
+    ui->label_day->setFont(font);*/
+    ui->label_day->setFont(font);
+    ui->label_day->setText(QString("%1").arg(Translator::Locale(Setting::Language).toString(date->Date(), QLocale::LongFormat)));
+
     loadLabels();
 }
 
@@ -38,7 +43,7 @@ void DayDetailDialog::loadLabels()
 
     if (!date->EventCount())
     {
-        QLabel* label = new QLabel("今天没有事件~", this);
+        QLabel* label = new QLabel(tr("You Have No Events Today~"), this);
         label->setFixedHeight(40);
         label->setAlignment(Qt::AlignCenter);
         ui->verticalLayout->addWidget(label);
@@ -55,4 +60,5 @@ void DayDetailDialog::loadLabels()
         ui->verticalLayout->addWidget(label);
     }
     ui->verticalLayout->addItem(spacer);
+    //ui->scrollArea->adjustSize();
 }

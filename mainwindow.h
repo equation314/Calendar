@@ -5,11 +5,13 @@
 #include "setting.h"
 #include "colormenu.h"
 #include "daywidget.h"
+#include "translator.h"
 #include "abstractevent.h"
 
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QWidgetAction>
+#include <QTranslator>
 
 namespace Ui
 {
@@ -43,12 +45,13 @@ private:
     std::vector<AbstractEvent*> event_list;
     std::map<QDate, QColor> day_color;
 
+    Translator translator;
+
     QLabel* corner_label;
     DayWidget* day_table[Const::MONTH_WEEKS][Const::WEEK_DAYS];
     LabelButton* vertical_header[Const::MONTH_WEEKS];
     LabelButton* horizontal_header[Const::WEEK_DAYS];
 
-    ColorMenu* color_menu;
     QAction *action_delete_event, *action_delete_one_event, *action_add_event;
 
     int dayFromColumn(int column) const { return (column + Setting::WeekFirstDay) % Const::WEEK_DAYS; }
@@ -64,7 +67,6 @@ private:
 private slots:
     void onDayWidgetContextMenu(const QPoint &pos);
 
-    void onColorSelected(const QColor& color);
     void onShowDayDetail();
 
     void on_action_menu_triggered();

@@ -2,11 +2,19 @@
 <ui version="4.0">
  <class>MonthRepeatWidget</class>
  <widget class="QWidget" name="MonthRepeatWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>254</width>
+    <height>64</height>
+   </rect>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QRadioButton" name="radioButton_day">
      <property name="text">
-      <string>在</string>
+      <string>&amp;On</string>
      </property>
      <property name="checked">
       <bool>true</bool>
@@ -16,43 +24,204 @@
    <item row="1" column="0">
     <widget class="QRadioButton" name="radioButton_weekday">
      <property name="text">
-      <string>在</string>
+      <string>&amp;At the</string>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QComboBox" name="comboBox_day"/>
+    <widget class="QComboBox" name="comboBox_day">
+     <item>
+      <property name="text">
+       <string>1st</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2nd</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>3rd</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>4th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>5th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>6th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>7th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>8th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>9th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>10th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>11th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>12th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>13th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>14th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>15th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>16th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>17th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>18th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>19th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>21st</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>22nd</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>23rd</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>24th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>25th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>26th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>27th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>28th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>29th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20th</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>31st</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>the last day</string>
+      </property>
+     </item>
+    </widget>
    </item>
    <item row="1" column="1">
     <widget class="QComboBox" name="comboBox_weekday_1">
      <item>
       <property name="text">
-       <string>第一个</string>
+       <string>first</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>第二个</string>
+       <string>second</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>第三个</string>
+       <string>third</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>第四个</string>
+       <string>fourth</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>第五个</string>
+       <string>fifth</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>最后一个</string>
+       <string>last</string>
       </property>
      </item>
     </widget>

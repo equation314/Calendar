@@ -7,6 +7,10 @@
         <file>icons/add.png</file>
         <file>icons/move.png</file>
         <file>icons/calendar.ico</file>
+        <file>icons/setting.png</file>
+        <file>icons/user.png</file>
+        <file>icons/about.png</file>
+        <file>icons/exit.png</file>
     </qresource>
     <qresource prefix="/trans">
         <file>trans/zh_CN.qm</file>

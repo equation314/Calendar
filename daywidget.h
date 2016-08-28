@@ -7,7 +7,6 @@
 #include <QWidget>
 #include <QLabel>
 #include <QDate>
-#include <QDebug>
 #include <QGridLayout>
 
 class DayWidget : public QWidget

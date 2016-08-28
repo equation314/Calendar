@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     dateselectdialog.cpp \
     setting.cpp \
     preferencedialog.cpp \
-    translator.cpp
+    translator.cpp \
+    registerdialog.cpp \
+    logindialog.cpp
 
 HEADERS  += mainwindow.h \
     daywidget.h \
@@ -39,7 +41,9 @@ HEADERS  += mainwindow.h \
     dateselectdialog.h \
     setting.h \
     preferencedialog.h \
-    translator.h
+    translator.h \
+    registerdialog.h \
+    logindialog.h
 
 FORMS    += forms/mainwindow.ui \
     forms/addeventdialog.ui \
@@ -48,7 +52,9 @@ FORMS    += forms/mainwindow.ui \
     forms/yearrepeatwidget.ui \
     forms/daydetaildialog.ui \
     forms/dateselectdialog.ui \
-    forms/preferencedialog.ui
+    forms/preferencedialog.ui \
+    forms/registerdialog.ui \
+    forms/logindialog.ui
 
 TRANSLATIONS += \
     resource/trans/zh_CN.ts \

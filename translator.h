@@ -6,25 +6,25 @@
 
 class Translator : public QTranslator
 {
+    Translator() {}
 public:
     enum Language
     {
         SimplifiedChinese,
         TraditionalChinese,
-        English
+        English,
+        Invalid
     };
-
-    Translator() {}
 
     static QLocale Locale(Language lang) { return LANGUAGE_LOCALE[(int)lang]; }
 
-    void InstallToApplication(Language lang);
+    static void InstallToApplication(Language lang);
 
 private:
-    Language language;
-    std::vector<QTranslator*> trans_list;
-
     static const QLocale LANGUAGE_LOCALE[3];
+
+    static Language language;
+    static std::vector<QTranslator*> trans_list;
 
 };
 

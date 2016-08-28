@@ -11,7 +11,9 @@ class Setting
     Setting();
 
 public:
+    static QString UserDirectory;
     static bool Movable;
+
     static bool EnableDragsAndDrops;
     static bool ShowWeekNumber;
     static int WeekFirstDay;

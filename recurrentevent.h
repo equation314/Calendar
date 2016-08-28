@@ -5,7 +5,6 @@
 #include "abstractevent.h"
 
 #include <set>
-#include <QDebug>
 
 class RecurrentEvent : public AbstractEvent
 {

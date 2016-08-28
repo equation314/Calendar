@@ -5,13 +5,9 @@
 #include "setting.h"
 #include "colormenu.h"
 #include "daywidget.h"
-#include "translator.h"
 #include "abstractevent.h"
 
 #include <QMainWindow>
-#include <QGridLayout>
-#include <QWidgetAction>
-#include <QTranslator>
 
 namespace Ui
 {
@@ -23,7 +19,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(const QString& username, QWidget *parent = nullptr);
     ~MainWindow();
 
 public slots:
@@ -47,8 +43,7 @@ private:
     std::vector<EventLabelButton*> event_labels;
     std::vector<AbstractEvent*> event_list;
     std::map<QDate, QColor> day_color;
-
-    Translator translator;
+    QString username;
 
     QLabel* corner_label;
     DayWidget* day_table[Const::MONTH_WEEKS][Const::WEEK_DAYS];
@@ -89,6 +84,8 @@ private slots:
     void on_action_select_date_triggered();
 
     void on_action_preference_triggered();
+
+    void on_action_logout_triggered();
 
 signals:
     void tableUpdated();

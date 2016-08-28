@@ -7,7 +7,6 @@
 #include "ui_yearrepeatwidget.h"
 #include "ui_addeventdialog.h"
 
-#include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
 

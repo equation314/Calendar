@@ -1,6 +1,6 @@
 #include "const.h"
 #include "translator.h"
-#include<QDebug>
+
 #include <QApplication>
 
 const QLocale Translator::LANGUAGE_LOCALE[3] =
@@ -9,6 +9,9 @@ const QLocale Translator::LANGUAGE_LOCALE[3] =
    QLocale(QLocale::Chinese, QLocale::TraditionalChineseScript, QLocale::HongKong),
    QLocale(QLocale::English)
 };
+
+Translator::Language Translator::language = Translator::Invalid;
+std::vector<QTranslator*> Translator::trans_list;
 
 void Translator::InstallToApplication(Language lang)
 {

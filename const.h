@@ -12,6 +12,7 @@ const int MONTH_WEEKS = 6;
 const QDate MAX_DATE(7999, 12, 31);
 const QString DISK_DIR = "disk/";
 const QString USER_DIR = "user/";
+const QString REGISTER_INFO_FILE = "reg.dat";
 const QString USER_DATA_FILE = "user.cdat";
 const QString SETTING_FILE = "setting.xml";
 const QList<QColor> COLOR_LIST =

@@ -22,6 +22,7 @@ public:
     QString Place() const { return place; }
     QString Detail() const { return detail; }
     QColor LabelColor() const { return color; }
+    QString MagicString() const { return magic_string; }
     int FileCount() const { return file_name_list.size(); }
     QString FilePathAt(int i) const;
 
@@ -48,7 +49,7 @@ public:
 
 protected:
     QDate begin, end;
-    QString title, place, detail, dir_name;
+    QString title, place, detail, magic_string;
     QColor color;
     QStringList file_name_list;
 

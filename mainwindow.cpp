@@ -1,5 +1,7 @@
 #include "setting.h"
+#include "translator.h"
 #include "mainwindow.h"
+#include "logindialog.h"
 #include "ui_mainwindow.h"
 #include "addeventdialog.h"
 #include "recurrentevent.h"
@@ -9,7 +11,6 @@
 #include "dateselectdialog.h"
 
 #include <QDir>
-#include <QDebug>
 #include <QFileInfo>
 #include <QDateEdit>
 #include <QFileDialog>
@@ -24,17 +25,19 @@ static LabelButton* eventLabelByAction;
 static QDate dateByAction;
 static DayWidget* dayWidgetByAction;
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(const QString& username, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    current_date(QDate::currentDate())
+    current_date(QDate::currentDate()),
+    username(username)
 {
-    if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
-    Setting::LoadSetting(Const::USER_DIR + Const::SETTING_FILE);
-    QGuiApplication::setFont(Setting::InterfaceFont);
-    translator.InstallToApplication(Setting::Language);
-
+    Setting::UserDirectory = Const::USER_DIR + username + "/";
+    if (!QDir(Setting::UserDirectory).exists()) QDir::current().mkpath(Setting::UserDirectory);
+    Setting::LoadSetting(Setting::UserDirectory + Const::SETTING_FILE);
+    Translator::InstallToApplication(Setting::Language);
     ui->setupUi(this);
+
+    QGuiApplication::setFont(Setting::InterfaceFont);
 
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
     this->setAttribute(Qt::WA_TranslucentBackground);
@@ -76,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
             connect(day_table[i][j], &QWidget::customContextMenuRequested, this, &MainWindow::onDayWidgetContextMenu);
         }
     createActions();
-    importData(QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE);
+    importData(QDir::currentPath() + "/" + Setting::UserDirectory + Const::USER_DATA_FILE);
     loadTable();
 }
 
@@ -118,13 +121,25 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
-    exportData(QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE);
+    if (!QDir(Setting::UserDirectory).exists()) QDir::current().mkpath(Setting::UserDirectory);
+
+    exportData(QDir::currentPath() + "/" + Setting::UserDirectory + Const::USER_DATA_FILE);
     QApplication::quit();
 }
 
 void MainWindow::createActions()
 {
+    action_show_day = new QAction(this);
+    action_add_event = new QAction(this);
+    action_delete_event = new QAction(this);
+    action_delete_one_event = new QAction(this);
+
+    QMenu* user = new QMenu(username, this);
+    user->setIcon(QPixmap(":/icons/icons/user.png"));
+    user->addAction(ui->action_preference);
+    user->addSeparator();
+    user->addAction(ui->action_logout);
+
     ui->toolBar->addAction(ui->action_menu);
     ui->toolBar->addAction(ui->action_date);
     ui->toolBar->addAction(ui->action_left);
@@ -133,19 +148,15 @@ void MainWindow::createActions()
     ui->toolBar->addAction(ui->action_movable);
     ui->toolBar->addWidget(ui->label_date);
 
-    action_show_day = new QAction(this);
-    action_add_event = new QAction(this);
-    action_delete_event = new QAction(this);
-    action_delete_one_event = new QAction(this);
-
     QSystemTrayIcon* tray = new QSystemTrayIcon(this);
     main_menu = new QMenu(this);
+    main_menu->addMenu(user);
+    main_menu->addSeparator();
     main_menu->addAction(ui->action_import);
     main_menu->addAction(ui->action_export);
     main_menu->addSeparator();
     main_menu->addAction(ui->action_dragDrop);
     main_menu->addSeparator();
-    main_menu->addAction(ui->action_preference);
     main_menu->addAction(ui->action_about);
     main_menu->addSeparator();
     main_menu->addAction(ui->action_exit);
@@ -177,7 +188,6 @@ void MainWindow::clearAll()
 
 void MainWindow::loadTable()
 {
-    translator.InstallToApplication(Setting::Language);
     ui->retranslateUi(this);
     this->setWindowOpacity(Setting::Opacity / 10.0);
 
@@ -333,7 +343,6 @@ void MainWindow::importData(const QString& fileName, bool showMessageBox)
         return;
     }
 
-    clearAll();
     QDataStream in(&file);
     int size;
     in >> size;
@@ -341,7 +350,10 @@ void MainWindow::importData(const QString& fileName, bool showMessageBox)
     {
         AbstractEvent* event;
         in >> &event;
-        event_list.push_back(event);
+        bool ok = true;
+        for (auto j : event_list)
+            if (j->MagicString() == event->MagicString()) ok = false;
+        if (ok) event_list.push_back(event);
     }
     in >> size;
     for (int i = 0; i < size; i++)
@@ -576,7 +588,7 @@ void MainWindow::on_action_movable_triggered(bool checked)
 void MainWindow::on_action_import_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import Data File"),
-                                                          QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE,
+                                                          QDir::currentPath() + "/" + Setting::UserDirectory + Const::USER_DATA_FILE,
                                                           tr("Calendar Data File (*.cdat)"));
     if (!fileName.isEmpty())
     {
@@ -604,8 +616,8 @@ void MainWindow::on_action_preference_triggered()
     PreferenceDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted)
     {
-        if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
-        Setting::SaveSetting(Const::USER_DIR + Const::SETTING_FILE);
+        if (!QDir(Setting::UserDirectory).exists()) QDir::current().mkpath(Setting::UserDirectory);
+        Setting::SaveSetting(Setting::UserDirectory + Const::SETTING_FILE);
         loadTable();
     }
 }
@@ -641,4 +653,10 @@ void MainWindow::on_action_select_date_triggered()
         current_date = dialog.SelectedDate();
         loadTable();
     }
+}
+#include <QProcess>
+void MainWindow::on_action_logout_triggered()
+{
+    qApp->quit();
+    QProcess::startDetached(qApp->applicationFilePath(), QStringList());
 }

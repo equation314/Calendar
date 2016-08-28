@@ -6,7 +6,8 @@
 #include <QMessageBox>
 
 AbstractEvent::AbstractEvent(const QDate& begin, const QDate& end) :
-    begin(begin), end(end)
+    begin(begin), end(end),
+    magic_string(QString("%1%2").arg(qrand() % 32768).arg(qrand() % 32768))
 {
 
 }
@@ -18,12 +19,12 @@ AbstractEvent::~AbstractEvent()
 
 QString AbstractEvent::FilePathAt(int i) const
 {
-    return QDir::currentPath() + "/" + Const::DISK_DIR + dir_name + "/" + file_name_list[i];
+    return QDir::currentPath() + "/" + Const::DISK_DIR + magic_string + "/" + file_name_list[i];
 }
 
 void AbstractEvent::RemoveFile(const QString& fileName)
 {
-    QFile(QDir::currentPath() + "/" + Const::DISK_DIR + dir_name + "/" + fileName).remove();
+    QFile(QDir::currentPath() + "/" + Const::DISK_DIR + magic_string + "/" + fileName).remove();
     for (auto i = file_name_list.begin(); i != file_name_list.end(); i++)
         if (QFileInfo(*i).fileName() == fileName)
         {
@@ -34,7 +35,7 @@ void AbstractEvent::RemoveFile(const QString& fileName)
 
 void AbstractEvent::RemoveAllFiles()
 {
-    QDir(QDir::currentPath() + "/" + Const::DISK_DIR + dir_name).removeRecursively();
+    QDir(QDir::currentPath() + "/" + Const::DISK_DIR + magic_string).removeRecursively();
     file_name_list.clear();
 }
 
@@ -45,18 +46,18 @@ void AbstractEvent::Clone(AbstractEvent *event)
     title = event->title;
     place = event->place;
     detail = event->detail;
-    dir_name = event->dir_name;
+    magic_string = event->magic_string;
     color = event->color;
     file_name_list = event->file_name_list;
 }
 
 bool AbstractEvent::AddFile(const QString &filePath, QWidget* parent)
 {
-    if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand() % 32768).arg(qrand() % 32768);
-    if (!QDir::current().exists(Const::DISK_DIR + dir_name)) QDir::current().mkpath(Const::DISK_DIR + dir_name);
+    QString dir = Const::DISK_DIR + "event_" + magic_string;
+    if (!QDir(dir).exists()) QDir::current().mkpath(dir);
 
     QString fileName = QFileInfo(filePath).fileName();
-    QString newFilePath = QString("%1/%2%3/%4").arg(QDir::currentPath()).arg(Const::DISK_DIR).arg(dir_name).arg(fileName);
+    QString newFilePath = QDir::currentPath() + "/" + dir + "/" + fileName;
     if (QFile(newFilePath).exists())
     {
         QMessageBox::critical(parent, tr("Import File Failed"), QString(tr("The file \"%1\" is already in this event!")).arg(fileName));
@@ -66,15 +67,16 @@ bool AbstractEvent::AddFile(const QString &filePath, QWidget* parent)
     {
         file_name_list.push_back(fileName);
         QMessageBox::information(parent, tr("File Imported Successfully"), QString(tr("Successfully imported the file \"%1\".")).arg(fileName));
+        return true;
     }
-    return true;
+    return false;
 }
 
 QDataStream& operator <<(QDataStream& dataStream, AbstractEvent* event)
 {
     dataStream << (int)event->Type();
     dataStream << event->begin << event->end;
-    dataStream << event->title << event->place << event->detail << event->dir_name;
+    dataStream << event->title << event->place << event->detail << event->magic_string;
     dataStream << event->color;
     dataStream << event->file_name_list;
     event->save(dataStream);
@@ -94,7 +96,7 @@ QDataStream& operator >>(QDataStream& dataStream, AbstractEvent** event)
     else
         return dataStream;
 
-    dataStream >> aevent->title >> aevent->place >> aevent->detail >> aevent->dir_name;
+    dataStream >> aevent->title >> aevent->place >> aevent->detail >> aevent->magic_string;
     dataStream >> aevent->color;
     dataStream >> aevent->file_name_list;
     aevent->load(dataStream);

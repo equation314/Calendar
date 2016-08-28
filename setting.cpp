@@ -5,7 +5,9 @@
 #include <QTextStream>
 #include <QDomDocument>
 
+QString Setting::UserDirectory = "";
 bool Setting::Movable = false;
+
 bool Setting::EnableDragsAndDrops = true;
 bool Setting::ShowWeekNumber = true;
 int Setting::WeekFirstDay = 1;

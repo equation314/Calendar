@@ -51,7 +51,7 @@ private:
     LabelButton* horizontal_header[Const::WEEK_DAYS];
 
     QMenu* main_menu;
-    QAction *action_add_event, *action_show_day, *action_delete_event, *action_delete_one_event;
+    QAction *action_add_event, *action_edit_event, *action_show_day, *action_delete_event, *action_delete_one_event;
 
     int dayFromColumn(int column) const { return (column + Setting::WeekFirstDay) % Const::WEEK_DAYS; }
     int columnFromDay(int day) const { return (day - Setting::WeekFirstDay + Const::WEEK_DAYS) % Const::WEEK_DAYS; }

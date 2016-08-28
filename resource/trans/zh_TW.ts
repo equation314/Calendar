@@ -4,22 +4,22 @@
 <context>
     <name>AbstractEvent</name>
     <message>
-        <location filename="../../abstractevent.cpp" line="63"/>
+        <location filename="../../abstractevent.cpp" line="66"/>
         <source>Import File Failed</source>
         <translation>導入文件失敗</translation>
     </message>
     <message>
-        <location filename="../../abstractevent.cpp" line="63"/>
+        <location filename="../../abstractevent.cpp" line="66"/>
         <source>The file &quot;%1&quot; is already in this event!</source>
         <translation>文件 &quot;%1&quot; 已在該事件中！</translation>
     </message>
     <message>
-        <location filename="../../abstractevent.cpp" line="69"/>
+        <location filename="../../abstractevent.cpp" line="72"/>
         <source>File Imported Successfully</source>
         <translation>導入文件成功</translation>
     </message>
     <message>
-        <location filename="../../abstractevent.cpp" line="69"/>
+        <location filename="../../abstractevent.cpp" line="72"/>
         <source>Successfully imported the file &quot;%1&quot;.</source>
         <translation>文件 &quot;%1&quot; 導入成功。</translation>
     </message>
@@ -112,43 +112,43 @@
         <translation>附件:</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="223"/>
+        <location filename="../../addeventdialog.cpp" line="222"/>
         <source>New Event</source>
         <translation>新事件</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="227"/>
+        <location filename="../../addeventdialog.cpp" line="226"/>
         <source>Edit Event</source>
         <translation>編輯事件</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="234"/>
+        <location filename="../../addeventdialog.cpp" line="233"/>
         <source>Edit Recurrent Event</source>
         <translation>編輯重複事件</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="283"/>
-        <location filename="../../addeventdialog.cpp" line="310"/>
+        <location filename="../../addeventdialog.cpp" line="282"/>
+        <location filename="../../addeventdialog.cpp" line="309"/>
         <source>Invalid Event</source>
         <translation>事件無效</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="283"/>
+        <location filename="../../addeventdialog.cpp" line="282"/>
         <source>Please input the title!</source>
         <translation>請輸入標題！</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="310"/>
+        <location filename="../../addeventdialog.cpp" line="309"/>
         <source>Please select at least one aay of a week!</source>
         <translation>請選擇一周中的至少一天！</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="431"/>
+        <location filename="../../addeventdialog.cpp" line="430"/>
         <source>Select Attachment</source>
         <translation>選擇附件</translation>
     </message>
     <message>
-        <location filename="../../addeventdialog.cpp" line="431"/>
+        <location filename="../../addeventdialog.cpp" line="430"/>
         <source>All Files (*)</source>
         <translation>所有文件 (*)</translation>
     </message>
@@ -220,22 +220,22 @@
         <translation>註冊</translation>
     </message>
     <message>
-        <location filename="../../logindialog.cpp" line="54"/>
+        <location filename="../../logindialog.cpp" line="52"/>
         <source>Please input username.</source>
         <translation>請輸入用戶名。</translation>
     </message>
     <message>
-        <location filename="../../logindialog.cpp" line="60"/>
+        <location filename="../../logindialog.cpp" line="58"/>
         <source>Incorrect username or password.</source>
         <translation>用戶名或密碼不正確。</translation>
     </message>
     <message>
-        <location filename="../../logindialog.cpp" line="74"/>
+        <location filename="../../logindialog.cpp" line="72"/>
         <source>Register Successfully</source>
         <translation>註冊成功</translation>
     </message>
     <message>
-        <location filename="../../logindialog.cpp" line="74"/>
+        <location filename="../../logindialog.cpp" line="72"/>
         <source>Register Successfully.</source>
         <translation>註冊成功。</translation>
     </message>
@@ -244,7 +244,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../../forms/mainwindow.ui" line="17"/>
-        <location filename="../../mainwindow.cpp" line="166"/>
+        <location filename="../../mainwindow.cpp" line="167"/>
         <source>Calendar</source>
         <translation></translation>
     </message>
@@ -289,138 +289,143 @@
         <translation>允許拖拽文件(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="150"/>
+        <location filename="../../forms/mainwindow.ui" line="154"/>
         <source>&amp;Preference...</source>
         <translation>偏好設置(&amp;P)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="155"/>
+        <location filename="../../forms/mainwindow.ui" line="163"/>
         <source>&amp;About...</source>
         <translation>關於(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="160"/>
+        <location filename="../../forms/mainwindow.ui" line="172"/>
         <source>E&amp;xit</source>
         <translation>退出(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="165"/>
+        <location filename="../../forms/mainwindow.ui" line="177"/>
         <source>Goto &amp;Today</source>
         <translation>返回今天(&amp;T)</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="170"/>
+        <location filename="../../forms/mainwindow.ui" line="182"/>
         <source>Goto &amp;Date...</source>
         <translation>選擇日期(&amp;D)...</translation>
     </message>
     <message>
-        <location filename="../../forms/mainwindow.ui" line="175"/>
+        <location filename="../../forms/mainwindow.ui" line="187"/>
         <source>&amp;Logout</source>
         <translation>登出(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="399"/>
-        <location filename="../../mainwindow.cpp" line="428"/>
+        <location filename="../../mainwindow.cpp" line="401"/>
+        <location filename="../../mainwindow.cpp" line="430"/>
         <source>Backgruond &amp;Color</source>
         <translation>背景顏色(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="396"/>
+        <location filename="../../mainwindow.cpp" line="398"/>
         <source>&amp;Add Event...</source>
         <oldsource>&amp;Add Event</oldsource>
         <translation>添加事件(&amp;A)...</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="442"/>
+        <location filename="../../mainwindow.cpp" line="445"/>
         <source>&amp;Remove Event</source>
         <translation>刪除事件(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="450"/>
+        <location filename="../../mainwindow.cpp" line="456"/>
         <source>Remove &amp;Single Event</source>
         <translation>刪除單個事件(&amp;S)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="342"/>
+        <location filename="../../mainwindow.cpp" line="344"/>
         <source>Fail to Import Data</source>
         <translation>導入數據失敗</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="201"/>
-        <location filename="../../mainwindow.cpp" line="585"/>
+        <location filename="../../mainwindow.cpp" line="203"/>
+        <location filename="../../mainwindow.cpp" line="596"/>
         <source>Fix</source>
         <translation>固定</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="201"/>
-        <location filename="../../mainwindow.cpp" line="585"/>
+        <location filename="../../mainwindow.cpp" line="203"/>
+        <location filename="../../mainwindow.cpp" line="596"/>
         <source>Move</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="342"/>
+        <location filename="../../mainwindow.cpp" line="344"/>
         <source>Cannot import data from &quot;%1&quot;!</source>
         <translation>無法從數據文件 &quot;%1&quot; 導入！</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="373"/>
+        <location filename="../../mainwindow.cpp" line="375"/>
         <source>Fail to Export Data</source>
         <translation>導出數據失敗</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="373"/>
+        <location filename="../../mainwindow.cpp" line="375"/>
         <source>Cannot export data to &quot;%1&quot;!</source>
         <translation>&quot;無法導出到數據文件 &quot;%1&quot;！</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="397"/>
+        <location filename="../../mainwindow.cpp" line="399"/>
         <source>&amp;Show All Events...</source>
         <translation>顯示所有事件(&amp;S)...</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="449"/>
+        <location filename="../../mainwindow.cpp" line="442"/>
+        <source>&amp;Edit Event</source>
+        <translation>編輯事件(&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="455"/>
         <source>Remove the Whole Event &amp;Sequence</source>
         <translation>刪除整個事件序列(&amp;D)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="487"/>
+        <location filename="../../mainwindow.cpp" line="498"/>
         <source>Remove Event</source>
         <translation>刪除事件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="487"/>
+        <location filename="../../mainwindow.cpp" line="498"/>
         <source>Are you sure you want to remove the event &quot;%1&quot; and it&apos;s all attachments?</source>
         <translation>確實要刪除事件 &quot;%1&quot; 和它的所有附件嗎？</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="527"/>
+        <location filename="../../mainwindow.cpp" line="538"/>
         <source>File &quot;%2&quot;</source>
         <translation>文件 &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="590"/>
+        <location filename="../../mainwindow.cpp" line="601"/>
         <source>Import Data File</source>
         <translation>導入數據文件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="592"/>
-        <location filename="../../mainwindow.cpp" line="604"/>
+        <location filename="../../mainwindow.cpp" line="603"/>
+        <location filename="../../mainwindow.cpp" line="615"/>
         <source>Calendar Data File (*.cdat)</source>
         <translation>日曆數據文件 (*.cdat)</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="602"/>
+        <location filename="../../mainwindow.cpp" line="613"/>
         <source>Export Data File</source>
         <translatorcomment>日曆數據文件 (*.dat)</translatorcomment>
         <translation>導出數據文件</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="628"/>
+        <location filename="../../mainwindow.cpp" line="639"/>
         <source>About Calendar</source>
         <translation>關於 Calendar</translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="629"/>
+        <location filename="../../mainwindow.cpp" line="640"/>
         <source>&lt;h2&gt;Calendar Program&lt;br/&gt;&lt;/h2&gt;&lt;p&gt;Programing and Training Project 1&lt;/p&gt;&lt;p&gt;Based on Qt 5.7.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Version: %1&lt;/p&gt;&lt;p&gt;Built time: %2 - %3&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2016 Yuekai Jia, CST, Tsinghua University&lt;/p&gt;&lt;p&gt;All Right Reserved.&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Project Index: &lt;a href=&quot;https://github.com/equation314/Calendar&quot;&gt;https://github.com/equation314/Calendar&lt;/a&gt;&lt;/p&gt;</source>
         <translation>&lt;h2&gt;Calendar 日曆程序&lt;br/&gt;&lt;/h2&gt;&lt;p&gt;程序設計訓練 Project 1&lt;/p&gt;&lt;p&gt;基於 Qt 5.7.0&lt;br/&gt;&lt;/p&gt;&lt;p&gt;版本: %1&lt;/p&gt;&lt;p&gt;構建時間: %2 - %3&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2016 清華大學 計算機系 賈越凱。&lt;/p&gt;&lt;p&gt;保留所有權利。&lt;br/&gt;&lt;/p&gt;&lt;p&gt;項目主頁: &lt;a href=&quot;https://github.com/equation314/Calendar&quot;&gt;https://github.com/equation314/Calendar&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
@@ -736,7 +741,7 @@
     </message>
     <message>
         <location filename="../../forms/preferencedialog.ui" line="206"/>
-        <source>簡體中文</source>
+        <source>简体中文</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -922,7 +927,7 @@
 <context>
     <name>WeekRepeatWidget</name>
     <message>
-        <location filename="../../addeventdialog.cpp" line="20"/>
+        <location filename="../../addeventdialog.cpp" line="19"/>
         <source>Working days</source>
         <translation>工作日</translation>
     </message>

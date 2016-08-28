@@ -11,6 +11,7 @@
 #include "dateselectdialog.h"
 
 #include <QDir>
+#include <QProcess>
 #include <QFileInfo>
 #include <QDateEdit>
 #include <QFileDialog>
@@ -21,7 +22,7 @@
 using namespace std;
 
 static AbstractEvent* eventByAction;
-static LabelButton* eventLabelByAction;
+static EventLabelButton* eventLabelByAction;
 static QDate dateByAction;
 static DayWidget* dayWidgetByAction;
 
@@ -131,6 +132,7 @@ void MainWindow::createActions()
 {
     action_show_day = new QAction(this);
     action_add_event = new QAction(this);
+    action_edit_event = new QAction(this);
     action_delete_event = new QAction(this);
     action_delete_one_event = new QAction(this);
 
@@ -173,6 +175,7 @@ void MainWindow::createActions()
     });
     connect(action_show_day, &QAction::triggered, this, &MainWindow::onShowDayDetail);
     connect(action_add_event, &QAction::triggered, this, &MainWindow::onAddEvent);
+    connect(action_edit_event, &QAction::triggered, this, &MainWindow::onEditEvent);
     connect(action_delete_event, &QAction::triggered, this, &MainWindow::onDeleteEvent);
     connect(action_delete_one_event, &QAction::triggered, this, &MainWindow::onDeleteOneEvent);
 }
@@ -437,9 +440,13 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
     }
 
     QMenu menu(this);
+    action_edit_event->setText(tr("&Edit Event"));
     if (event->Type() == AbstractEvent::ContinuousEvent)
     {
         action_delete_event->setText(tr("&Remove Event"));
+
+        menu.addAction(action_edit_event);
+        menu.addSeparator();
         menu.addAction(action_delete_event);
         menu.addSeparator();
         menu.addMenu(&color_menu);
@@ -448,6 +455,9 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
     {
         action_delete_event->setText(tr("Remove the Whole Event &Sequence"));
         action_delete_one_event->setText(tr("Remove &Single Event"));
+
+        menu.addAction(action_edit_event);
+        menu.addSeparator();
         menu.addAction(action_delete_event);
         menu.addAction(action_delete_one_event);
         menu.addSeparator();
@@ -461,6 +471,7 @@ void MainWindow::onEventLabelContextMenu(const QPoint& pos)
         eventByAction->SetLabelColor(color_menu.SelectedColor());
         loadTable();
     }
+    eventLabelByAction = nullptr;
 }
 
 void MainWindow::onAddEvent()
@@ -475,7 +486,8 @@ void MainWindow::onAddEvent()
 
 void MainWindow::onEditEvent()
 {
-    EventLabelButton* label = static_cast<EventLabelButton*>(QObject::sender());
+    EventLabelButton* label = eventLabelByAction;
+    if (label == nullptr) label = static_cast<EventLabelButton*>(QObject::sender());
     AbstractEvent* event = label->Event();
 
     AddEventDialog dialog(event, this);
@@ -654,9 +666,12 @@ void MainWindow::on_action_select_date_triggered()
         loadTable();
     }
 }
-#include <QProcess>
+
 void MainWindow::on_action_logout_triggered()
 {
+    if (!QDir(Setting::UserDirectory).exists()) QDir::current().mkpath(Setting::UserDirectory);
+    exportData(QDir::currentPath() + "/" + Setting::UserDirectory + Const::USER_DATA_FILE);
+
     qApp->quit();
     QProcess::startDetached(qApp->applicationFilePath(), QStringList());
 }

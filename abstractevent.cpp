@@ -19,12 +19,14 @@ AbstractEvent::~AbstractEvent()
 
 QString AbstractEvent::FilePathAt(int i) const
 {
-    return QDir::currentPath() + "/" + Const::DISK_DIR + magic_string + "/" + file_name_list[i];
+    QString dir = Const::DISK_DIR + "event_" + magic_string;
+    return QDir::currentPath() + "/" + dir + "/" + file_name_list[i];
 }
 
 void AbstractEvent::RemoveFile(const QString& fileName)
 {
-    QFile(QDir::currentPath() + "/" + Const::DISK_DIR + magic_string + "/" + fileName).remove();
+    QString dir = Const::DISK_DIR + "event_" + magic_string;
+    QFile(QDir::currentPath() + "/" + dir + "/" + fileName).remove();
     for (auto i = file_name_list.begin(); i != file_name_list.end(); i++)
         if (QFileInfo(*i).fileName() == fileName)
         {
@@ -35,7 +37,8 @@ void AbstractEvent::RemoveFile(const QString& fileName)
 
 void AbstractEvent::RemoveAllFiles()
 {
-    QDir(QDir::currentPath() + "/" + Const::DISK_DIR + magic_string).removeRecursively();
+    QString dir = Const::DISK_DIR + "event_" + magic_string;
+    QDir(QDir::currentPath() + "/" + dir).removeRecursively();
     file_name_list.clear();
 }
 

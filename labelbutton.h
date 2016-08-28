@@ -20,12 +20,12 @@ public:
     void SetTextColor(const QColor& color)
     {
         text_color = color;
-        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name()));
+        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name(QColor::HexArgb)));
     }
     void SetBackgroundColor(const QColor& color)
     {
         background_color = color;
-        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name()));
+        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name(QColor::HexArgb)));
     }
 
 

@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>Calendar</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../resource/res.qrc">
+    <normaloff>:/icons/icons/calendar.ico</normaloff>:/icons/icons/calendar.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0" colspan="3">

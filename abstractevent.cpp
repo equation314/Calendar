@@ -18,12 +18,12 @@ AbstractEvent::~AbstractEvent()
 
 QString AbstractEvent::FilePathAt(int i) const
 {
-    return QDir::currentPath() + "/data/" + dir_name + "/" + file_name_list[i];
+    return QDir::currentPath() + "/" + Const::DISK_DIR + dir_name + "/" + file_name_list[i];
 }
 
 void AbstractEvent::RemoveFile(const QString& fileName)
 {
-    QFile(QDir::currentPath() + "/data/" + dir_name + "/" + fileName).remove();
+    QFile(QDir::currentPath() + "/" + Const::DISK_DIR + dir_name + "/" + fileName).remove();
     for (auto i = file_name_list.begin(); i != file_name_list.end(); i++)
         if (QFileInfo(*i).fileName() == fileName)
         {
@@ -34,7 +34,7 @@ void AbstractEvent::RemoveFile(const QString& fileName)
 
 void AbstractEvent::RemoveAllFiles()
 {
-    QDir(QDir::currentPath() + "/data/" + dir_name).removeRecursively();
+    QDir(QDir::currentPath() + "/" + Const::DISK_DIR + dir_name).removeRecursively();
     file_name_list.clear();
 }
 
@@ -53,10 +53,10 @@ void AbstractEvent::Clone(AbstractEvent *event)
 bool AbstractEvent::AddFile(const QString &filePath, QWidget* parent)
 {
     if (dir_name.isEmpty()) dir_name = QString("event_%1%2").arg(qrand() % 32768).arg(qrand() % 32768);
-    if (!QDir::current().exists("data/" + dir_name)) QDir::current().mkpath("data/" + dir_name);
+    if (!QDir::current().exists(Const::DISK_DIR + dir_name)) QDir::current().mkpath(Const::DISK_DIR + dir_name);
 
     QString fileName = QFileInfo(filePath).fileName();
-    QString newFilePath = QString("%1/%2/%3/%4").arg(QDir::currentPath()).arg("data").arg(dir_name).arg(fileName);
+    QString newFilePath = QString("%1/%2%3/%4").arg(QDir::currentPath()).arg(Const::DISK_DIR).arg(dir_name).arg(fileName);
     if (QFile(newFilePath).exists())
     {
         QMessageBox::critical(parent, tr("Import File Failed"), QString(tr("The file \"%1\" is already in this event!")).arg(fileName));

@@ -25,11 +25,7 @@ public:
         content->setAcceptDrops(on);
     }
     void SetDate(const QDate& date);
-    void SetBackgroundThemeColor(const QColor &color, bool isDark = false)
-    {
-        SetTitleBackgroundColor(isDark ? color : color.lighter(135));
-        SetContentBackgroundColor(isDark ? color.darker(135) : color);
-    }
+    void SetBackgroundThemeColor(const QColor &color, bool isTransparent = false);
     void SetTitleTextColor(const QColor &color) { title->SetTextColor(color); }
     void SetContentTextColor(const QColor &color) { content->SetTextColor(color); }
     void SetTitleBackgroundColor(const QColor &color)

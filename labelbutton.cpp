@@ -19,34 +19,6 @@ LabelButton::LabelButton(const QString& text, QWidget *parent) :
     setup();
 }
 
-void LabelButton::setup()
-{
-    this->setIndent(3);
-    this->setMouseTracking(true);
-    this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-
-    ShowReleasedStyle();
-}
-
-void LabelButton::ShowEnterStyle()
-{
-    if (!Setting::Movable) return;
-    if (show_enter_color)
-        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(110).name()));
-}
-
-void LabelButton::ShowPressedStyle()
-{
-    if (!Setting::Movable) return;
-    this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(120).name()));
-}
-
-void LabelButton::ShowReleasedStyle()
-{
-    if (!Setting::Movable) return;
-    this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name()));
-}
-
 void LabelButton::resizeEvent(QResizeEvent* event)
 {
     if (!text.isEmpty())
@@ -104,6 +76,38 @@ void LabelButton::dropEvent(QDropEvent* event)
         if (QFileInfo(file).isFile()) emit dropIn(file);
     }
 }
+
+void LabelButton::setup()
+{
+    this->setIndent(3);
+    this->setMouseTracking(true);
+    this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+
+    ShowReleasedStyle();
+}
+
+void LabelButton::ShowEnterStyle()
+{
+    if (!Setting::Movable) return;
+    if (show_enter_color)
+        this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(110).name(QColor::HexArgb)));
+}
+
+void LabelButton::ShowPressedStyle()
+{
+    if (!Setting::Movable) return;
+    this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.darker(120).name(QColor::HexArgb)));
+}
+
+void LabelButton::ShowReleasedStyle()
+{
+    if (!Setting::Movable) return;
+    this->setStyleSheet(QString("QLabel{color:%1;background:%2;}").arg(text_color.name()).arg(background_color.name(QColor::HexArgb)));
+}
+
+
+
+
 
 EventLabelButton::EventLabelButton(const QString &text, AbstractEvent *event, QWidget *parent) :
     LabelButton(text, parent), event(event)

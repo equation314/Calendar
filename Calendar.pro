@@ -56,3 +56,5 @@ TRANSLATIONS += \
 
 RESOURCES += \
     resource/res.qrc
+
+RC_FILE = resource/icon.rc

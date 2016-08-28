@@ -107,7 +107,7 @@ void PreferenceDialog::accept()
 void PreferenceDialog::on_pushButton_import_clicked()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import Configuration File"),
-                                                          QDir::currentPath() + "/" + Const::SETTING_FILE,
+                                                          QDir::currentPath() + "/" + Const::USER_DIR + Const::SETTING_FILE,
                                                           tr("Configuration File (*.xml)"));
     if (!fileName.isEmpty()) Setting::LoadSetting(fileName);
     loadSetting();

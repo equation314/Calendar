@@ -29,7 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     current_date(QDate::currentDate())
 {
-    Setting::LoadSetting(Const::SETTING_FILE);
+    if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
+    Setting::LoadSetting(Const::USER_DIR + Const::SETTING_FILE);
     QGuiApplication::setFont(Setting::InterfaceFont);
     translator.InstallToApplication(Setting::Language);
 
@@ -75,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
             connect(day_table[i][j], &QWidget::customContextMenuRequested, this, &MainWindow::onDayWidgetContextMenu);
         }
     createActions();
-    importData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
+    importData(QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE);
     loadTable();
 }
 
@@ -117,7 +118,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    exportData(QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE);
+    if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
+    exportData(QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE);
     QApplication::quit();
 }
 
@@ -148,12 +150,16 @@ void MainWindow::createActions()
     main_menu->addSeparator();
     main_menu->addAction(ui->action_exit);
 
-    tray->setIcon(QPixmap(":/icons/icons/date.png"));
+    tray->setIcon(QPixmap(":/icons/icons/calendar.ico"));
     tray->setContextMenu(main_menu);
     tray->setToolTip(tr("Calendar"));
     tray->show();
 
-    connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::show);
+    connect(tray, &QSystemTrayIcon::activated, this, [this]()
+    {
+        this->activateWindow();
+        this->show();
+    });
     connect(action_show_day, &QAction::triggered, this, &MainWindow::onShowDayDetail);
     connect(action_add_event, &QAction::triggered, this, &MainWindow::onAddEvent);
     connect(action_delete_event, &QAction::triggered, this, &MainWindow::onDeleteEvent);
@@ -233,12 +239,12 @@ void MainWindow::loadTable()
             day_table[i][j]->SetDate(day);
             day_table[i][j]->setAcceptDrops(Setting::EnableDragsAndDrops);
 
-            bool isDark = day.month() != first.month();
+            bool isTransparent = day.month() != first.month();
 
             if (day_color.find(day) != day_color.end())
-                day_table[i][j]->SetBackgroundThemeColor(day_color[day], isDark);
+                day_table[i][j]->SetBackgroundThemeColor(day_color[day], isTransparent);
             else
-                day_table[i][j]->SetBackgroundThemeColor(Setting::CellColor, isDark);
+                day_table[i][j]->SetBackgroundThemeColor(Setting::CellColor, isTransparent);
 
             if (Const::IsWeekend(day.dayOfWeek()))
                 day_table[i][j]->SetTitleTextColor(Qt::red);
@@ -570,7 +576,7 @@ void MainWindow::on_action_movable_triggered(bool checked)
 void MainWindow::on_action_import_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Import Data File"),
-                                                          QDir::currentPath() + "/" + Const::DEFAULT_DATA_FILE,
+                                                          QDir::currentPath() + "/" + Const::USER_DIR + Const::USER_DATA_FILE,
                                                           tr("Calendar Data File (*.cdat)"));
     if (!fileName.isEmpty())
     {
@@ -598,7 +604,8 @@ void MainWindow::on_action_preference_triggered()
     PreferenceDialog dialog(this);
     if (dialog.exec() == QDialog::Accepted)
     {
-        Setting::SaveSetting(Const::SETTING_FILE);
+        if (!QDir(Const::USER_DIR).exists()) QDir::current().mkdir(Const::USER_DIR);
+        Setting::SaveSetting(Const::USER_DIR + Const::SETTING_FILE);
         loadTable();
     }
 }

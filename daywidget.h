@@ -62,7 +62,6 @@ private:
 
     void setup();
 
-    void drawShadow(QPainter &painter);
 signals:
     void clicked();
     void dropIn(const QString& filePath);

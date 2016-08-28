@@ -4,7 +4,7 @@
 #include <QLocale>
 #include <QTranslator>
 
-class Translator : public QTranslator
+class Translator
 {
     Translator() {}
 public:

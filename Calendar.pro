@@ -9,6 +9,8 @@ QT       += core gui widgets xml
 TARGET = Calendar
 TEMPLATE = app
 
+CONFIG += c++11
+
 SOURCES += main.cpp\
     mainwindow.cpp \
     daywidget.cpp \
